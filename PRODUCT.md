@@ -8,7 +8,10 @@ Locale di esempio: **Osteria del Porto**.
 
 ## Per chi
 - **Cliente del locale** (utente principale): al telefono, in sala o in cassa, spesso con poca luce e poca pazienza. Deve mostrare il QR in due tocchi e capire subito quanti punti ha.
-- **Ristoratore**: sceglie i colori del locale, pubblica promo ed eventi (pannello non incluso in questo repo).
+- **Titolare**: entra con il PIN del locale ("Sei il titolare?" nella schermata di accesso) e gestisce tutto da **Gestione locale**:
+  identità (nome, sigla, frase, logo, copertina, mappa), colori, premi, promo, eventi (con immagini), orari, contatti e link,
+  regole dei punti (punti per euro, benvenuto, durata QR), funzioni attive (eventi, prenotazioni, promo, recensioni, compleanno) e PIN.
+  Il cliente non vede nessuna di queste impostazioni.
 
 ## Funzioni (da mantenere)
 1. Installazione e accesso (Google o email, registrazione con 50 punti di benvenuto, istruzioni iPhone/Android)

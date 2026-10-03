@@ -10,13 +10,12 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Empty, EmptyDescription, EmptyMedia, EmptyTitle } from "@/components/ui/empty"
-import { PRIZES, VENUE } from "@/lib/data"
 import { navigate, useNow } from "@/lib/router"
 import { toast, useStore } from "@/lib/store"
 import { cn } from "@/lib/utils"
 
 export function RiscattoScreen() {
-  const { user, redemption, cancelRedeem, confirmRedeem, startRedeem } = useStore()
+  const { user, redemption, cancelRedeem, confirmRedeem, startRedeem, prizes, venue } = useStore()
   const [done, setDone] = React.useState<string | null>(null)
   const now = useNow(500)
 
@@ -47,7 +46,8 @@ export function RiscattoScreen() {
       </>
     )
 
-  if (!redemption)
+  const prize = redemption ? prizes.find((p) => p.id === redemption.prizeId) : undefined
+  if (!redemption || !prize)
     return (
       <>
         <PageHeader title="Riscatta premio" back="premi" />
@@ -66,12 +66,11 @@ export function RiscattoScreen() {
       </>
     )
 
-  const prize = PRIZES.find((p) => p.id === redemption.prizeId)!
   const leftMs = Math.max(0, redemption.expiresAt - now)
   const expired = leftMs === 0
   const mm = String(Math.floor(leftMs / 60000)).padStart(2, "0")
   const ss = String(Math.floor((leftMs % 60000) / 1000)).padStart(2, "0")
-  const ratio = leftMs / (VENUE.redeemValidityMinutes * 60000)
+  const ratio = Math.min(1, leftMs / (venue.redeemValidityMinutes * 60000))
 
   return (
     <>
@@ -80,7 +79,7 @@ export function RiscattoScreen() {
         <Card className="items-stretch gap-5 rounded-[28px]">
           <CardContent className="flex flex-col items-center gap-5">
             <div className="flex w-full items-center gap-3">
-              <PrizeArt id={prize.id} className="size-[52px]" />
+              <PrizeArt id={prize.id} image={prize.image} category={prize.category} className="size-[52px]" />
               <div className="flex flex-1 flex-col">
                 <span className="font-heading text-[17px] font-semibold">{prize.name}</span>
                 <span className="text-[13px] text-muted-foreground">−{prize.cost} punti dopo la scansione</span>
@@ -127,7 +126,7 @@ export function RiscattoScreen() {
 
         <div className="flex flex-col gap-3">
           {expired ? (
-            <Button size="xl" onClick={() => startRedeem(prize.id)}>
+            <Button size="xl" onClick={() => startRedeem(prize.id, venue.redeemValidityMinutes)}>
               Genera un nuovo codice
             </Button>
           ) : (
@@ -145,7 +144,7 @@ export function RiscattoScreen() {
                   size="lg"
                   onClick={() => {
                     const name = prize.name
-                    confirmRedeem()
+                    confirmRedeem(prize)
                     setDone(name)
                     toast.success(`Premio riscattato · −${prize.cost} punti`)
                   }}

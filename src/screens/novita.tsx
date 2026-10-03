@@ -26,27 +26,31 @@ import { Progress } from "@/components/ui/progress"
 import { Switch } from "@/components/ui/switch"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
-import { EVENTS, PROMOS, eventDate, type EventType, type FideliaEvent } from "@/lib/data"
+import { eventDate, type EventType, type FideliaEvent } from "@/lib/data"
 import { navigate } from "@/lib/router"
 import { toast, useStore } from "@/lib/store"
 import { cn } from "@/lib/utils"
 
 export function NovitaScreen({ tab, eventId }: { tab: string; eventId: string | null }) {
-  const current = tab === "promo" ? "promo" : "eventi"
+  const { venue } = useStore()
+  const { events: evOn, promos: prOn } = venue.features
+  const current = !evOn ? "promo" : !prOn ? "eventi" : tab === "promo" ? "promo" : "eventi"
   const month = new Date().toLocaleDateString("it-IT", { month: "long", year: "numeric" })
   return (
     <>
       <PageHeader title="Novità" description={`${month.charAt(0).toUpperCase() + month.slice(1)} · promo valide mostrando la tessera, eventi con punti extra`} />
       <PageBody>
         <Tabs value={current} onValueChange={(v) => navigate("novita", { tab: v })} className="gap-5">
-          <TabsList className="h-11 w-full sm:w-fit">
-            <TabsTrigger value="eventi" className="px-5">
-              <RiCalendarEventLine /> Eventi
-            </TabsTrigger>
-            <TabsTrigger value="promo" className="px-5">
-              <RiCoupon3Line /> Promo
-            </TabsTrigger>
-          </TabsList>
+          {evOn && prOn && (
+            <TabsList className="h-11 w-full sm:w-fit">
+              <TabsTrigger value="eventi" className="px-5">
+                <RiCalendarEventLine /> Eventi
+              </TabsTrigger>
+              <TabsTrigger value="promo" className="px-5">
+                <RiCoupon3Line /> Promo
+              </TabsTrigger>
+            </TabsList>
+          )}
           <TabsContent value="eventi">
             <EventsPanel initial={eventId} />
           </TabsContent>
@@ -63,7 +67,7 @@ function NotifyRow({ id, title, desc, checked, onChange }: { id: string; title: 
   return (
     <Card size="sm">
       <CardContent className="flex items-center gap-3">
-        <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary dark:bg-primary/25 dark:text-foreground">
+        <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary-soft text-primary-soft-foreground">
           <RiNotification3Line className="size-5" />
         </span>
         <Label htmlFor={id} className="flex-1 flex-col items-start gap-0.5">
@@ -84,15 +88,25 @@ function NotifyRow({ id, title, desc, checked, onChange }: { id: string; title: 
 }
 
 function PromoPanel() {
-  const { notify, setNotify } = useStore()
-  const [hero, ...rest] = PROMOS
+  const { notify, setNotify, visible } = useStore()
+  const [hero, ...rest] = visible.promos
   const today = new Date().getDay()
+  if (!hero)
+    return (
+      <Empty>
+        <EmptyMedia>
+          <RiCoupon3Line />
+        </EmptyMedia>
+        <EmptyTitle>Nessuna promo attiva</EmptyTitle>
+        <EmptyDescription>Attiva le notifiche: ti avvisiamo appena il locale pubblica un'offerta.</EmptyDescription>
+      </Empty>
+    )
   return (
     <div className="grid gap-4 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] lg:items-start">
-      <Card className="gap-0 border-0 bg-primary py-0 text-primary-foreground ring-0">
-        <div className="relative isolate flex h-[200px] items-end overflow-hidden p-5">
-          <EventArt type="live" scrim={false} className="opacity-70" />
-          <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_top,var(--primary),transparent)]" />
+      <Card className="gap-0 border-0 bg-brand py-0 text-brand-foreground ring-0 dark:ring-1 dark:ring-white/10">
+        <div className="relative isolate flex h-[220px] items-end overflow-hidden p-5">
+          <EventArt type="live" image={hero.image} scrim={false} />
+          <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_top,var(--brand),color-mix(in_oklch,var(--brand)_35%,transparent)_60%,transparent)]" />
           <div className="flex flex-wrap gap-1.5">
             {hero.doublePoints && (
               <Badge variant="highlight" size="lg">
@@ -107,10 +121,10 @@ function PromoPanel() {
           </div>
         </div>
         <CardContent className="flex flex-col gap-2 py-5">
-          <span className="text-xs font-medium opacity-75">{hero.label}</span>
+          <span className="text-xs font-medium opacity-90">{hero.label}</span>
           <h2 className="font-heading text-[26px] leading-tight font-semibold">{hero.title}</h2>
-          <p className="text-sm leading-relaxed opacity-90">{hero.text}</p>
-          <span className="text-xs font-semibold opacity-80">{hero.validity}</span>
+          <p className="text-sm leading-relaxed">{hero.text}</p>
+          <span className="text-xs font-semibold opacity-90">{hero.validity}</span>
         </CardContent>
       </Card>
 
@@ -118,9 +132,13 @@ function PromoPanel() {
         {rest.map((p) => (
           <Card key={p.id} size="sm">
             <CardContent className="flex items-start gap-3.5">
-              <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-highlight/25 text-warning">
-                <RiTicket2Line className="size-6" />
-              </span>
+              {p.image ? (
+                <img src={p.image} alt="" className="size-16 shrink-0 rounded-2xl object-cover" />
+              ) : (
+                <span className="flex size-16 shrink-0 items-center justify-center rounded-2xl bg-warning-soft text-warning">
+                  <RiTicket2Line className="size-6" />
+                </span>
+              )}
               <div className="flex flex-col gap-1">
                 <Badge variant="secondary">{p.label}</Badge>
                 <span className="font-heading text-base font-semibold">{p.title}</span>
@@ -145,7 +163,8 @@ const TYPES: { value: "tutti" | EventType; label: string }[] = [
 ]
 
 function EventsPanel({ initial }: { initial: string | null }) {
-  const { bookings, notify, setNotify } = useStore()
+  const { bookings, notify, setNotify, visible } = useStore()
+  const EVENTS = visible.events
   const [type, setType] = React.useState<"tutti" | EventType>("tutti")
   const [openId, setOpenId] = React.useState<string | null>(initial)
   const list = EVENTS.filter((e) => type === "tutti" || e.type === type)
@@ -185,7 +204,7 @@ function EventsPanel({ initial }: { initial: string | null }) {
                   className="group/event flex items-center gap-3.5 rounded-[20px] bg-card p-3 text-left shadow-sm ring-1 ring-foreground/5 outline-none transition-colors hover:bg-muted focus-visible:ring-3 focus-visible:ring-ring/30 dark:ring-foreground/10"
                 >
                   <div className="relative isolate flex size-[72px] shrink-0 flex-col items-center justify-center overflow-hidden rounded-2xl text-white">
-                    <EventArt type={e.type} />
+                    <EventArt type={e.type} image={e.image} />
                     <span className="font-heading text-[22px] leading-none font-bold tabular">{d.day}</span>
                     <span className="text-[11px] font-semibold uppercase">{d.month}</span>
                   </div>
@@ -222,7 +241,7 @@ function EventsPanel({ initial }: { initial: string | null }) {
 }
 
 function BookingSheet({ event, onDone }: { event: FideliaEvent; onDone: () => void }) {
-  const { bookings, book, cancelBooking } = useStore()
+  const { bookings, book, cancelBooking, venue } = useStore()
   const booked = bookings[event.id]
   const [guests, setGuests] = React.useState(booked ?? 2)
   const d = eventDate(event.date)
@@ -232,7 +251,7 @@ function BookingSheet({ event, onDone }: { event: FideliaEvent; onDone: () => vo
   return (
     <>
       <div className="relative isolate mx-4 mt-3 flex h-36 items-end overflow-hidden rounded-[20px] p-4 text-white">
-        <EventArt type={event.type} />
+        <EventArt type={event.type} image={event.image} />
         <Badge variant="glass" size="lg">
           {d.weekday} {d.day} {d.month} · {event.time}
         </Badge>
@@ -262,7 +281,7 @@ function BookingSheet({ event, onDone }: { event: FideliaEvent; onDone: () => vo
           </div>
           <Progress value={(taken / event.seats) * 100} aria-label="Posti occupati" indicatorClassName={cn(event.seatsLeft <= 6 && "bg-destructive")} />
         </div>
-        {!booked && (
+        {!booked && venue.features.booking && (
           <div className="flex items-center justify-between rounded-2xl border p-2 pl-4">
             <span className="flex items-center gap-2 text-sm font-medium">
               <RiGroupLine className="size-4" /> Persone
@@ -299,6 +318,8 @@ function BookingSheet({ event, onDone }: { event: FideliaEvent; onDone: () => vo
               Annulla prenotazione
             </Button>
           </>
+        ) : !venue.features.booking ? (
+          <p className="rounded-2xl bg-muted p-3 text-sm">Per partecipare chiama il locale{venue.phone ? `: ${venue.phone}` : ""}.</p>
         ) : (
           <Button
             size="xl"

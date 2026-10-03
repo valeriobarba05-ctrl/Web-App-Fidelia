@@ -49,6 +49,10 @@
   --color-sidebar-ring: var(--sidebar-ring);
 
   /* Fidelia semantic layer */
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-primary-soft: var(--primary-soft);
+  --color-primary-soft-foreground: var(--primary-soft-foreground);
   --color-highlight: var(--highlight);
   --color-highlight-foreground: var(--highlight-foreground);
   --color-success: var(--success);
@@ -56,6 +60,9 @@
   --color-warning: var(--warning);
   --color-warning-soft: var(--warning-soft);
   --color-surface: var(--surface);
+  --color-destructive-soft: var(--destructive-soft);
+  --color-sidebar-muted: var(--sidebar-muted);
+  --color-inverted-muted: var(--inverted-muted);
   --color-inverted: var(--inverted);
   --color-inverted-foreground: var(--inverted-foreground);
 
@@ -85,27 +92,34 @@
 :root {
   --radius: 0.625rem;
 
-  /* taupe base (light) */
+  /* taupe base (light) — muted-foreground scurito per AA anche su --muted */
   --background: oklch(1 0 0);
   --foreground: oklch(0.147 0.004 49.3);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.147 0.004 49.3);
   --popover: oklch(0.214 0.009 43.1); /* menu: inverted */
   --popover-foreground: oklch(0.986 0.002 67.8);
-  --secondary: oklch(0.96 0.002 17.2);
+  --secondary: oklch(0.955 0.003 40);
   --secondary-foreground: oklch(0.214 0.009 43.1);
-  --muted: oklch(0.96 0.002 17.2);
-  --muted-foreground: oklch(0.547 0.021 43.1);
-  --accent: oklch(0.96 0.002 17.2);
+  --muted: oklch(0.955 0.003 40);
+  --muted-foreground: oklch(0.47 0.02 43);
+  --accent: oklch(0.955 0.003 40);
   --accent-foreground: oklch(0.214 0.009 43.1);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0.005 34.3);
-  --input: oklch(0.922 0.005 34.3);
+  --destructive: oklch(0.53 0.21 27);
+  --destructive-soft: oklch(0.95 0.03 25);
+  --border: oklch(0.9 0.006 34);
+  --input: oklch(0.9 0.006 34);
 
-  /* emerald theme (overridable per locale) */
+  /* tema del locale: sovrascritto a runtime da applyTheme() (src/lib/themes.ts) */
   --primary: oklch(0.508 0.118 165.612);
-  --primary-foreground: oklch(0.979 0.021 166.113);
+  --primary-foreground: oklch(0.99 0.02 166);
+  --primary-soft: oklch(0.95 0.045 166);
+  --primary-soft-foreground: oklch(0.45 0.1 166);
   --ring: oklch(0.508 0.118 165.612);
+  --brand: oklch(0.378 0.077 168.94);
+  --brand-foreground: oklch(0.99 0.02 166);
+  --highlight: oklch(0.8 0.15 78);
+  --highlight-foreground: oklch(0.16 0.01 50);
 
   /* lime charts */
   --chart-1: oklch(0.897 0.196 126.665);
@@ -114,59 +128,64 @@
   --chart-4: oklch(0.532 0.157 131.589);
   --chart-5: oklch(0.453 0.124 130.933);
 
-  --sidebar: oklch(0.214 0.009 43.1);
+  --sidebar: oklch(0.2 0.008 45);
   --sidebar-foreground: oklch(0.986 0.002 67.8);
-  --sidebar-primary: oklch(0.596 0.145 163.225);
-  --sidebar-primary-foreground: oklch(0.979 0.021 166.113);
-  --sidebar-accent: oklch(0.268 0.011 36.5);
+  --sidebar-muted: oklch(0.8 0.01 45);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: oklch(0.28 0.01 40);
   --sidebar-accent-foreground: oklch(0.986 0.002 67.8);
-  --sidebar-border: oklch(1 0 0 / 8%);
-  --sidebar-ring: oklch(0.547 0.021 43.1);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.7 0.02 43);
 
   /* Fidelia layer */
   --surface: oklch(0.975 0.003 60);
-  --inverted: oklch(0.214 0.009 43.1);
+  --inverted: oklch(0.2 0.008 45);
   --inverted-foreground: oklch(0.986 0.002 67.8);
-  --highlight: oklch(0.8 0.15 78);
-  --highlight-foreground: oklch(0.214 0.009 43.1);
-  --success: oklch(0.508 0.118 165.612);
-  --success-soft: oklch(0.95 0.052 163.051);
-  --warning: oklch(0.47 0.11 65);
-  --warning-soft: oklch(0.962 0.059 95.617);
+  --inverted-muted: oklch(0.8 0.01 45);
+  --success: oklch(0.47 0.11 163);
+  --success-soft: oklch(0.95 0.045 163);
+  --warning: oklch(0.45 0.11 62);
+  --warning-soft: oklch(0.96 0.06 92);
 }
 
+/* Tema scuro: sfondo nero puro, card grafite, testi chiari. */
 .dark {
-  --background: oklch(0.147 0.004 49.3);
-  --foreground: oklch(0.986 0.002 67.8);
-  --card: oklch(0.214 0.009 43.1);
-  --card-foreground: oklch(0.986 0.002 67.8);
-  --popover: oklch(0.96 0.002 17.2); /* inverted in dark = light menu */
-  --popover-foreground: oklch(0.214 0.009 43.1);
-  --secondary: oklch(0.268 0.011 36.5);
-  --secondary-foreground: oklch(0.986 0.002 67.8);
-  --muted: oklch(0.268 0.011 36.5);
-  --muted-foreground: oklch(0.714 0.014 41.2);
-  --accent: oklch(0.268 0.011 36.5);
-  --accent-foreground: oklch(0.986 0.002 67.8);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
+  --background: oklch(0 0 0);
+  --foreground: oklch(0.97 0.003 67.8);
+  --card: oklch(0.17 0.004 49);
+  --card-foreground: oklch(0.97 0.003 67.8);
+  --popover: oklch(0.955 0.003 40); /* inverted: menu chiaro su nero */
+  --popover-foreground: oklch(0.16 0.006 45);
+  --secondary: oklch(0.25 0.006 45);
+  --secondary-foreground: oklch(0.97 0.003 67.8);
+  --muted: oklch(0.25 0.006 45);
+  --muted-foreground: oklch(0.78 0.012 45);
+  --accent: oklch(0.25 0.006 45);
+  --accent-foreground: oklch(0.97 0.003 67.8);
+  --destructive: oklch(0.72 0.17 22);
+  --destructive-soft: oklch(0.28 0.07 22);
+  --border: oklch(1 0 0 / 14%);
+  --input: oklch(1 0 0 / 18%);
 
-  --primary: oklch(0.432 0.095 166.913);
-  --primary-foreground: oklch(0.979 0.021 166.113);
-  --ring: oklch(0.596 0.145 163.225);
+  --sidebar: oklch(0.12 0.004 49);
+  --sidebar-accent: oklch(0.22 0.006 45);
+  --sidebar-border: oklch(1 0 0 / 12%);
 
-  --sidebar: oklch(0.12 0.004 49.3);
-  --sidebar-accent: oklch(0.214 0.009 43.1);
+  --surface: oklch(0 0 0);
+  --inverted: oklch(0.2 0.006 45);
+  --inverted-foreground: oklch(0.97 0.003 67.8);
+  --inverted-muted: oklch(0.8 0.01 45);
+  --success: oklch(0.8 0.15 163);
+  --success-soft: oklch(0.27 0.06 168);
+  --warning: oklch(0.86 0.13 85);
+  --warning-soft: oklch(0.29 0.06 70);
+}
 
-  --surface: oklch(0.12 0.004 49.3);
-  --inverted: oklch(0.96 0.002 17.2);
-  --inverted-foreground: oklch(0.214 0.009 43.1);
-  --highlight: oklch(0.82 0.15 80);
-  --success: oklch(0.765 0.177 163.223);
-  --success-soft: oklch(0.262 0.051 172.552);
-  --warning: oklch(0.85 0.14 85);
-  --warning-soft: oklch(0.3 0.06 70);
+/* Cambio tema morbido: solo colori, solo durante lo switch. */
+.theme-switching,
+.theme-switching * {
+  transition: background-color 0.28s ease, color 0.28s ease, border-color 0.28s ease, fill 0.28s ease !important;
 }
 
 @layer base {

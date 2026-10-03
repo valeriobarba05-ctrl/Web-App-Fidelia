@@ -27,10 +27,10 @@ export function MovimentiScreen() {
     <>
       <PageHeader title="Saldo e movimenti" back="tessera" />
       <PageBody className="lg:grid lg:grid-cols-[360px_minmax(0,1fr)] lg:items-start lg:gap-8">
-        <Card className="border-0 bg-primary text-primary-foreground ring-0 lg:sticky lg:top-10">
+        <Card className="border-0 bg-brand text-brand-foreground ring-0 lg:sticky lg:top-10 dark:ring-1 dark:ring-white/10">
           <CardContent className="flex flex-col gap-5">
             <div className="flex flex-col gap-2">
-              <span className="text-sm opacity-80">Saldo disponibile</span>
+              <span className="text-sm opacity-90">Saldo disponibile</span>
               <PointsOdometer value={user.points} className="text-[56px] text-highlight" />
             </div>
             <dl className="grid grid-cols-3 gap-2">
@@ -40,7 +40,7 @@ export function MovimentiScreen() {
                 ["Visite", String(user.visits)],
               ].map(([k, v]) => (
                 <div key={k} className="flex flex-col gap-0.5 rounded-2xl bg-white/12 px-3 py-2.5">
-                  <dt className="text-[11px] opacity-80">{k}</dt>
+                  <dt className="text-[11px] opacity-90">{k}</dt>
                   <dd className="font-heading text-lg font-semibold tabular">{v}</dd>
                 </div>
               ))}

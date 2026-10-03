@@ -19,13 +19,22 @@ Documentazione viva: apri l'app su `#/design-system`.
 - `--highlight` oro: tutto ciò che riguarda i **punti** (saldo, CTA tessera, bonus). Mai per decorare.
 - `--success / --success-soft`, `--warning / --warning-soft`: disponibile / in attesa di scansione.
 - `--surface`: fondo dell'app (taupe 50 caldo) sotto le card bianche.
-- `--inverted`: superfici scure (barra di navigazione, promo, menu).
+- `--inverted`: superfici scure (barra di navigazione, promo).
+- `--brand`: superficie di marca sempre scura (tessera). `--primary-soft`: fondo tenue del primario per icone e righe evidenziate.
 - Varianti bottone `highlight`, `glass`; taglia `xl` (48px) e `icon-xl` (44px) per le CTA al telefono.
 - Badge `highlight`, `success`, `warning`, `glass`; taglia `lg`.
 
-## Colori del locale
-`src/lib/themes.ts`: ogni locale sovrascrive solo `--primary`, `--primary-foreground`, `--ring`, `--highlight` (chiaro e scuro).
-Preset: Emerald (default del preset), Verde porto, Bordeaux, Blu notte, Antracite.
+## Colori del locale (li sceglie solo il titolare)
+`src/lib/themes.ts` → `generateTheme(brand, punti, scuro)`. Il titolare sceglie due colori (o un abbinamento: Emerald, Verde porto, Bordeaux, Blu notte, Antracite);
+da questi vengono generati `--primary`, `--primary-soft`, `--brand` (superficie scura della tessera), `--highlight` e i rispettivi testi,
+alzando o abbassando la luminosità finché ogni coppia supera **WCAG AA 4,5:1** in chiaro e in scuro.
+
+## Leggibilità
+- Tema scuro: sfondo **nero puro** (`#000`), card grafite `oklch(0.17)`, bordi al 14%. Nel tema scuro il primario diventa chiaro con testo scuro.
+- Tessera, saldo e pannello di accesso usano `--brand`, sempre scuro con testo chiaro e numeri oro, in entrambi i temi.
+- Testo su foto caricate: sempre sopra un velo scuro o di marca.
+- `npm run check:contrast` verifica tutte le coppie testo/sfondo per ogni preset (più colori "difficili") in entrambi i temi; deve passare prima di ogni rilascio.
+- Niente testo con opacità sotto l'85% su superfici colorate; i secondari usano token dedicati (`--muted-foreground`, `--inverted-muted`, `--sidebar-muted`).
 
 ## Firma
 1. **Tessera‑biglietto** (`LoyaltyCard`): due tacche laterali (utility `ticket-notch`) e una perforazione: sopra chi sei e il saldo, sotto cosa fare adesso.

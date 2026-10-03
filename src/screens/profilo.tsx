@@ -2,7 +2,6 @@ import * as React from "react"
 import { RiCake3Line, RiExternalLinkLine, RiLogoutBoxRLine, RiMoonLine, RiPaletteLine, RiShieldCheckLine } from "@remixicon/react"
 
 import { PageBody, PageHeader } from "@/components/fidelia/app-shell"
-import { VenueThemePicker } from "@/components/fidelia/venue-theme-picker"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -10,7 +9,6 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import { Switch } from "@/components/ui/switch"
-import { VENUE } from "@/lib/data"
 import { navigate } from "@/lib/router"
 import { toast, useStore } from "@/lib/store"
 
@@ -22,7 +20,7 @@ const CONSENTS = [
 ] as const
 
 export function ProfiloScreen() {
-  const { user, consents, setConsent, setBirthday, dark, setDark, logout } = useStore()
+  const { user, consents, setConsent, setBirthday, dark, setDark, logout, venue, role } = useStore()
   const [bday, setBday] = React.useState(user.birthday)
   const dirty = bday !== user.birthday
 
@@ -51,6 +49,7 @@ export function ProfiloScreen() {
             </CardContent>
           </Card>
 
+          {venue.features.birthday && (
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 font-semibold">
@@ -77,17 +76,16 @@ export function ProfiloScreen() {
               </form>
             </CardContent>
           </Card>
+          )}
 
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 font-semibold">
                 <RiPaletteLine className="size-5" /> Aspetto
               </CardTitle>
-              <CardDescription>Colori del locale e tema dell'app.</CardDescription>
+              <CardDescription>Tema dell'app su questo telefono.</CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col gap-4">
-              <VenueThemePicker />
-              <Separator />
               <div className="flex items-center gap-3">
                 <RiMoonLine className="size-5 text-muted-foreground" />
                 <Label htmlFor="dark" className="flex-1">
@@ -95,9 +93,11 @@ export function ProfiloScreen() {
                 </Label>
                 <Switch id="dark" checked={dark} onCheckedChange={setDark} />
               </div>
-              <Button variant="outline" size="lg" className="w-fit" onClick={() => navigate("design-system")}>
-                Apri il design system <RiExternalLinkLine />
-              </Button>
+              {role === "titolare" && (
+                <Button variant="outline" size="lg" className="w-fit" onClick={() => navigate("gestione")}>
+                  Colori e contenuti del locale <RiExternalLinkLine />
+                </Button>
+              )}
             </CardContent>
           </Card>
         </div>
@@ -135,9 +135,13 @@ export function ProfiloScreen() {
             </CardContent>
           </Card>
 
-          <Button asChild variant="link" className="w-fit px-1">
-            <a href={VENUE.links.privacy}>Leggi l'informativa privacy</a>
-          </Button>
+          {venue.links.privacy && (
+            <Button asChild variant="link" className="w-fit px-1">
+              <a href={venue.links.privacy} target="_blank" rel="noopener noreferrer">
+                Leggi l'informativa privacy
+              </a>
+            </Button>
+          )}
 
           <Button variant="destructive" size="xl" onClick={logout}>
             <RiLogoutBoxRLine /> Esci

@@ -64,7 +64,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Switch } from "@/components/ui/switch"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
-import { EVENTS, INITIAL_MOVEMENTS, PRIZES } from "@/lib/data"
+import { DEFAULT_EVENTS as EVENTS, DEFAULT_PRIZES as PRIZES, INITIAL_MOVEMENTS } from "@/lib/data"
 import { navigate } from "@/lib/router"
 import { toast, useStore } from "@/lib/store"
 import { cn } from "@/lib/utils"
@@ -72,6 +72,7 @@ import { cn } from "@/lib/utils"
 const SECTIONS = [
   ["fondamenta", "Preset"],
   ["colori", "Colori"],
+  ["leggibilita", "Leggibilità"],
   ["tipografia", "Tipografia"],
   ["forma", "Forma ed elevazione"],
   ["icone", "Icone"],
@@ -146,6 +147,7 @@ export function DesignSystemPage() {
         <main className="flex min-w-0 flex-col gap-20">
           <Intro />
           <Colors />
+          <Legibility />
           <Typography />
           <Shape />
           <IconsSection />
@@ -212,7 +214,7 @@ function Intro() {
         ))}
       </div>
       <div className="flex flex-col gap-3 rounded-[20px] bg-muted p-5">
-        <span className="text-sm font-medium">Colori del locale: prova a cambiarli, tutta la pagina segue.</span>
+        <span className="text-sm font-medium">Colori del locale (li sceglie il titolare): prova a cambiarli, tutta la pagina segue.</span>
         <VenueThemePicker />
       </div>
     </Section>
@@ -221,8 +223,8 @@ function Intro() {
 
 const COLOR_GROUPS: { name: string; tokens: [string, string?][] }[] = [
   { name: "Superfici", tokens: [["background", "foreground"], ["surface", "foreground"], ["card", "card-foreground"], ["muted", "muted-foreground"], ["secondary", "secondary-foreground"], ["inverted", "inverted-foreground"]] },
-  { name: "Brand e punti", tokens: [["primary", "primary-foreground"], ["highlight", "highlight-foreground"], ["ring"]] },
-  { name: "Stati", tokens: [["success-soft", "success"], ["warning-soft", "warning"], ["destructive"], ["border"], ["input"]] },
+  { name: "Locale e punti (generati, sempre AA)", tokens: [["primary", "primary-foreground"], ["primary-soft", "primary-soft-foreground"], ["brand", "brand-foreground"], ["brand", "highlight"], ["highlight", "highlight-foreground"], ["ring"]] },
+  { name: "Stati", tokens: [["success-soft", "success"], ["warning-soft", "warning"], ["destructive-soft", "destructive"], ["border"], ["input"]] },
   { name: "Grafici (lime)", tokens: [["chart-1"], ["chart-2"], ["chart-3"], ["chart-4"], ["chart-5"]] },
 ]
 
@@ -247,6 +249,30 @@ function Colors() {
           </div>
         </div>
       ))}
+    </Section>
+  )
+}
+
+function Legibility() {
+  return (
+    <Section
+      id="leggibilita"
+      title="Leggibilità garantita"
+      lead="Il titolare sceglie due colori; i token del locale vengono generati regolando la luminosità finché ogni testo supera WCAG AA (4,5:1) sia in chiaro sia in scuro. Il tema scuro usa sfondo nero puro e card grafite."
+    >
+      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        {[
+          ["Sfondo scuro", "Nero puro #000, card grafite separate da un bordo al 14%."],
+          ["Testi secondari", "Mai sotto 4,5:1, anche su card e sfondi grigi."],
+          ["Testo su foto", "Velo scuro o di marca sotto ogni testo che sta su un'immagine caricata."],
+          ["Controllo automatico", "npm run check:contrast verifica tutte le coppie, per ogni colore e in entrambi i temi."],
+        ].map(([k, v]) => (
+          <div key={k} className="flex flex-col gap-1 rounded-[20px] border p-4">
+            <span className="font-heading text-base font-semibold">{k}</span>
+            <span className="text-sm text-muted-foreground">{v}</span>
+          </div>
+        ))}
+      </div>
     </Section>
   )
 }
@@ -633,7 +659,7 @@ function Patterns() {
           <span className="text-xs font-medium text-muted-foreground">PrizeArt · tinte per categoria, desaturate se bloccate</span>
           <div className="flex flex-wrap gap-3 rounded-[20px] border p-5">
             {PRIZES.map((p, i) => (
-              <PrizeArt key={p.id} id={p.id} locked={i > 1} />
+              <PrizeArt key={p.id} id={p.id} category={p.category} locked={i > 1} />
             ))}
           </div>
         </div>

@@ -11,7 +11,7 @@ export function MovementRow({ m, className }: { m: Movement; className?: string 
   const plus = m.points > 0
   return (
     <Item size="sm" role="listitem" className={cn("animate-rise", className)}>
-      <ItemMedia variant="icon" className={cn(plus ? "bg-success-soft text-success" : "bg-muted text-muted-foreground", m.kind === "bonus" && "bg-highlight/25 text-warning")}>
+      <ItemMedia variant="icon" className={cn(plus ? "bg-success-soft text-success" : "bg-muted text-foreground", m.kind === "bonus" && "bg-warning-soft text-warning")}>
         <Icon />
       </ItemMedia>
       <ItemContent className="gap-0.5">

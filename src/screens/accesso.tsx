@@ -1,13 +1,14 @@
 import * as React from "react"
-import { RiAddBoxLine, RiAndroidFill, RiAppleFill, RiEyeLine, RiEyeOffLine, RiGift2Line, RiMore2Fill, RiQrCodeLine, RiShare2Line, RiSparkling2Line } from "@remixicon/react"
+import { RiKey2Line, RiAddBoxLine, RiAndroidFill, RiAppleFill, RiEyeLine, RiEyeOffLine, RiGift2Line, RiMore2Fill, RiQrCodeLine, RiShare2Line, RiSparkling2Line } from "@remixicon/react"
 
 import { VenueMark } from "@/components/fidelia/loyalty-card"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { VENUE } from "@/lib/data"
+import { pointsRule } from "@/lib/data"
 import { navigate } from "@/lib/router"
 import { toast, useStore } from "@/lib/store"
 
@@ -23,7 +24,7 @@ function GoogleMark() {
 }
 
 export function AccessoScreen() {
-  const { login } = useStore()
+  const { login, venue } = useStore()
   const [mode, setMode] = React.useState<"accedi" | "registrati">("registrati")
   const [show, setShow] = React.useState(false)
   const [email, setEmail] = React.useState("")
@@ -39,30 +40,37 @@ export function AccessoScreen() {
   const enter = (welcome: boolean) => {
     login()
     navigate("home")
-    toast.success(welcome ? "Benvenuto! +50 punti di benvenuto" : "Bentornato!", { description: VENUE.name })
+    toast.success(welcome && venue.welcomePoints > 0 ? `Benvenuto! +${venue.welcomePoints} punti di benvenuto` : "Bentornato!", { description: venue.name })
   }
 
   return (
     <div className="grid min-h-dvh lg:grid-cols-[minmax(0,1fr)_minmax(0,560px)]">
       {/* Brand panel */}
-      <section className="relative isolate flex flex-col justify-between gap-10 overflow-hidden bg-primary px-6 pt-10 pb-24 text-primary-foreground sm:px-10 lg:p-14">
+      <section className="relative isolate flex flex-col justify-between gap-10 overflow-hidden bg-brand px-6 pt-10 pb-24 text-brand-foreground sm:px-10 lg:p-14">
+        {venue.cover && (
+          <>
+            <img src={venue.cover} alt="" className="absolute inset-0 -z-20 size-full object-cover" />
+            {/* velo di marca: garantisce la leggibilità del testo su qualsiasi foto */}
+            <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_top,var(--brand)_35%,color-mix(in_oklch,var(--brand)_82%,transparent))]" />
+          </>
+        )}
         <span aria-hidden className="pointer-events-none absolute -right-10 -bottom-16 -z-10 font-heading text-[340px] leading-none font-black tracking-[-0.06em] opacity-[0.07] select-none">
-          {VENUE.initials}
+          {venue.initials}
         </span>
         <div className="flex items-center gap-3">
           <VenueMark className="size-12 text-base" />
-          <span className="font-heading text-lg font-semibold">{VENUE.name}</span>
+          <span className="font-heading text-lg font-semibold">{venue.name}</span>
         </div>
         <div className="flex max-w-lg flex-col gap-5">
-          <h1 className="font-heading text-[40px] leading-[1.05] font-semibold tracking-[-0.03em] sm:text-[52px]">{VENUE.tagline}</h1>
+          <h1 className="font-heading text-[40px] leading-[1.05] font-semibold tracking-[-0.03em] sm:text-[52px]">{venue.tagline}</h1>
           <ul className="flex flex-col gap-3 text-[15px]">
             {[
-              { icon: RiQrCodeLine, t: `${VENUE.pointsRule}, con un QR dal telefono` },
-              { icon: RiGift2Line, t: "Premi veri: caffè, calici, dolci, cene" },
-              { icon: RiSparkling2Line, t: "50 punti di benvenuto appena ti iscrivi" },
+              { icon: RiQrCodeLine, t: `${pointsRule(venue)}, con un QR dal telefono` },
+              { icon: RiGift2Line, t: "Premi veri, scelti dal locale" },
+              ...(venue.welcomePoints > 0 ? [{ icon: RiSparkling2Line, t: `${venue.welcomePoints} punti di benvenuto appena ti iscrivi` }] : []),
             ].map(({ icon: Icon, t }) => (
               <li key={t} className="flex items-center gap-3">
-                <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-white/12">
+                <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-white/15">
                   <Icon className="size-5" />
                 </span>
                 {t}
@@ -70,7 +78,7 @@ export function AccessoScreen() {
             ))}
           </ul>
         </div>
-        <p className="hidden text-xs opacity-70 lg:block">Fidelia · la tessera fedeltà che vive nel telefono, senza app da scaricare.</p>
+        <p className="hidden text-xs opacity-90 lg:block">Fidelia · la tessera fedeltà che vive nel telefono, senza app da scaricare.</p>
       </section>
 
       {/* Form */}
@@ -129,7 +137,7 @@ export function AccessoScreen() {
                   {mode === "registrati" && (
                     <p className="text-center text-xs text-muted-foreground">
                       Continuando accetti l'
-                      <a href={VENUE.links.privacy} className="font-medium text-foreground underline">
+                      <a href={venue.links.privacy || undefined} target="_blank" rel="noopener noreferrer" className="font-medium text-foreground underline">
                         informativa privacy
                       </a>
                       . I consensi marketing li scegli dopo, uno per uno.
@@ -142,6 +150,7 @@ export function AccessoScreen() {
         </Card>
 
         <InstallHint />
+        <OwnerAccess />
       </section>
     </div>
   )
@@ -193,5 +202,47 @@ function InstallHint() {
         </p>
       </CardContent>
     </Card>
+  )
+}
+
+/** Ingresso del titolare: PIN impostato nella gestione (predefinito 1234 nella demo). */
+function OwnerAccess() {
+  const { venue, loginOwner } = useStore()
+  const [pin, setPin] = React.useState("")
+  const [error, setError] = React.useState(false)
+  return (
+    <Dialog onOpenChange={() => { setPin(""); setError(false) }}>
+      <DialogTrigger asChild>
+        <Button variant="ghost" size="lg" className="self-center text-muted-foreground">
+          <RiKey2Line /> Sei il titolare? Entra nella gestione
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Area titolare</DialogTitle>
+          <DialogDescription>Inserisci il PIN del locale per modificare contenuti, immagini, colori e regole. Nella demo il PIN è 1234.</DialogDescription>
+        </DialogHeader>
+        <form
+          id="owner"
+          className="flex flex-col gap-2"
+          onSubmit={(e) => {
+            e.preventDefault()
+            if (pin !== venue.ownerPin) return setError(true)
+            loginOwner()
+            navigate("gestione")
+            toast.success("Modalità titolare attiva")
+          }}
+        >
+          <Label htmlFor="pin">PIN</Label>
+          <Input id="pin" inputMode="numeric" autoComplete="one-time-code" maxLength={8} value={pin} onChange={(e) => { setPin(e.target.value.replace(/\D/g, "")); setError(false) }} aria-invalid={error} autoFocus className="text-center font-heading text-2xl tracking-[0.4em]" />
+          {error && <p role="alert" className="text-xs text-destructive">PIN errato. Riprova o chiedi il PIN a chi gestisce il locale.</p>}
+        </form>
+        <DialogFooter>
+          <Button type="submit" form="owner" size="lg" disabled={pin.length < 4}>
+            Entra
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   )
 }

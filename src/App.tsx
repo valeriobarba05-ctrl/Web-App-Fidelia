@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/sonner"
 import { useRoute } from "@/lib/router"
 import { useStore } from "@/lib/store"
 import { AccessoScreen } from "@/screens/accesso"
+import { GestioneScreen } from "@/screens/gestione"
 import { HomeScreen } from "@/screens/home"
 import { LocaleScreen } from "@/screens/locale"
 import { MovimentiScreen } from "@/screens/movimenti"
@@ -38,6 +39,7 @@ export function App() {
         {route === "novita" && <NovitaScreen tab={params.get("tab") ?? "eventi"} eventId={params.get("evento")} />}
         {route === "locale" && <LocaleScreen />}
         {route === "profilo" && <ProfiloScreen />}
+        {route === "gestione" && <GestioneScreen tab={params.get("tab") ?? "identita"} />}
       </AppShell>
     )
 

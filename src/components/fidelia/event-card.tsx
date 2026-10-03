@@ -31,7 +31,7 @@ export function EventCard({
         className,
       )}
     >
-      <EventArt type={event.type} />
+      <EventArt type={event.type} image={event.image} />
       <div className="absolute top-4 right-4 left-4 flex items-start justify-between gap-2">
         <div className="flex flex-wrap gap-1.5">
           <Badge variant="glass" size="lg">

@@ -14,6 +14,7 @@ import {
   RiQrCodeLine,
   RiStore2Fill,
   RiStore2Line,
+  RiSettings3Line,
   RiSunLine,
   RiUser3Line,
 } from "@remixicon/react"
@@ -30,7 +31,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { VENUE } from "@/lib/data"
 import { navigate, type Route } from "@/lib/router"
 import { useStore } from "@/lib/store"
 import { cn } from "@/lib/utils"
@@ -47,30 +47,70 @@ const NAV: NavItem[] = [
 
 const isActive = (item: NavItem, route: Route) => (item.match ?? [item.route]).includes(route)
 
+/** Le voci seguono le funzioni attivate dal titolare (es. niente "Novità" se eventi e promo sono spenti). */
+function useNav() {
+  const { venue } = useStore()
+  return NAV.filter((n) => n.route !== "novita" || venue.features.events || venue.features.promos)
+}
+
 export function AppShell({ route, children }: { route: Route; children: React.ReactNode }) {
+  const { role, leaveOwner } = useStore()
   return (
     <div className="min-h-dvh lg:grid lg:grid-cols-[272px_1fr]">
       <Sidebar route={route} />
-      <div className="flex min-w-0 flex-col pb-28 lg:pb-12">{children}</div>
+      <div className="flex min-w-0 flex-col pb-28 lg:pb-12">
+        {role === "titolare" && (
+          <div className="sticky top-0 z-30 flex items-center gap-2 bg-inverted px-4 py-2 text-sm text-inverted-foreground lg:hidden">
+            <RiSettings3Line className="size-4 text-highlight" />
+            <span className="flex-1 font-medium">Modalità titolare</span>
+            {route !== "gestione" ? (
+              <Button variant="glass" size="sm" onClick={() => navigate("gestione")}>
+                Gestione
+              </Button>
+            ) : (
+              <Button variant="glass" size="sm" onClick={() => navigate("home")}>
+                Vedi l'app
+              </Button>
+            )}
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-inverted-foreground hover:bg-white/10 hover:text-inverted-foreground"
+              onClick={() => {
+                leaveOwner()
+                navigate("home")
+              }}
+            >
+              Esci
+            </Button>
+          </div>
+        )}
+        {children}
+      </div>
       <BottomNav route={route} />
     </div>
   )
 }
 
 function Sidebar({ route }: { route: Route }) {
-  const { user } = useStore()
+  const { user, venue, role } = useStore()
+  const nav = useNav()
   return (
     <aside className="sticky top-0 hidden h-dvh flex-col gap-6 bg-sidebar p-4 text-sidebar-foreground lg:flex">
       <a href="#/home" className="flex items-center gap-3 rounded-2xl p-2 outline-none focus-visible:ring-3 focus-visible:ring-sidebar-ring/40">
         <VenueMark />
         <span className="flex flex-col">
-          <span className="font-heading text-[15px] font-semibold">{VENUE.name}</span>
-          <span className="text-xs text-sidebar-foreground/60">Tessera fedeltà</span>
+          <span className="font-heading text-[15px] font-semibold">{venue.name}</span>
+          <span className="text-xs text-sidebar-muted">Tessera fedeltà</span>
         </span>
       </a>
 
       <nav aria-label="Principale" className="flex flex-col gap-1">
-        {[...NAV, { route: "movimenti", label: "Movimenti", icon: RiHistoryLine, activeIcon: RiHistoryLine } as NavItem].map((item) => {
+        {[
+          ...nav,
+          { route: "movimenti", label: "Movimenti", icon: RiHistoryLine, activeIcon: RiHistoryLine } as NavItem,
+          ...(role === "titolare" ? [{ route: "gestione", label: "Gestione locale", icon: RiSettings3Line, activeIcon: RiSettings3Line } as NavItem] : []),
+        ].map((item) => {
           const active = item.route === "tessera" ? route === "tessera" : isActive(item, route)
           const Icon = active ? item.activeIcon : item.icon
           return (
@@ -79,7 +119,7 @@ function Sidebar({ route }: { route: Route }) {
               href={`#/${item.route}`}
               aria-current={active ? "page" : undefined}
               className={cn(
-                "flex h-11 items-center gap-3 rounded-2xl px-3 text-sm font-medium text-sidebar-foreground/75 outline-none transition-colors hover:bg-sidebar-accent hover:text-sidebar-foreground focus-visible:ring-3 focus-visible:ring-sidebar-ring/40",
+                "flex h-11 items-center gap-3 rounded-2xl px-3 text-sm font-medium text-sidebar-muted outline-none transition-colors hover:bg-sidebar-accent hover:text-sidebar-foreground focus-visible:ring-3 focus-visible:ring-sidebar-ring/40",
                 active && "bg-sidebar-primary text-sidebar-primary-foreground hover:bg-sidebar-primary hover:text-sidebar-primary-foreground",
               )}
             >
@@ -95,9 +135,9 @@ function Sidebar({ route }: { route: Route }) {
           href="#/tessera"
           className="flex flex-col gap-2 rounded-2xl bg-sidebar-accent p-4 outline-none transition-colors hover:bg-white/10 focus-visible:ring-3 focus-visible:ring-sidebar-ring/40"
         >
-          <span className="text-xs text-sidebar-foreground/60">Il tuo saldo</span>
+          <span className="text-xs text-sidebar-muted">Il tuo saldo</span>
           <PointsOdometer value={user.points} className="text-3xl text-highlight" />
-          <span className="flex items-center gap-1.5 text-xs font-medium text-sidebar-foreground/80">
+          <span className="flex items-center gap-1.5 text-xs font-medium text-sidebar-muted">
             <RiQrCodeLine className="size-4" /> Mostra la tessera in cassa
           </span>
         </a>
@@ -108,12 +148,13 @@ function Sidebar({ route }: { route: Route }) {
 }
 
 function BottomNav({ route }: { route: Route }) {
+  const nav = useNav()
   return (
     <nav
       aria-label="Principale"
-      className="fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-40 mx-auto flex max-w-md items-center justify-between rounded-[24px] bg-inverted p-1.5 text-inverted-foreground shadow-[0_16px_40px_-12px_rgb(0_0_0/0.45)] lg:hidden"
+      className="fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-40 mx-auto flex max-w-md items-center justify-between rounded-[24px] bg-inverted p-1.5 text-inverted-foreground shadow-[0_16px_40px_-12px_rgb(0_0_0/0.45)] ring-1 ring-white/10 lg:hidden"
     >
-      {NAV.map((item) => {
+      {nav.map((item) => {
         const active = isActive(item, route)
         const Icon = active ? item.activeIcon : item.icon
         if (item.route === "tessera")
@@ -134,11 +175,11 @@ function BottomNav({ route }: { route: Route }) {
             href={`#/${item.route}`}
             aria-current={active ? "page" : undefined}
             className={cn(
-              "flex h-14 min-w-0 flex-1 flex-col items-center justify-center gap-0.5 rounded-[18px] text-[11px] font-medium text-inverted-foreground/60 outline-none transition-colors focus-visible:ring-3 focus-visible:ring-ring/40",
-              active && "bg-white/10 text-inverted-foreground dark:bg-black/5",
+              "flex h-14 min-w-0 flex-1 flex-col items-center justify-center gap-0.5 rounded-[18px] text-[11px] font-medium text-inverted-muted outline-none transition-colors focus-visible:ring-3 focus-visible:ring-ring/40",
+              active && "bg-white/12 text-inverted-foreground",
             )}
           >
-            <Icon className={cn("size-[22px]", active && "text-highlight dark:text-primary")} />
+            <Icon className={cn("size-[22px]", active && "text-highlight")} />
             {item.label}
           </a>
         )
@@ -148,7 +189,7 @@ function BottomNav({ route }: { route: Route }) {
 }
 
 export function UserMenu({ align = "end", side = "bottom", full }: { align?: "start" | "end"; side?: "top" | "bottom"; full?: boolean }) {
-  const { user, dark, setDark, logout } = useStore()
+  const { user, dark, setDark, logout, role, leaveOwner } = useStore()
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -164,7 +205,7 @@ export function UserMenu({ align = "end", side = "bottom", full }: { align?: "st
               <span className="truncate text-sm font-medium">
                 {user.firstName} {user.lastName}
               </span>
-              <span className="truncate text-xs text-sidebar-foreground/60">{user.email}</span>
+              <span className="truncate text-xs text-sidebar-muted">{user.email}</span>
             </span>
           </button>
         ) : (
@@ -192,6 +233,23 @@ export function UserMenu({ align = "end", side = "bottom", full }: { align?: "st
         <DropdownMenuItem onSelect={() => navigate("design-system")}>
           <RiPaletteLine /> Design system
         </DropdownMenuItem>
+        {role === "titolare" && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuLabel>Titolare</DropdownMenuLabel>
+            <DropdownMenuItem onSelect={() => navigate("gestione")}>
+              <RiSettings3Line /> Gestione locale
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onSelect={() => {
+                leaveOwner()
+                navigate("home")
+              }}
+            >
+              <RiUser3Line /> Esci dalla modalità titolare
+            </DropdownMenuItem>
+          </>
+        )}
         <DropdownMenuSeparator />
         <DropdownMenuItem variant="destructive" onSelect={logout}>
           <RiLogoutBoxRLine /> Esci

@@ -20,7 +20,6 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { ItemGroup } from "@/components/ui/item"
 import { Progress } from "@/components/ui/progress"
-import { EVENTS, PRIZES, PROMOS, VENUE } from "@/lib/data"
 import { navigate } from "@/lib/router"
 import { nextPrize, useStore } from "@/lib/store"
 import { fmtPoints } from "@/lib/utils"
@@ -31,18 +30,19 @@ function greeting() {
 }
 
 export function HomeScreen() {
-  const { user, movements, bookings, redemption } = useStore()
-  const next = nextPrize(user.points)
+  const { user, movements, bookings, redemption, venue, visible } = useStore()
+  const PRIZES = visible.prizes
+  const next = nextPrize(PRIZES, user.points)
   const unlocked = PRIZES.filter((p) => p.cost <= user.points)
-  const promoToday = PROMOS.find((p) => p.days?.includes(new Date().getDay()))
-  const promo = promoToday ?? PROMOS[0]
-  const event = EVENTS[0]
+  const promoToday = visible.promos.find((p) => p.days?.includes(new Date().getDay()))
+  const promo = promoToday ?? visible.promos[0]
+  const event = visible.events.find((e) => e.date >= new Date().toISOString().slice(0, 10)) ?? visible.events[0]
 
   return (
     <>
       <header className="mx-auto flex w-full max-w-6xl items-center gap-3 px-4 pt-6 pb-5 sm:px-6 lg:px-10 lg:pt-10">
         <div className="flex min-w-0 flex-1 flex-col">
-          <span className="text-sm text-muted-foreground">{VENUE.name}</span>
+          <span className="text-sm text-muted-foreground">{venue.name}</span>
           <h1 className="font-heading text-[28px] leading-tight font-semibold tracking-[-0.02em] lg:text-[34px]">
             {greeting()}, {user.firstName}
           </h1>
@@ -60,7 +60,7 @@ export function HomeScreen() {
           <LoyaltyCard>
             <div className="flex flex-col gap-3">
               {next ? (
-                <Progress value={(user.points / next.cost) * 100} aria-label={`Progresso verso ${next.name}`} className="h-2 bg-white/15" indicatorClassName="bg-highlight" />
+                <Progress value={(user.points / next.cost) * 100} aria-label={`Progresso verso ${next.name}`} className="h-2 bg-white/20" indicatorClassName="bg-highlight" />
               ) : (
                 <span className="text-sm">Hai sbloccato tutti i premi del catalogo.</span>
               )}
@@ -89,19 +89,19 @@ export function HomeScreen() {
             </button>
           )}
 
-          <nav aria-label="Azioni rapide" className="grid grid-cols-4 gap-2">
+          <nav aria-label="Azioni rapide" className="grid auto-cols-fr grid-flow-col gap-2">
             {[
-              { label: "Premi", icon: RiGift2Line, to: () => navigate("premi") },
-              { label: "Eventi", icon: RiCalendarEventLine, to: () => navigate("novita", { tab: "eventi" }) },
-              { label: "Movimenti", icon: RiHistoryLine, to: () => navigate("movimenti") },
-              { label: "Recensisci", icon: RiStarSmileLine, to: () => window.open(VENUE.links.review, "_blank") },
-            ].map(({ label, icon: Icon, to }) => (
+              { label: "Premi", icon: RiGift2Line, to: () => navigate("premi"), on: true },
+              { label: "Eventi", icon: RiCalendarEventLine, to: () => navigate("novita", { tab: "eventi" }), on: venue.features.events },
+              { label: "Movimenti", icon: RiHistoryLine, to: () => navigate("movimenti"), on: true },
+              { label: "Recensisci", icon: RiStarSmileLine, to: () => window.open(venue.links.review, "_blank", "noopener"), on: venue.features.reviews && !!venue.links.review },
+            ].filter((a) => a.on).map(({ label, icon: Icon, to }) => (
               <button
                 key={label}
                 onClick={to}
                 className="flex flex-col items-center gap-2 rounded-2xl bg-card py-3.5 text-xs font-medium shadow-sm ring-1 ring-foreground/5 outline-none transition-[background-color,transform] hover:bg-muted focus-visible:ring-3 focus-visible:ring-ring/30 active:scale-[0.97] dark:ring-foreground/10"
               >
-                <span className="flex size-10 items-center justify-center rounded-xl bg-primary/10 text-primary dark:bg-primary/25 dark:text-foreground">
+                <span className="flex size-10 items-center justify-center rounded-xl bg-primary-soft text-primary-soft-foreground">
                   <Icon className="size-5" />
                 </span>
                 {label}
@@ -131,10 +131,12 @@ export function HomeScreen() {
         </div>
 
         <div className="flex flex-col gap-5">
+          {promo && (
           <section aria-labelledby="promo-home" className="flex flex-col gap-2.5">
             <SectionTitle id="promo-home">{promoToday ? "Promo di oggi" : "Promo del mese"}</SectionTitle>
-            <Card className="gap-3 border-0 bg-inverted text-inverted-foreground ring-0">
-              <CardContent className="flex flex-col gap-3">
+            <Card className="gap-0 border-0 bg-inverted py-0 text-inverted-foreground ring-0 dark:ring-1 dark:ring-white/10">
+              {promo.image && <img src={promo.image} alt="" className="h-40 w-full object-cover" />}
+              <CardContent className="flex flex-col gap-3 py-5">
                 <div className="flex flex-wrap gap-1.5">
                   {promo.doublePoints && (
                     <Badge variant="highlight" size="lg">
@@ -148,14 +150,16 @@ export function HomeScreen() {
                   )}
                 </div>
                 <h3 className="font-heading text-[22px] leading-tight font-semibold">{promo.title}</h3>
-                <p className="text-sm leading-relaxed opacity-80">{promo.text}</p>
+                <p className="text-sm leading-relaxed text-inverted-muted">{promo.text}</p>
                 <Button variant="glass" size="lg" className="w-fit" onClick={() => navigate("novita", { tab: "promo" })}>
                   Tutte le promo <RiArrowRightLine />
                 </Button>
               </CardContent>
             </Card>
           </section>
+          )}
 
+          {event && (
           <section aria-labelledby="evento-home" className="flex flex-col gap-2.5">
             <SectionTitle
               id="evento-home"
@@ -169,6 +173,7 @@ export function HomeScreen() {
             </SectionTitle>
             <EventCard event={event} booked={bookings[event.id]} onOpen={() => navigate("novita", { tab: "eventi", evento: event.id })} />
           </section>
+          )}
 
           <section aria-labelledby="premi-home" className="flex flex-col gap-2.5">
             <SectionTitle
@@ -192,7 +197,7 @@ export function HomeScreen() {
                     onClick={() => navigate("premi", { premio: p.id })}
                     className="flex w-[156px] shrink-0 snap-start flex-col gap-3 rounded-[20px] bg-card p-3.5 text-left shadow-sm ring-1 ring-foreground/5 outline-none transition-[background-color,transform] hover:bg-muted focus-visible:ring-3 focus-visible:ring-ring/30 active:scale-[0.98] dark:ring-foreground/10"
                   >
-                    <PrizeArt id={p.id} locked={!ok} className="size-12" />
+                    <PrizeArt id={p.id} image={p.image} category={p.category} locked={!ok} className="size-12" />
                     <span className="line-clamp-1 text-sm font-medium">{p.name}</span>
                     <span className={ok ? "text-xs font-semibold text-success" : "text-xs text-muted-foreground"}>
                       {ok ? "Disponibile" : `${fmtPoints(p.cost)} punti`}

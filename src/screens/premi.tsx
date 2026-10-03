@@ -11,7 +11,7 @@ import { Drawer, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, D
 import { Empty, EmptyDescription, EmptyMedia, EmptyTitle } from "@/components/ui/empty"
 import { Progress } from "@/components/ui/progress"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
-import { PRIZES, VENUE, type Prize } from "@/lib/data"
+import { pointsRule, type Prize } from "@/lib/data"
 import { navigate } from "@/lib/router"
 import { useStore } from "@/lib/store"
 import { cn, fmtPoints } from "@/lib/utils"
@@ -19,7 +19,8 @@ import { cn, fmtPoints } from "@/lib/utils"
 type Filter = "tutti" | "disponibili" | "bloccati"
 
 export function PremiScreen({ initial }: { initial?: string | null }) {
-  const { user, redemption, startRedeem } = useStore()
+  const { user, redemption, startRedeem, visible, venue, prizes: allPrizes } = useStore()
+  const PRIZES = visible.prizes
   const [filter, setFilter] = React.useState<Filter>("tutti")
   const [openId, setOpenId] = React.useState<string | null>(initial ?? null)
   const open = PRIZES.find((p) => p.id === openId) ?? null
@@ -30,13 +31,13 @@ export function PremiScreen({ initial }: { initial?: string | null }) {
     <>
       <PageHeader title="Premi" description="Si riscattano in cassa con un QR monouso. I punti vengono scalati solo dopo la scansione." />
       <PageBody>
-        <div className="flex flex-col gap-4 rounded-[24px] bg-inverted p-5 text-inverted-foreground sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-4 rounded-[24px] bg-inverted p-5 text-inverted-foreground ring-white/10 sm:flex-row dark:ring-1 sm:items-center sm:justify-between">
           <div className="flex items-center gap-4">
             <span className="flex size-12 items-center justify-center rounded-2xl bg-highlight text-highlight-foreground">
               <RiGift2Line className="size-6" />
             </span>
             <div className="flex flex-col gap-1">
-              <span className="text-xs opacity-70">Hai a disposizione</span>
+              <span className="text-xs text-inverted-muted">Hai a disposizione</span>
               <PointsOdometer value={user.points} className="text-[34px] text-highlight" />
             </div>
           </div>
@@ -51,7 +52,7 @@ export function PremiScreen({ initial }: { initial?: string | null }) {
             className="flex items-center gap-3 rounded-2xl bg-warning-soft p-4 text-left text-warning outline-none focus-visible:ring-3 focus-visible:ring-ring/30"
           >
             <RiQrCodeLine className="size-5" />
-            <span className="flex-1 text-sm font-medium">Riscatto in corso: {PRIZES.find((p) => p.id === redemption.prizeId)?.name}</span>
+            <span className="flex-1 text-sm font-medium">Riscatto in corso: {allPrizes.find((p) => p.id === redemption.prizeId)?.name}</span>
             <RiArrowRightSLine className="size-5" />
           </button>
         )}
@@ -69,7 +70,7 @@ export function PremiScreen({ initial }: { initial?: string | null }) {
             </EmptyMedia>
             <EmptyTitle>{filter === "disponibili" ? "Ancora nessun premio disponibile" : "Hai sbloccato tutto"}</EmptyTitle>
             <EmptyDescription>
-              {filter === "disponibili" ? `Ti servono ${fmtPoints(PRIZES[0].cost - user.points)} punti per il primo premio. ${VENUE.pointsRule}.` : "Ogni premio del catalogo è alla tua portata. Scegline uno!"}
+              {filter === "disponibili" ? PRIZES.length ? `Ti servono ${fmtPoints(PRIZES[0].cost - user.points)} punti per il primo premio. ${pointsRule(venue)}.` : "Il catalogo premi è in preparazione." : "Ogni premio del catalogo è alla tua portata. Scegline uno!"}
             </EmptyDescription>
           </Empty>
         ) : (
@@ -91,7 +92,7 @@ export function PremiScreen({ initial }: { initial?: string | null }) {
               points={user.points}
               busy={!!redemption}
               onRedeem={() => {
-                startRedeem(open.id)
+                startRedeem(open.id, venue.redeemValidityMinutes)
                 setOpenId(null)
                 navigate("riscatto")
               }}
@@ -109,7 +110,7 @@ function PrizeCard({ prize, points, onOpen }: { prize: Prize; points: number; on
     <Card size="sm" className="h-full">
       <button onClick={onOpen} className="flex h-full flex-col gap-4 px-4 text-left outline-none focus-visible:ring-3 focus-visible:ring-ring/30">
         <div className="flex items-start gap-3.5">
-          <PrizeArt id={prize.id} locked={!ok} />
+          <PrizeArt id={prize.id} image={prize.image} category={prize.category} locked={!ok} />
           <div className="flex min-w-0 flex-1 flex-col gap-1">
             <span className="font-heading text-base font-semibold">{prize.name}</span>
             <span className="text-xs text-muted-foreground">{prize.note}</span>
@@ -131,11 +132,12 @@ function PrizeCard({ prize, points, onOpen }: { prize: Prize; points: number; on
 }
 
 function PrizeDetail({ prize, points, busy, onRedeem }: { prize: Prize; points: number; busy: boolean; onRedeem: () => void }) {
+  const { venue } = useStore()
   const ok = points >= prize.cost
   return (
     <>
       <DrawerHeader className="items-center text-center">
-        <PrizeArt id={prize.id} className="mb-2 size-20" locked={!ok} />
+        <PrizeArt id={prize.id} image={prize.image} category={prize.category} className="mb-2 size-24" locked={!ok} />
         <DrawerTitle>{prize.name}</DrawerTitle>
         <DrawerDescription>{prize.note}</DrawerDescription>
       </DrawerHeader>
@@ -152,7 +154,7 @@ function PrizeDetail({ prize, points, busy, onRedeem }: { prize: Prize; points: 
         </div>
         <p className="flex gap-2.5 rounded-2xl bg-success-soft p-3 text-[13px] text-success">
           <RiShieldCheckLine className="size-5 shrink-0" />
-          Generi un QR monouso valido {VENUE.redeemValidityMinutes} minuti. Se non lo usi, i punti restano tuoi.
+          Generi un QR monouso valido {venue.redeemValidityMinutes} minuti. Se non lo usi, i punti restano tuoi.
         </p>
       </div>
       <DrawerFooter>

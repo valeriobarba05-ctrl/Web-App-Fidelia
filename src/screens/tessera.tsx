@@ -10,7 +10,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
-import { VENUE } from "@/lib/data"
+import { pointsRule } from "@/lib/data"
 import { navigate, useNow } from "@/lib/router"
 import { toast, useStore } from "@/lib/store"
 import { cn } from "@/lib/utils"
@@ -24,12 +24,12 @@ export function useRotatingCode(seconds: number) {
 }
 
 export function TesseraScreen() {
-  const { user } = useStore()
-  const { cycle, left, ratio } = useRotatingCode(VENUE.qrRefreshSeconds)
+  const { user, venue } = useStore()
+  const { cycle, left, ratio } = useRotatingCode(venue.qrRefreshSeconds)
   const [bright, setBright] = React.useState(false)
 
   return (
-    <div className={cn("transition-colors duration-500", bright && "min-h-dvh bg-white text-stone-950 dark:bg-white dark:text-stone-950")}>
+    <div className={cn("transition-colors duration-500", bright && "min-h-dvh bg-white text-stone-950 [&_[data-slot=card]]:bg-white [&_[data-slot=card]]:text-stone-950 [&_[data-slot=card-description]]:text-stone-600 [&_p]:text-stone-700")}>
       <PageHeader
         title="La tua tessera"
         description="Mostrala in cassa: il codice cambia da solo per sicurezza."
@@ -47,12 +47,12 @@ export function TesseraScreen() {
             </div>
             <div className="flex w-full max-w-[260px] flex-col gap-2">
               <div className="flex items-center justify-between text-xs">
-                <span className="flex items-center gap-1.5 opacity-80">
+                <span className="flex items-center gap-1.5 opacity-90">
                   <RiRefreshLine className="size-3.5" /> Il codice si rinnova tra
                 </span>
                 <span className="font-semibold tabular">{Math.ceil(left)}s</span>
               </div>
-              <div className="h-1.5 overflow-hidden rounded-full bg-white/15">
+              <div className="h-1.5 overflow-hidden rounded-full bg-white/20">
                 <div className="h-full origin-left rounded-full bg-highlight transition-transform duration-300 ease-linear" style={{ transform: `scaleX(${ratio})` }} />
               </div>
             </div>
@@ -63,7 +63,7 @@ export function TesseraScreen() {
         <div className="flex flex-col gap-4">
           <Card size="sm">
             <CardContent className="flex items-center gap-3">
-              <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-highlight/25 text-warning">
+              <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-warning-soft text-warning">
                 <RiFlashlightLine className="size-5" />
               </span>
               <Label htmlFor="bright" className="flex-1 flex-col items-start gap-0.5">
@@ -77,7 +77,7 @@ export function TesseraScreen() {
           <Card size="sm">
             <CardHeader>
               <CardTitle>Come funziona</CardTitle>
-              <CardDescription>{VENUE.pointsRule}. I punti arrivano appena il personale scansiona il QR.</CardDescription>
+              <CardDescription>{pointsRule(venue)}. I punti arrivano appena il personale scansiona il QR.</CardDescription>
             </CardHeader>
             <CardContent>
               <ol className="flex flex-col gap-3 text-sm">
@@ -99,7 +99,7 @@ export function TesseraScreen() {
 }
 
 function SimulateVisit() {
-  const { registerVisit } = useStore()
+  const { registerVisit, venueState } = useStore()
   const [open, setOpen] = React.useState(false)
   const [amount, setAmount] = React.useState("42,00")
   const value = Number(amount.replace(/\./g, "").replace(",", "."))
@@ -134,7 +134,7 @@ function SimulateVisit() {
           onSubmit={(e) => {
             e.preventDefault()
             if (invalid) return
-            const gained = registerVisit(value)
+            const gained = registerVisit(value, venueState)
             setOpen(false)
             toast.success(`+${gained} punti accreditati`, { description: `Conto da ${value.toLocaleString("it-IT", { minimumFractionDigits: 2 })} €` })
           }}
