@@ -13,7 +13,7 @@ import {
   RiTimeLine,
 } from "@remixicon/react"
 
-import { PageBody, PageHeader } from "@/components/fidelia/app-shell"
+import { PageBody, PageHeader } from "@/screens/app-shell"
 import { EVENT_ICON, EventArt } from "@/components/fidelia/event-art"
 import { EventCard } from "@/components/fidelia/event-card"
 import { Badge } from "@/components/ui/badge"
@@ -26,9 +26,10 @@ import { Progress } from "@/components/ui/progress"
 import { Switch } from "@/components/ui/switch"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
-import { eventDate, type EventType, type FideliaEvent } from "@/lib/data"
-import { navigate } from "@/lib/router"
-import { toast, useStore } from "@/lib/store"
+import { eventDate } from "@/lib/format"
+import type { EventType, FideliaEvent } from "@/types"
+import { navigate } from "@/mock/router"
+import { toast, useStore } from "@/mock/store"
 import { cn } from "@/lib/utils"
 
 export function NovitaScreen({ tab, eventId }: { tab: string; eventId: string | null }) {

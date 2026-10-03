@@ -10,9 +10,9 @@ import {
   RiStarSmileLine,
 } from "@remixicon/react"
 
-import { PageBody, SectionTitle, UserMenu } from "@/components/fidelia/app-shell"
+import { PageBody, SectionTitle, UserMenu } from "@/screens/app-shell"
 import { EventCard } from "@/components/fidelia/event-card"
-import { LoyaltyCard } from "@/components/fidelia/loyalty-card"
+import { LoyaltyCard } from "@/screens/parts"
 import { MovementRow } from "@/components/fidelia/movement-row"
 import { PrizeArt } from "@/components/fidelia/prize-art"
 import { Badge } from "@/components/ui/badge"
@@ -20,8 +20,8 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { ItemGroup } from "@/components/ui/item"
 import { Progress } from "@/components/ui/progress"
-import { navigate } from "@/lib/router"
-import { nextPrize, useStore } from "@/lib/store"
+import { navigate } from "@/mock/router"
+import { nextPrize, useStore } from "@/mock/store"
 import { fmtPoints } from "@/lib/utils"
 
 function greeting() {

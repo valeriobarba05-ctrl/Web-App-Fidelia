@@ -10,14 +10,14 @@ import {
   RiWhatsappLine,
 } from "@remixicon/react"
 
-import { PageBody } from "@/components/fidelia/app-shell"
-import { VenueMark } from "@/components/fidelia/loyalty-card"
+import { PageBody } from "@/screens/app-shell"
+import { BrandMark as VenueMark } from "@/screens/parts"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { fmtMinutes, openState } from "@/lib/data"
-import { useNow } from "@/lib/router"
-import { useStore } from "@/lib/store"
+import { fmtMinutes, openState } from "@/lib/format"
+import { useNow } from "@/mock/router"
+import { useStore } from "@/mock/store"
 import { cn } from "@/lib/utils"
 
 function Placeholder({ label, className }: { label: string; className?: string }) {

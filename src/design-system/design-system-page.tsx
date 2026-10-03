@@ -34,13 +34,13 @@ import {
 } from "@remixicon/react"
 
 import { EventCard } from "@/components/fidelia/event-card"
-import { LoyaltyCard } from "@/components/fidelia/loyalty-card"
+import { TicketCard } from "@/components/fidelia/loyalty-card"
 import { MovementRow } from "@/components/fidelia/movement-row"
 import { PointsOdometer } from "@/components/fidelia/points-odometer"
 import { PrizeArt } from "@/components/fidelia/prize-art"
 import { QrCode } from "@/components/fidelia/qr-code"
 import { VenueThemePicker } from "@/owner/venue-theme-picker"
-import { useVenue, useVenueAdmin } from "@/lib/venue"
+import { useVenue, useVenueAdmin } from "@/mock/venue"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -65,9 +65,9 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Switch } from "@/components/ui/switch"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
-import { DEFAULT_EVENTS as EVENTS, DEFAULT_PRIZES as PRIZES, INITIAL_MOVEMENTS } from "@/lib/data"
-import { navigate } from "@/lib/router"
-import { toast } from "@/lib/store"
+import { DEFAULT_EVENTS as EVENTS, DEFAULT_PRIZES as PRIZES, INITIAL_MOVEMENTS } from "@/mock/data"
+import { navigate } from "@/mock/router"
+import { toast } from "sonner"
 import { cn } from "@/lib/utils"
 
 const SECTIONS = [
@@ -639,8 +639,8 @@ function Patterns() {
     <Section id="pattern" title="Pattern Fidelia" lead="Gli elementi che rendono Fidelia riconoscibile. La tessera è un biglietto: due tacche laterali e una perforazione separano chi sei (sopra) da cosa fai adesso (sotto).">
       <div className="grid gap-6 lg:grid-cols-2">
         <div className="flex flex-col gap-2">
-          <span className="text-xs font-medium text-muted-foreground">LoyaltyCard · tessera-biglietto</span>
-          <LoyaltyCard />
+          <span className="text-xs font-medium text-muted-foreground">TicketCard · tessera-biglietto</span>
+          <TicketCard venue={{ name: "Osteria del Porto", initials: "OP" }} member={{ name: "Giulia Russo", code: "FDL-4821", points: 340 }} next={PRIZES[3]} />
         </div>
         <div className="flex flex-col gap-2">
           <span className="text-xs font-medium text-muted-foreground">QrCode · reale e scansionabile, rigenerato a ogni ciclo</span>

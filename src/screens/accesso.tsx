@@ -1,15 +1,15 @@
 import * as React from "react"
 import { RiAddBoxLine, RiAndroidFill, RiAppleFill, RiEyeLine, RiEyeOffLine, RiGift2Line, RiMore2Fill, RiQrCodeLine, RiShare2Line, RiSparkling2Line } from "@remixicon/react"
 
-import { VenueMark } from "@/components/fidelia/loyalty-card"
+import { BrandMark as VenueMark } from "@/screens/parts"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { pointsRule } from "@/lib/data"
-import { navigate } from "@/lib/router"
-import { toast, useStore } from "@/lib/store"
+import { pointsRule } from "@/lib/format"
+import { navigate } from "@/mock/router"
+import { toast, useStore } from "@/mock/store"
 
 function GoogleMark() {
   return (

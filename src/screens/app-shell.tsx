@@ -1,6 +1,5 @@
 import * as React from "react"
 import {
-  RiArrowLeftLine,
   RiCalendarEventFill,
   RiCalendarEventLine,
   RiGift2Fill,
@@ -16,7 +15,7 @@ import {
 } from "@remixicon/react"
 
 import { PointsOdometer } from "@/components/fidelia/points-odometer"
-import { VenueMark } from "@/components/fidelia/loyalty-card"
+import { BrandMark } from "@/screens/parts"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import {
@@ -27,8 +26,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { navigate, type Route } from "@/lib/router"
-import { useStore } from "@/lib/store"
+import { navigate, type Route } from "@/mock/router"
+import { useStore } from "@/mock/store"
 import { cn } from "@/lib/utils"
 
 type NavItem = { route: Route; label: string; icon: React.ElementType; activeIcon: React.ElementType; match?: Route[] }
@@ -65,7 +64,7 @@ function Sidebar({ route }: { route: Route }) {
   return (
     <aside className="sticky top-0 hidden h-dvh flex-col gap-6 bg-sidebar p-4 text-sidebar-foreground lg:flex">
       <a href="#/home" className="flex items-center gap-3 rounded-2xl p-2 outline-none focus-visible:ring-3 focus-visible:ring-sidebar-ring/40">
-        <VenueMark />
+        <BrandMark />
         <span className="flex flex-col">
           <span className="font-heading text-[15px] font-semibold">{venue.name}</span>
           <span className="text-xs text-sidebar-muted">Tessera fedeltà</span>
@@ -202,47 +201,5 @@ export function UserMenu({ align = "end", side = "bottom", full }: { align?: "st
   )
 }
 
-/** Intestazione di pagina: titolo grande, sottotitolo, azioni; back opzionale. */
-export function PageHeader({
-  title,
-  description,
-  back,
-  actions,
-  className,
-}: {
-  title: React.ReactNode
-  description?: React.ReactNode
-  back?: Route
-  actions?: React.ReactNode
-  className?: string
-}) {
-  return (
-    <header className={cn("mx-auto flex w-full max-w-6xl items-end gap-3 px-4 pt-6 pb-4 sm:px-6 lg:px-10 lg:pt-10", className)}>
-      {back && (
-        <Button variant="secondary" size="icon-xl" className="mb-0.5 rounded-full" aria-label="Indietro" onClick={() => navigate(back)}>
-          <RiArrowLeftLine />
-        </Button>
-      )}
-      <div className="flex min-w-0 flex-1 flex-col gap-1">
-        <h1 className="font-heading text-[28px] leading-tight font-semibold tracking-[-0.02em] lg:text-[34px]">{title}</h1>
-        {description && <p className="text-sm text-muted-foreground">{description}</p>}
-      </div>
-      {actions && <div className="flex shrink-0 items-center gap-2">{actions}</div>}
-    </header>
-  )
-}
 
-export function PageBody({ className, ...props }: React.ComponentProps<"main">) {
-  return <main className={cn("mx-auto flex w-full max-w-6xl flex-col gap-5 px-4 sm:px-6 lg:px-10", className)} {...props} />
-}
-
-export function SectionTitle({ children, action, id }: { children: React.ReactNode; action?: React.ReactNode; id?: string }) {
-  return (
-    <div className="flex items-center justify-between gap-3 px-1">
-      <h2 id={id} className="font-heading text-lg font-semibold tracking-[-0.01em]">
-        {children}
-      </h2>
-      {action}
-    </div>
-  )
-}
+export { PageBody, PageHeader, SectionTitle } from "@/components/fidelia/page"

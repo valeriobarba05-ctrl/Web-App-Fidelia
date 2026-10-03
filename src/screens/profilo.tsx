@@ -1,7 +1,7 @@
 import * as React from "react"
 import { RiCake3Line, RiLogoutBoxRLine, RiShieldCheckLine } from "@remixicon/react"
 
-import { PageBody, PageHeader } from "@/components/fidelia/app-shell"
+import { PageBody, PageHeader } from "@/screens/app-shell"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -9,7 +9,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import { Switch } from "@/components/ui/switch"
-import { toast, useStore } from "@/lib/store"
+import { navigate } from "@/mock/router"
+import { toast, useStore } from "@/mock/store"
 
 const CONSENTS = [
   { key: null, title: "Servizio tessera (necessario)", desc: "Gestione di punti, premi e account. Senza questo la tessera non funziona." },
@@ -25,7 +26,7 @@ export function ProfiloScreen() {
 
   return (
     <>
-      <PageHeader title="Il tuo profilo" back="home" />
+      <PageHeader title="Il tuo profilo" onBack={() => navigate("home")} />
       <PageBody className="lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:items-start lg:gap-8">
         <div className="flex flex-col gap-4">
           <Card>

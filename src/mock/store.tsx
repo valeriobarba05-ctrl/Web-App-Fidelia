@@ -1,9 +1,10 @@
 import * as React from "react"
 import { toast } from "sonner"
 
-import { INITIAL_MOVEMENTS, INITIAL_USER, type Movement, type Prize } from "@/lib/data"
+import { INITIAL_MOVEMENTS, INITIAL_USER } from "@/mock/data"
+import type { Movement, Prize } from "@/types"
 import { safeStorage, saveStorage } from "@/lib/utils"
-import { useVenue, type VenueState } from "@/lib/venue"
+import { useVenue, type VenueState } from "@/mock/venue"
 
 /**
  * Stato del CLIENTE: il suo account, punti, riscatti, prenotazioni, consensi.

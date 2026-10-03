@@ -1,5 +1,7 @@
 # Fidelia · Web app tessera fedeltà
 
+> **Per lo sviluppatore: leggi [HANDOFF.md](HANDOFF.md).** Qui c'è il design in codice; il backend è da realizzare.
+
 Redesign della web app Fidelia su **shadcn/ui** (preset `b1LObiUpkf`: rhea · taupe · emerald · Montserrat/Figtree · Remix Icon), con design system integrato.
 
 ```bash
@@ -14,9 +16,4 @@ npm run build
 - Controllo leggibilità: `npm run check:contrast`
 - Demo interattive: *Simula* nella Tessera (accredita punti da un conto), *Scansiona* nel Riscatto (scala i punti), prenotazione eventi, consensi, colori del locale, tema scuro. Lo stato si salva in `localStorage` (le immagini vengono ridimensionate e compresse prima del salvataggio). In produzione la configurazione del locale andrebbe su un server.
 
-Struttura:
-- `src/screens` + `src/lib/store.tsx` → **app cliente**: solo il suo account (punti, riscatti, prenotazioni, consensi). Nessuna impostazione dell'app: il tema segue il telefono.
-- `src/owner` → **app titolare**: unica parte che scrive la configurazione del locale (`useVenueAdmin`).
-- `src/lib/venue.tsx` → configurazione del locale: il cliente la legge (`useVenue`), solo il titolare la scrive.
-- `src/styles/globals.css` (token) · `src/components/ui` (shadcn rhea) · `src/components/fidelia` (pattern condivisi).
-Vedi `DESIGN.md` e `PRODUCT.md`.
+Struttura e cosa sostituire: vedi `HANDOFF.md`. Decisioni visive: `DESIGN.md`. Prodotto: `PRODUCT.md`.

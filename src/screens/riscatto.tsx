@@ -1,7 +1,7 @@
 import * as React from "react"
 import { RiCheckboxCircleFill, RiErrorWarningLine, RiGift2Line, RiHourglassLine, RiStore2Line } from "@remixicon/react"
 
-import { PageBody, PageHeader } from "@/components/fidelia/app-shell"
+import { PageBody, PageHeader } from "@/screens/app-shell"
 import { PointsOdometer } from "@/components/fidelia/points-odometer"
 import { PrizeArt } from "@/components/fidelia/prize-art"
 import { QrCode } from "@/components/fidelia/qr-code"
@@ -10,8 +10,9 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Empty, EmptyDescription, EmptyMedia, EmptyTitle } from "@/components/ui/empty"
-import { navigate, useNow } from "@/lib/router"
-import { toast, useStore } from "@/lib/store"
+import { navigate, useNow } from "@/mock/router"
+import { DEMO } from "@/mock/demo"
+import { toast, useStore } from "@/mock/store"
 import { cn } from "@/lib/utils"
 
 export function RiscattoScreen() {
@@ -22,7 +23,7 @@ export function RiscattoScreen() {
   if (done)
     return (
       <>
-        <PageHeader title="Premio riscattato" back="premi" />
+        <PageHeader title="Premio riscattato" onBack={() => navigate("premi")} />
         <PageBody className="max-w-xl">
           <Card className="items-center gap-4 text-center">
             <CardContent className="flex flex-col items-center gap-4 py-4">
@@ -50,7 +51,7 @@ export function RiscattoScreen() {
   if (!redemption || !prize)
     return (
       <>
-        <PageHeader title="Riscatta premio" back="premi" />
+        <PageHeader title="Riscatta premio" onBack={() => navigate("premi")} />
         <PageBody className="max-w-xl">
           <Empty>
             <EmptyMedia>
@@ -74,7 +75,7 @@ export function RiscattoScreen() {
 
   return (
     <>
-      <PageHeader title="Riscatta premio" back="premi" />
+      <PageHeader title="Riscatta premio" onBack={() => navigate("premi")} />
       <PageBody className="lg:grid lg:grid-cols-[minmax(0,420px)_minmax(0,1fr)] lg:items-start lg:gap-8">
         <Card className="items-stretch gap-5 rounded-[28px]">
           <CardContent className="flex flex-col items-center gap-5">
@@ -130,7 +131,7 @@ export function RiscattoScreen() {
               Genera un nuovo codice
             </Button>
           ) : (
-            <Card size="sm" className="border border-dashed bg-transparent shadow-none ring-0">
+            DEMO && <Card size="sm" className="border border-dashed bg-transparent shadow-none ring-0">
               <CardContent className="flex items-center gap-3">
                 <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-muted">
                   <RiStore2Line className="size-5" />

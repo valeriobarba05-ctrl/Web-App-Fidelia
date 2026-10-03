@@ -1,8 +1,8 @@
 import * as React from "react"
 import { RiFlashlightLine, RiHistoryLine, RiRefreshLine, RiStore2Line } from "@remixicon/react"
 
-import { PageBody, PageHeader } from "@/components/fidelia/app-shell"
-import { LoyaltyCard } from "@/components/fidelia/loyalty-card"
+import { PageBody, PageHeader } from "@/screens/app-shell"
+import { LoyaltyCard } from "@/screens/parts"
 import { QrCode } from "@/components/fidelia/qr-code"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -10,9 +10,10 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
-import { pointsRule } from "@/lib/data"
-import { navigate, useNow } from "@/lib/router"
-import { toast, useStore } from "@/lib/store"
+import { pointsRule } from "@/lib/format"
+import { navigate, useNow } from "@/mock/router"
+import { DEMO } from "@/mock/demo"
+import { toast, useStore } from "@/mock/store"
 import { cn } from "@/lib/utils"
 
 /** QR dinamico: si rigenera ogni N secondi, così uno screenshot non vale. */
@@ -91,7 +92,7 @@ export function TesseraScreen() {
             </CardContent>
           </Card>
 
-          <SimulateVisit />
+          {DEMO && <SimulateVisit />}
         </div>
       </PageBody>
     </div>

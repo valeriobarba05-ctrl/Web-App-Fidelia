@@ -2,63 +2,46 @@ import * as React from "react"
 
 import { PointsOdometer } from "@/components/fidelia/points-odometer"
 import { Progress } from "@/components/ui/progress"
-import type { Prize } from "@/lib/data"
-import { nextPrize, useStore } from "@/lib/store"
-import { useVenue } from "@/lib/venue"
 import { cn, fmtPoints } from "@/lib/utils"
+import type { Prize } from "@/types"
 
-export function VenueMark({ className }: { className?: string }) {
-  const { venue } = useVenue()
-  if (venue.logo)
-    return <img src={venue.logo} alt="" className={cn("size-10 shrink-0 rounded-2xl bg-white object-cover", className)} />
+/** Marchio del locale: il logo se c'è, altrimenti la sigla su fondo "punti". */
+export function VenueMark({ initials, logo, className }: { initials: string; logo?: string; className?: string }) {
+  if (logo) return <img src={logo} alt="" className={cn("size-10 shrink-0 rounded-2xl bg-white object-cover", className)} />
   return (
     <span
       aria-hidden
       className={cn("flex size-10 shrink-0 items-center justify-center rounded-2xl bg-highlight font-heading text-sm font-bold text-highlight-foreground", className)}
     >
-      {venue.initials}
+      {initials}
     </span>
-  )
-}
-
-/**
- * La tessera: un biglietto con due tacche laterali e una perforazione.
- * Sopra il taglio l'identità e il saldo, sotto il taglio cosa fare adesso.
- */
-export function LoyaltyCard({
-  children,
-  className,
-  cut = 172,
-}: {
-  children?: React.ReactNode
-  className?: string
-  cut?: number
-}) {
-  const { user, visible } = useStore()
-  return (
-    <TicketCard className={className} cut={cut} member={{ name: `${user.firstName} ${user.lastName}`, code: user.cardCode, points: user.points }} next={nextPrize(visible.prizes, user.points)}>
-      {children}
-    </TicketCard>
   )
 }
 
 type Member = { name: string; code: string; points: number }
 
-/** La tessera "pura": usata dall'app cliente (dati del cliente) e dall'anteprima del titolare (cliente di esempio). */
+/**
+ * La tessera: un biglietto con due tacche laterali e una perforazione.
+ * Sopra il taglio l'identità e il saldo, sotto il taglio cosa fare adesso (children).
+ * Componente puro: riceve locale, cliente e prossimo premio come props.
+ */
+export type TicketVenue = { name: string; initials: string; logo?: string }
+
 export function TicketCard({
+  venue,
   member: user,
   next,
   children,
   className,
   cut = 172,
 }: {
+  venue: TicketVenue
   member: Member
   next: Prize | null
   children?: React.ReactNode
   className?: string
   cut?: number
 }) {
-  const { venue } = useVenue()
   return (
     <div
       className={cn("ticket-notch relative isolate overflow-hidden rounded-[24px] bg-brand text-brand-foreground shadow-[0_18px_40px_-18px_color-mix(in_oklch,var(--brand)_70%,black)] dark:ring-1 dark:ring-white/10", className)}
@@ -71,7 +54,7 @@ export function TicketCard({
 
       <div className="flex flex-col gap-5 px-5 pt-5" style={{ height: cut }}>
         <div className="flex items-center gap-3">
-          <VenueMark />
+          <VenueMark initials={venue.initials} logo={venue.logo} />
           <div className="flex min-w-0 flex-1 flex-col">
             <span className="truncate font-heading text-[15px] font-semibold">{venue.name}</span>
             <span className="truncate text-xs opacity-85">

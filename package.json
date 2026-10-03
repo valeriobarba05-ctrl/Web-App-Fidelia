@@ -8,7 +8,8 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
-    "check:contrast": "node scripts/check-contrast.ts"
+    "check:contrast": "node scripts/check-contrast.ts",
+    "tokens": "node scripts/export-tokens.ts"
   },
   "dependencies": {
     "@fontsource-variable/figtree": "^5.3.0",

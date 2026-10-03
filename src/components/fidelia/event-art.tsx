@@ -1,7 +1,16 @@
 import { RiGoblet2Line, RiMicLine, RiMusic2Line, RiSparkling2Line } from "@remixicon/react"
 
-import { EVENT_ART, type EventType } from "@/lib/data"
+import type { EventType } from "@/types"
+
 import { cn } from "@/lib/utils"
+
+/** Illustrazioni predefinite per tipo di evento (public/events). */
+export const EVENT_ART: Record<EventType, string> = {
+  karaoke: "./events/karaoke.svg",
+  natale: "./events/natale.svg",
+  live: "./events/live.svg",
+  degustazione: "./events/degustazione.svg",
+}
 
 export const EVENT_ICON = { karaoke: RiMicLine, live: RiMusic2Line, degustazione: RiGoblet2Line, natale: RiSparkling2Line } as const
 

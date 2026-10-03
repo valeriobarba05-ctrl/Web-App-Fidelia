@@ -2,7 +2,8 @@ import { RiCalendarCheckLine, RiSparkling2Line, RiTimeLine } from "@remixicon/re
 
 import { EVENT_ICON, EventArt } from "@/components/fidelia/event-art"
 import { Badge } from "@/components/ui/badge"
-import { eventDate, type FideliaEvent } from "@/lib/data"
+import { eventDate } from "@/lib/format"
+import type { FideliaEvent } from "@/types"
 import { cn } from "@/lib/utils"
 
 /** Card evento a tutta immagine; è un bottone: apre la prenotazione. */

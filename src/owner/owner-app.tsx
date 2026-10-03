@@ -18,7 +18,7 @@ import {
   RiTimeLine,
 } from "@remixicon/react"
 
-import { PageBody, PageHeader } from "@/components/fidelia/app-shell"
+import { PageBody, PageHeader } from "@/components/fidelia/page"
 import { EventArt } from "@/components/fidelia/event-art"
 import { ImageField } from "@/owner/image-field"
 import { TicketCard, VenueMark } from "@/components/fidelia/loyalty-card"
@@ -37,12 +37,13 @@ import { Separator } from "@/components/ui/separator"
 import { Switch } from "@/components/ui/switch"
 import { Textarea } from "@/components/ui/textarea"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
-import { eventDate, fmtMinutes, type EventType, type FideliaEvent, type Prize, type Promo, type Venue } from "@/lib/data"
-import { navigate } from "@/lib/router"
+import { eventDate, fmtMinutes } from "@/lib/format"
+import type { EventType, FideliaEvent, Prize, Promo, Venue } from "@/types"
+import { navigate } from "@/mock/router"
 import { toast } from "sonner"
 
 import { safeStorage, saveStorage } from "@/lib/utils"
-import { useVenue, useVenueAdmin } from "@/lib/venue"
+import { useVenue, useVenueAdmin } from "@/mock/venue"
 import { cn, fmtPoints } from "@/lib/utils"
 
 // ——— piccoli mattoni di form ———
@@ -162,7 +163,7 @@ function OwnerSidebar({ current, onLogout }: { current: string; onLogout: () => 
   return (
     <aside className="sticky top-0 hidden h-dvh flex-col gap-6 overflow-y-auto bg-sidebar p-4 text-sidebar-foreground lg:flex">
       <div className="flex items-center gap-3 p-2">
-        <VenueMark />
+        <VenueMark initials={venue.initials} logo={venue.logo} />
         <span className="flex min-w-0 flex-col">
           <span className="truncate font-heading text-[15px] font-semibold">{venue.name}</span>
           <span className="text-xs text-sidebar-muted">Gestione del locale</span>
@@ -205,7 +206,7 @@ function OwnerMobileBar({ current, onLogout }: { current: string; onLogout: () =
   return (
     <div className="sticky top-0 z-30 flex flex-col gap-2 bg-sidebar px-4 pt-3 pb-2 text-sidebar-foreground lg:hidden">
       <div className="flex items-center gap-3">
-        <VenueMark className="size-8 rounded-xl text-xs" />
+        <VenueMark initials={venue.initials} logo={venue.logo} className="size-8 rounded-xl text-xs" />
         <span className="flex min-w-0 flex-1 flex-col">
           <span className="truncate text-sm font-semibold">{venue.name}</span>
           <span className="text-[11px] text-sidebar-muted">Gestione del locale</span>
@@ -247,7 +248,7 @@ function OwnerLogin({ onLogin }: { onLogin: () => void }) {
     <div className="flex min-h-dvh items-center justify-center bg-sidebar px-4 py-10 text-sidebar-foreground">
       <div className="flex w-full max-w-sm flex-col gap-6">
         <div className="flex flex-col items-center gap-3 text-center">
-          <VenueMark className="size-14 text-lg" />
+          <VenueMark initials={venue.initials} logo={venue.logo} className="size-14 text-lg" />
           <h1 className="font-heading text-2xl font-semibold">Gestione di {venue.name}</h1>
           <p className="text-sm text-sidebar-muted">Area riservata al titolare. I clienti usano l'app della tessera e non vedono nulla di questa sezione.</p>
         </div>
@@ -344,7 +345,7 @@ function Identity() {
 
       <div className="flex flex-col gap-3 lg:sticky lg:top-10">
         <span className="px-1 text-sm font-semibold">Anteprima della tessera</span>
-        <TicketCard member={{ name: "Cliente di esempio", code: "FDL-0000", points: 340 }} next={visible.prizes.find((p) => p.cost > 340) ?? null} />
+        <TicketCard venue={venue} member={{ name: "Cliente di esempio", code: "FDL-0000", points: 340 }} next={visible.prizes.find((p) => p.cost > 340) ?? null} />
         <p className="px-1 text-xs text-muted-foreground">Così la vedono i clienti. Usa “Anteprima tema” per controllarla anche in scuro: i clienti vedono il tema del loro telefono.</p>
       </div>
     </div>

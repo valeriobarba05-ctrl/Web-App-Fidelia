@@ -1,7 +1,8 @@
 import * as React from "react"
 import { toast } from "sonner"
 
-import { DEFAULT_EVENTS, DEFAULT_PRIZES, DEFAULT_PROMOS, DEFAULT_VENUE, type FideliaEvent, type Prize, type Promo, type Venue } from "@/lib/data"
+import { DEFAULT_EVENTS, DEFAULT_PRIZES, DEFAULT_PROMOS, DEFAULT_VENUE } from "@/mock/data"
+import type { FideliaEvent, Prize, Promo, Venue } from "@/types"
 import { applyTheme } from "@/lib/themes"
 import { safeStorage, saveStorage } from "@/lib/utils"
 

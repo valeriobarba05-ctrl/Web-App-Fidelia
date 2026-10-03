@@ -1,29 +1,14 @@
-/** Contenuti del locale. In produzione arrivano dal pannello del ristoratore. */
+/**
+ * DATI DI ESEMPIO (mock). In produzione arrivano dall'API.
+ * Servono solo a far vedere le schermate con contenuti realistici.
+ */
+import type { Customer, FideliaEvent, Movement, Prize, Promo, Venue } from "@/types"
 
-export type Prize = { id: string; name: string; cost: number; note: string; category: "bar" | "cucina" | "esperienza"; image?: string; active?: boolean }
-export type Promo = { id: string; label: string; title: string; text: string; validity: string; doublePoints?: boolean; days?: number[]; image?: string; active?: boolean }
-export type EventType = "karaoke" | "natale" | "live" | "degustazione"
-export type FideliaEvent = {
-  id: string
-  type: EventType
-  typeLabel: string
-  title: string
-  date: string // ISO
-  time: string
-  description: string
-  price: string
-  bonusPoints: number
-  seats: number
-  seatsLeft: number
-  image?: string
-}
-export type Movement = { id: string; label: string; date: string; points: number; kind: "visit" | "bonus" | "redeem" | "gift" }
-
-export const DEFAULT_VENUE = {
+export const DEFAULT_VENUE: Venue = {
   name: "Osteria del Porto",
-  logo: "" as string,
-  cover: "" as string,
-  mapImage: "" as string,
+  logo: "",
+  cover: "",
+  mapImage: "",
   initials: "OP",
   tagline: "La tua tessera fedeltà: punti a ogni visita, premi quando vuoi tu.",
   pointsPerEuro: 1,
@@ -55,7 +40,7 @@ export const DEFAULT_VENUE = {
     { day: "Giovedì", slots: [[1140, 1410]] },
     { day: "Venerdì", slots: [[750, 900], [1140, 1440]] },
     { day: "Sabato", slots: [[750, 900], [1140, 1440]] },
-  ] as { day: string; slots: [number, number][] }[],
+  ],
 }
 
 export const DEFAULT_PRIZES: Prize[] = [
@@ -87,7 +72,7 @@ export const DEFAULT_EVENTS: FideliaEvent[] = [
   { id: "natale", type: "natale", typeLabel: "Natale", title: "Cena della Vigilia", date: "2026-12-24", time: "20:30", description: "Menù di pesce della tradizione. Posti limitati.", price: "55 € a persona", bonusPoints: 100, seats: 40, seatsLeft: 3 },
 ]
 
-export const INITIAL_USER = {
+export const INITIAL_USER: Customer = {
   firstName: "Giulia",
   lastName: "Russo",
   email: "giulia@email.it",
@@ -109,51 +94,3 @@ export const INITIAL_MOVEMENTS: Movement[] = [
   { id: "m6", label: "Regalo di benvenuto", date: "2026-09-14T19:02", points: 50, kind: "gift" },
 ]
 
-export const EVENT_ART: Record<EventType, string> = {
-  karaoke: "./events/karaoke.svg",
-  natale: "./events/natale.svg",
-  live: "./events/live.svg",
-  degustazione: "./events/degustazione.svg",
-}
-
-const MONTHS = ["gen", "feb", "mar", "apr", "mag", "giu", "lug", "ago", "set", "ott", "nov", "dic"]
-const WEEKDAYS = ["Domenica", "Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato"]
-export function eventDate(iso: string) {
-  const d = new Date(iso + "T12:00")
-  return { day: String(d.getDate()), month: MONTHS[d.getMonth()], weekday: WEEKDAYS[d.getDay()] }
-}
-
-export const fmtMinutes = (m: number) =>
-  `${String(Math.floor(m / 60) % 24).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`
-
-export type Venue = typeof DEFAULT_VENUE
-export type Hours = Venue["hours"]
-
-export const pointsRule = (v: Venue) => (v.pointsPerEuro === 1 ? "1 € speso = 1 punto" : `1 € speso = ${v.pointsPerEuro.toLocaleString("it-IT")} punti`)
-
-/** Stato apertura calcolato dagli orari reali, non una stringa fissa. */
-export function openState(hours: Hours, now = new Date()) {
-  const day = now.getDay()
-  const mins = now.getHours() * 60 + now.getMinutes()
-  const slot = hours[day].slots.find(([a, b]) => mins >= a && mins < b)
-  if (slot) return { open: true, label: `Aperto ora · chiude alle ${fmtMinutes(slot[1])}` }
-  for (let i = 0; i < 7; i++) {
-    const d = (day + i) % 7
-    const next = hours[d].slots.find(([a]) => i > 0 || a > mins)
-    if (next) {
-      const when = i === 0 ? "oggi" : i === 1 ? "domani" : hours[d].day.toLowerCase()
-      return { open: false, label: `Chiuso · apre ${when} alle ${fmtMinutes(next[0])}` }
-    }
-  }
-  return { open: false, label: "Chiuso" }
-}
-
-export function fmtMovementDate(iso: string) {
-  const d = new Date(iso)
-  return `${d.getDate()} ${MONTHS[d.getMonth()]}, ${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`
-}
-export function monthKey(iso: string) {
-  const d = new Date(iso)
-  const m = d.toLocaleDateString("it-IT", { month: "long", year: "numeric" })
-  return m.charAt(0).toUpperCase() + m.slice(1)
-}

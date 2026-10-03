@@ -1,7 +1,8 @@
 import { RiArrowDownLine, RiArrowUpLine, RiGift2Line, RiSparkling2Line } from "@remixicon/react"
 
 import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from "@/components/ui/item"
-import { fmtMovementDate, type Movement } from "@/lib/data"
+import { fmtMovementDate } from "@/lib/format"
+import type { Movement } from "@/types"
 import { cn } from "@/lib/utils"
 
 const ICON = { visit: RiArrowUpLine, bonus: RiSparkling2Line, gift: RiGift2Line, redeem: RiArrowDownLine }

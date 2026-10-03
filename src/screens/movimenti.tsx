@@ -1,15 +1,16 @@
 import * as React from "react"
 import { RiHistoryLine } from "@remixicon/react"
 
-import { PageBody, PageHeader } from "@/components/fidelia/app-shell"
+import { PageBody, PageHeader } from "@/screens/app-shell"
 import { MovementRow } from "@/components/fidelia/movement-row"
 import { PointsOdometer } from "@/components/fidelia/points-odometer"
 import { Card, CardContent } from "@/components/ui/card"
 import { Empty, EmptyDescription, EmptyMedia, EmptyTitle } from "@/components/ui/empty"
 import { ItemGroup } from "@/components/ui/item"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { monthKey } from "@/lib/data"
-import { useStore } from "@/lib/store"
+import { monthKey } from "@/lib/format"
+import { navigate } from "@/mock/router"
+import { useStore } from "@/mock/store"
 import { fmtPoints } from "@/lib/utils"
 
 type Filter = "tutti" | "plus" | "minus"
@@ -25,7 +26,7 @@ export function MovimentiScreen() {
 
   return (
     <>
-      <PageHeader title="Saldo e movimenti" back="tessera" />
+      <PageHeader title="Saldo e movimenti" onBack={() => navigate("tessera")} />
       <PageBody className="lg:grid lg:grid-cols-[360px_minmax(0,1fr)] lg:items-start lg:gap-8">
         <Card className="border-0 bg-brand text-brand-foreground ring-0 lg:sticky lg:top-10 dark:ring-1 dark:ring-white/10">
           <CardContent className="flex flex-col gap-5">

@@ -3,7 +3,7 @@ import { RiCheckLine, RiShieldCheckLine } from "@remixicon/react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { THEME_PRESETS } from "@/lib/themes"
-import { useVenue, useVenueAdmin } from "@/lib/venue"
+import { useVenue, useVenueAdmin } from "@/mock/venue"
 import { cn } from "@/lib/utils"
 
 /**

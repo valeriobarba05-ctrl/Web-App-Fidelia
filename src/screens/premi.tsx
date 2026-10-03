@@ -1,7 +1,7 @@
 import * as React from "react"
 import { RiArrowRightSLine, RiGift2Line, RiLockLine, RiQrCodeLine, RiShieldCheckLine } from "@remixicon/react"
 
-import { PageBody, PageHeader } from "@/components/fidelia/app-shell"
+import { PageBody, PageHeader } from "@/screens/app-shell"
 import { PointsOdometer } from "@/components/fidelia/points-odometer"
 import { PrizeArt } from "@/components/fidelia/prize-art"
 import { Badge } from "@/components/ui/badge"
@@ -11,9 +11,10 @@ import { Drawer, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, D
 import { Empty, EmptyDescription, EmptyMedia, EmptyTitle } from "@/components/ui/empty"
 import { Progress } from "@/components/ui/progress"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
-import { pointsRule, type Prize } from "@/lib/data"
-import { navigate } from "@/lib/router"
-import { useStore } from "@/lib/store"
+import { pointsRule } from "@/lib/format"
+import type { Prize } from "@/types"
+import { navigate } from "@/mock/router"
+import { useStore } from "@/mock/store"
 import { cn, fmtPoints } from "@/lib/utils"
 
 type Filter = "tutti" | "disponibili" | "bloccati"
