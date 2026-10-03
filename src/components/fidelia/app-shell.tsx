@@ -9,13 +9,9 @@ import {
   RiHome5Fill,
   RiHome5Line,
   RiLogoutBoxRLine,
-  RiMoonLine,
-  RiPaletteLine,
   RiQrCodeLine,
   RiStore2Fill,
   RiStore2Line,
-  RiSettings3Line,
-  RiSunLine,
   RiUser3Line,
 } from "@remixicon/react"
 
@@ -54,46 +50,17 @@ function useNav() {
 }
 
 export function AppShell({ route, children }: { route: Route; children: React.ReactNode }) {
-  const { role, leaveOwner } = useStore()
   return (
     <div className="min-h-dvh lg:grid lg:grid-cols-[272px_1fr]">
       <Sidebar route={route} />
-      <div className="flex min-w-0 flex-col pb-28 lg:pb-12">
-        {role === "titolare" && (
-          <div className="sticky top-0 z-30 flex items-center gap-2 bg-inverted px-4 py-2 text-sm text-inverted-foreground lg:hidden">
-            <RiSettings3Line className="size-4 text-highlight" />
-            <span className="flex-1 font-medium">Modalità titolare</span>
-            {route !== "gestione" ? (
-              <Button variant="glass" size="sm" onClick={() => navigate("gestione")}>
-                Gestione
-              </Button>
-            ) : (
-              <Button variant="glass" size="sm" onClick={() => navigate("home")}>
-                Vedi l'app
-              </Button>
-            )}
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-inverted-foreground hover:bg-white/10 hover:text-inverted-foreground"
-              onClick={() => {
-                leaveOwner()
-                navigate("home")
-              }}
-            >
-              Esci
-            </Button>
-          </div>
-        )}
-        {children}
-      </div>
+      <div className="flex min-w-0 flex-col pb-28 lg:pb-12">{children}</div>
       <BottomNav route={route} />
     </div>
   )
 }
 
 function Sidebar({ route }: { route: Route }) {
-  const { user, venue, role } = useStore()
+  const { user, venue } = useStore()
   const nav = useNav()
   return (
     <aside className="sticky top-0 hidden h-dvh flex-col gap-6 bg-sidebar p-4 text-sidebar-foreground lg:flex">
@@ -109,7 +76,6 @@ function Sidebar({ route }: { route: Route }) {
         {[
           ...nav,
           { route: "movimenti", label: "Movimenti", icon: RiHistoryLine, activeIcon: RiHistoryLine } as NavItem,
-          ...(role === "titolare" ? [{ route: "gestione", label: "Gestione locale", icon: RiSettings3Line, activeIcon: RiSettings3Line } as NavItem] : []),
         ].map((item) => {
           const active = item.route === "tessera" ? route === "tessera" : isActive(item, route)
           const Icon = active ? item.activeIcon : item.icon
@@ -189,7 +155,7 @@ function BottomNav({ route }: { route: Route }) {
 }
 
 export function UserMenu({ align = "end", side = "bottom", full }: { align?: "start" | "end"; side?: "top" | "bottom"; full?: boolean }) {
-  const { user, dark, setDark, logout, role, leaveOwner } = useStore()
+  const { user, logout } = useStore()
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -227,29 +193,6 @@ export function UserMenu({ align = "end", side = "bottom", full }: { align?: "st
         <DropdownMenuItem onSelect={() => navigate("movimenti")}>
           <RiHistoryLine /> Movimenti
         </DropdownMenuItem>
-        <DropdownMenuItem onSelect={() => setDark(!dark)}>
-          {dark ? <RiSunLine /> : <RiMoonLine />} Tema {dark ? "chiaro" : "scuro"}
-        </DropdownMenuItem>
-        <DropdownMenuItem onSelect={() => navigate("design-system")}>
-          <RiPaletteLine /> Design system
-        </DropdownMenuItem>
-        {role === "titolare" && (
-          <>
-            <DropdownMenuSeparator />
-            <DropdownMenuLabel>Titolare</DropdownMenuLabel>
-            <DropdownMenuItem onSelect={() => navigate("gestione")}>
-              <RiSettings3Line /> Gestione locale
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onSelect={() => {
-                leaveOwner()
-                navigate("home")
-              }}
-            >
-              <RiUser3Line /> Esci dalla modalità titolare
-            </DropdownMenuItem>
-          </>
-        )}
         <DropdownMenuSeparator />
         <DropdownMenuItem variant="destructive" onSelect={logout}>
           <RiLogoutBoxRLine /> Esci

@@ -3,7 +3,7 @@ import { RiCheckLine, RiShieldCheckLine } from "@remixicon/react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { THEME_PRESETS } from "@/lib/themes"
-import { useStore } from "@/lib/store"
+import { useVenue, useVenueAdmin } from "@/lib/venue"
 import { cn } from "@/lib/utils"
 
 /**
@@ -11,7 +11,8 @@ import { cn } from "@/lib/utils"
  * Il generatore corregge la luminosità, quindi ogni scelta resta leggibile.
  */
 export function VenueThemePicker({ className, custom = true }: { className?: string; custom?: boolean }) {
-  const { venue, updateVenue } = useStore()
+  const { venue } = useVenue()
+  const { updateVenue } = useVenueAdmin()
   const current = THEME_PRESETS.find((t) => t.brand === venue.brandColor && t.highlight === venue.highlightColor)
   return (
     <div className={cn("flex flex-col gap-4", className)}>

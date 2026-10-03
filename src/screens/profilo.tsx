@@ -1,5 +1,5 @@
 import * as React from "react"
-import { RiCake3Line, RiExternalLinkLine, RiLogoutBoxRLine, RiMoonLine, RiPaletteLine, RiShieldCheckLine } from "@remixicon/react"
+import { RiCake3Line, RiLogoutBoxRLine, RiShieldCheckLine } from "@remixicon/react"
 
 import { PageBody, PageHeader } from "@/components/fidelia/app-shell"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
@@ -9,7 +9,6 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import { Switch } from "@/components/ui/switch"
-import { navigate } from "@/lib/router"
 import { toast, useStore } from "@/lib/store"
 
 const CONSENTS = [
@@ -20,7 +19,7 @@ const CONSENTS = [
 ] as const
 
 export function ProfiloScreen() {
-  const { user, consents, setConsent, setBirthday, dark, setDark, logout, venue, role } = useStore()
+  const { user, consents, setConsent, setBirthday, logout, venue } = useStore()
   const [bday, setBday] = React.useState(user.birthday)
   const dirty = bday !== user.birthday
 
@@ -78,28 +77,6 @@ export function ProfiloScreen() {
           </Card>
           )}
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 font-semibold">
-                <RiPaletteLine className="size-5" /> Aspetto
-              </CardTitle>
-              <CardDescription>Tema dell'app su questo telefono.</CardDescription>
-            </CardHeader>
-            <CardContent className="flex flex-col gap-4">
-              <div className="flex items-center gap-3">
-                <RiMoonLine className="size-5 text-muted-foreground" />
-                <Label htmlFor="dark" className="flex-1">
-                  Tema scuro
-                </Label>
-                <Switch id="dark" checked={dark} onCheckedChange={setDark} />
-              </div>
-              {role === "titolare" && (
-                <Button variant="outline" size="lg" className="w-fit" onClick={() => navigate("gestione")}>
-                  Colori e contenuti del locale <RiExternalLinkLine />
-                </Button>
-              )}
-            </CardContent>
-          </Card>
         </div>
 
         <div className="flex flex-col gap-4">

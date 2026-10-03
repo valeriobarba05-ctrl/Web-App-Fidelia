@@ -7,8 +7,10 @@ import {
   RiCoupon3Line,
   RiDeleteBin6Line,
   RiEyeLine,
+  RiKey2Line,
+  RiLogoutBoxRLine,
+  RiPaletteLine,
   RiGift2Line,
-  RiLockLine,
   RiPencilLine,
   RiRestartLine,
   RiSettings3Line,
@@ -18,27 +20,29 @@ import {
 
 import { PageBody, PageHeader } from "@/components/fidelia/app-shell"
 import { EventArt } from "@/components/fidelia/event-art"
-import { ImageField } from "@/components/fidelia/image-field"
-import { LoyaltyCard } from "@/components/fidelia/loyalty-card"
+import { ImageField } from "@/owner/image-field"
+import { TicketCard, VenueMark } from "@/components/fidelia/loyalty-card"
 import { PrizeArt } from "@/components/fidelia/prize-art"
-import { VenueThemePicker } from "@/components/fidelia/venue-theme-picker"
+import { VenueThemePicker } from "@/owner/venue-theme-picker"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Drawer, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
-import { Empty, EmptyDescription, EmptyMedia, EmptyTitle } from "@/components/ui/empty"
+import { Empty, EmptyDescription, EmptyTitle } from "@/components/ui/empty"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { NativeSelect } from "@/components/ui/native-select"
 import { Separator } from "@/components/ui/separator"
 import { Switch } from "@/components/ui/switch"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import { eventDate, fmtMinutes, type EventType, type FideliaEvent, type Prize, type Promo, type Venue } from "@/lib/data"
 import { navigate } from "@/lib/router"
-import { toast, useStore } from "@/lib/store"
+import { toast } from "sonner"
+
+import { safeStorage, saveStorage } from "@/lib/utils"
+import { useVenue, useVenueAdmin } from "@/lib/venue"
 import { cn, fmtPoints } from "@/lib/utils"
 
 // ——— piccoli mattoni di form ———
@@ -73,85 +77,228 @@ function SwitchRow({ id, title, desc, checked, onChange, disabled }: { id: strin
 
 const isUrl = (v: string) => !v || /^https:\/\/\S+$/.test(v)
 
-// ——— schermata ———
+// ——— App del titolare: sessione, accesso e navigazione propri ———
 
-const TABS = [
-  { id: "identita", label: "Identità", icon: RiStore2Line },
-  { id: "premi", label: "Premi", icon: RiGift2Line },
-  { id: "promo", label: "Promo", icon: RiCoupon3Line },
-  { id: "eventi", label: "Eventi", icon: RiCalendarEventLine },
-  { id: "orari", label: "Orari e contatti", icon: RiTimeLine },
-  { id: "regole", label: "Regole e funzioni", icon: RiSettings3Line },
+const SECTIONS = [
+  { id: "identita", label: "Identità e colori", icon: RiStore2Line, desc: "Nome, immagini e colori del locale. Le modifiche si salvano subito." },
+  { id: "premi", label: "Premi", icon: RiGift2Line, desc: "Il catalogo che i clienti riscattano con i punti." },
+  { id: "promo", label: "Promo", icon: RiCoupon3Line, desc: "Offerte in evidenza nella Home e in Novità." },
+  { id: "eventi", label: "Eventi", icon: RiCalendarEventLine, desc: "Serate con prenotazione e punti bonus." },
+  { id: "orari", label: "Orari e contatti", icon: RiTimeLine, desc: "Quando sei aperto e come trovarti." },
+  { id: "regole", label: "Regole e funzioni", icon: RiSettings3Line, desc: "Come si guadagnano i punti e quali parti dell'app sono attive." },
 ] as const
 
-export function GestioneScreen({ tab }: { tab: string }) {
-  const { role } = useStore()
-  if (role !== "titolare")
-    return (
-      <>
-        <PageHeader title="Gestione locale" />
-        <PageBody className="max-w-xl">
-          <Empty>
-            <EmptyMedia>
-              <RiLockLine />
-            </EmptyMedia>
-            <EmptyTitle>Area riservata al titolare</EmptyTitle>
-            <EmptyDescription>Esci e usa “Sei il titolare?” nella schermata di accesso, con il PIN del locale.</EmptyDescription>
-          </Empty>
-        </PageBody>
-      </>
-    )
-  const current = TABS.some((t) => t.id === tab) ? tab : "identita"
+const OWNER_KEY = "fidelia:titolare:v1"
+function useOwnerSession() {
+  const [authed, setAuthed] = React.useState(() => safeStorage(OWNER_KEY, { authed: false }).authed)
+  React.useEffect(() => void saveStorage(OWNER_KEY, { authed }), [authed])
+  return { authed, login: () => setAuthed(true), logout: () => setAuthed(false) }
+}
+
+/** Contenuti del locale in lettura + scrittura: esiste solo qui, nell'app del titolare. */
+function useOwner() {
+  return { ...useVenue(), ...useVenueAdmin() }
+}
+
+export function OwnerApp({ section }: { section: string }) {
+  const session = useOwnerSession()
+  if (!session.authed) return <OwnerLogin onLogin={session.login} />
+  const current = SECTIONS.find((s) => s.id === section) ?? SECTIONS[0]
   return (
-    <>
-      <PageHeader
-        title="Gestione locale"
-        description="Le modifiche si salvano subito: i clienti le vedono all'apertura dell'app."
-        actions={
-          <Button variant="outline" size="lg" onClick={() => navigate("home")}>
-            <RiEyeLine /> <span className="hidden sm:inline">Vedi come cliente</span>
-          </Button>
-        }
-      />
-      <PageBody>
-        <Tabs value={current} onValueChange={(v) => navigate("gestione", { tab: v })} className="gap-5">
-          <div className="-mx-4 overflow-x-auto px-4 no-scrollbar sm:mx-0 sm:px-0">
-            <TabsList className="h-11">
-              {TABS.map(({ id, label, icon: Icon }) => (
-                <TabsTrigger key={id} value={id} className="px-3.5">
-                  <Icon /> {label}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-          </div>
-          <TabsContent value="identita">
-            <Identity />
-          </TabsContent>
-          <TabsContent value="premi">
-            <PrizesAdmin />
-          </TabsContent>
-          <TabsContent value="promo">
-            <PromosAdmin />
-          </TabsContent>
-          <TabsContent value="eventi">
-            <EventsAdmin />
-          </TabsContent>
-          <TabsContent value="orari">
-            <HoursContacts />
-          </TabsContent>
-          <TabsContent value="regole">
-            <Rules />
-          </TabsContent>
-        </Tabs>
-      </PageBody>
-    </>
+    <div className="min-h-dvh lg:grid lg:grid-cols-[280px_1fr]">
+      <OwnerSidebar current={current.id} onLogout={session.logout} />
+      <div className="flex min-w-0 flex-col pb-12">
+        <OwnerMobileBar current={current.id} onLogout={session.logout} />
+        <PageHeader title={current.label} description={current.desc} />
+        <PageBody>
+          {current.id === "identita" && <Identity />}
+          {current.id === "premi" && <PrizesAdmin />}
+          {current.id === "promo" && <PromosAdmin />}
+          {current.id === "eventi" && <EventsAdmin />}
+          {current.id === "orari" && <HoursContacts />}
+          {current.id === "regole" && <Rules />}
+        </PageBody>
+      </div>
+    </div>
+  )
+}
+
+const goSection = (id: string) => navigate("titolare", { sezione: id })
+
+function ThemePreview({ className }: { className?: string }) {
+  const { previewDark, setPreviewDark } = useVenueAdmin()
+  const value = previewDark === null ? "auto" : previewDark ? "scuro" : "chiaro"
+  return (
+    <div className={cn("flex flex-col gap-2", className)}>
+      <span className="text-xs text-sidebar-muted">Anteprima tema</span>
+      <div role="radiogroup" aria-label="Anteprima tema" className="grid grid-cols-3 gap-1 rounded-2xl bg-sidebar-accent p-1">
+        {(
+          [
+            ["auto", "Sistema", null],
+            ["chiaro", "Chiaro", false],
+            ["scuro", "Scuro", true],
+          ] as const
+        ).map(([id, label, v]) => (
+          <button
+            key={id}
+            role="radio"
+            aria-checked={value === id}
+            onClick={() => setPreviewDark(v)}
+            className={cn(
+              "h-8 rounded-xl text-xs font-medium text-sidebar-muted outline-none transition-colors focus-visible:ring-3 focus-visible:ring-sidebar-ring/40",
+              value === id && "bg-sidebar-primary text-sidebar-primary-foreground",
+            )}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function OwnerSidebar({ current, onLogout }: { current: string; onLogout: () => void }) {
+  const { venue } = useVenue()
+  return (
+    <aside className="sticky top-0 hidden h-dvh flex-col gap-6 overflow-y-auto bg-sidebar p-4 text-sidebar-foreground lg:flex">
+      <div className="flex items-center gap-3 p-2">
+        <VenueMark />
+        <span className="flex min-w-0 flex-col">
+          <span className="truncate font-heading text-[15px] font-semibold">{venue.name}</span>
+          <span className="text-xs text-sidebar-muted">Gestione del locale</span>
+        </span>
+      </div>
+      <nav aria-label="Gestione" className="flex flex-col gap-1">
+        {SECTIONS.map(({ id, label, icon: Icon }) => (
+          <a
+            key={id}
+            href={`#/titolare?sezione=${id}`}
+            aria-current={current === id ? "page" : undefined}
+            className={cn(
+              "flex h-11 items-center gap-3 rounded-2xl px-3 text-sm font-medium text-sidebar-muted outline-none transition-colors hover:bg-sidebar-accent hover:text-sidebar-foreground focus-visible:ring-3 focus-visible:ring-sidebar-ring/40",
+              current === id && "bg-sidebar-primary text-sidebar-primary-foreground hover:bg-sidebar-primary hover:text-sidebar-primary-foreground",
+            )}
+          >
+            <Icon className="size-5" />
+            {label}
+          </a>
+        ))}
+      </nav>
+      <div className="mt-auto flex flex-col gap-3">
+        <ThemePreview />
+        <a href="#/home" target="_blank" rel="noopener" className="flex h-10 items-center gap-2.5 rounded-2xl px-3 text-sm font-medium text-sidebar-muted outline-none hover:bg-sidebar-accent hover:text-sidebar-foreground focus-visible:ring-3 focus-visible:ring-sidebar-ring/40">
+          <RiEyeLine className="size-4" /> Apri l'app clienti
+        </a>
+        <a href="#/design-system" className="flex h-10 items-center gap-2.5 rounded-2xl px-3 text-sm font-medium text-sidebar-muted outline-none hover:bg-sidebar-accent hover:text-sidebar-foreground focus-visible:ring-3 focus-visible:ring-sidebar-ring/40">
+          <RiPaletteLine className="size-4" /> Design system
+        </a>
+        <button onClick={onLogout} className="flex h-10 items-center gap-2.5 rounded-2xl px-3 text-left text-sm font-medium text-sidebar-muted outline-none hover:bg-sidebar-accent hover:text-sidebar-foreground focus-visible:ring-3 focus-visible:ring-sidebar-ring/40">
+          <RiLogoutBoxRLine className="size-4" /> Esci dalla gestione
+        </button>
+      </div>
+    </aside>
+  )
+}
+
+function OwnerMobileBar({ current, onLogout }: { current: string; onLogout: () => void }) {
+  const { venue } = useVenue()
+  return (
+    <div className="sticky top-0 z-30 flex flex-col gap-2 bg-sidebar px-4 pt-3 pb-2 text-sidebar-foreground lg:hidden">
+      <div className="flex items-center gap-3">
+        <VenueMark className="size-8 rounded-xl text-xs" />
+        <span className="flex min-w-0 flex-1 flex-col">
+          <span className="truncate text-sm font-semibold">{venue.name}</span>
+          <span className="text-[11px] text-sidebar-muted">Gestione del locale</span>
+        </span>
+        <Button asChild variant="glass" size="sm">
+          <a href="#/home" target="_blank" rel="noopener">
+            <RiEyeLine /> App clienti
+          </a>
+        </Button>
+        <Button variant="ghost" size="icon-lg" aria-label="Esci dalla gestione" className="text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-foreground" onClick={onLogout}>
+          <RiLogoutBoxRLine />
+        </Button>
+      </div>
+      <nav aria-label="Gestione" className="-mx-4 flex gap-1.5 overflow-x-auto px-4 pb-1 no-scrollbar">
+        {SECTIONS.map(({ id, label, icon: Icon }) => (
+          <button
+            key={id}
+            onClick={() => goSection(id)}
+            aria-current={current === id ? "page" : undefined}
+            className={cn(
+              "flex h-9 shrink-0 items-center gap-1.5 rounded-2xl px-3 text-[13px] font-medium text-sidebar-muted outline-none focus-visible:ring-3 focus-visible:ring-sidebar-ring/40",
+              current === id && "bg-sidebar-primary text-sidebar-primary-foreground",
+            )}
+          >
+            <Icon className="size-4" />
+            {label}
+          </button>
+        ))}
+      </nav>
+    </div>
+  )
+}
+
+function OwnerLogin({ onLogin }: { onLogin: () => void }) {
+  const { venue } = useVenue()
+  const [pin, setPin] = React.useState("")
+  const [error, setError] = React.useState(false)
+  return (
+    <div className="flex min-h-dvh items-center justify-center bg-sidebar px-4 py-10 text-sidebar-foreground">
+      <div className="flex w-full max-w-sm flex-col gap-6">
+        <div className="flex flex-col items-center gap-3 text-center">
+          <VenueMark className="size-14 text-lg" />
+          <h1 className="font-heading text-2xl font-semibold">Gestione di {venue.name}</h1>
+          <p className="text-sm text-sidebar-muted">Area riservata al titolare. I clienti usano l'app della tessera e non vedono nulla di questa sezione.</p>
+        </div>
+        <Card>
+          <CardContent>
+            <form
+              className="flex flex-col gap-3"
+              onSubmit={(e) => {
+                e.preventDefault()
+                if (pin !== venue.ownerPin) return setError(true)
+                onLogin()
+                toast.success("Benvenuto nella gestione")
+              }}
+            >
+              <Label htmlFor="owner-pin">PIN del locale</Label>
+              <Input
+                id="owner-pin"
+                inputMode="numeric"
+                autoComplete="one-time-code"
+                maxLength={8}
+                value={pin}
+                onChange={(e) => {
+                  setPin(e.target.value.replace(/\D/g, ""))
+                  setError(false)
+                }}
+                aria-invalid={error}
+                autoFocus
+                className="h-12 text-center font-heading text-2xl tracking-[0.4em]"
+              />
+              {error ? (
+                <p role="alert" className="text-xs text-destructive">
+                  PIN errato. Riprova.
+                </p>
+              ) : (
+                <p className="text-xs text-muted-foreground">Nella demo il PIN è 1234: cambialo in Regole e funzioni.</p>
+              )}
+              <Button type="submit" size="xl" disabled={pin.length < 4}>
+                <RiKey2Line /> Entra
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
   )
 }
 
 // ——— Identità: nome, immagini, colori, con anteprima della tessera ———
 
 function Identity() {
-  const { venue, updateVenue } = useStore()
+  const { venue, updateVenue, visible } = useOwner()
   return (
     <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_400px] lg:items-start">
       <div className="flex flex-col gap-5">
@@ -197,8 +344,8 @@ function Identity() {
 
       <div className="flex flex-col gap-3 lg:sticky lg:top-10">
         <span className="px-1 text-sm font-semibold">Anteprima della tessera</span>
-        <LoyaltyCard />
-        <p className="px-1 text-xs text-muted-foreground">Così la vedono i tuoi clienti. Passa al tema scuro dal menu profilo per controllarla anche di sera.</p>
+        <TicketCard member={{ name: "Cliente di esempio", code: "FDL-0000", points: 340 }} next={visible.prizes.find((p) => p.cost > 340) ?? null} />
+        <p className="px-1 text-xs text-muted-foreground">Così la vedono i clienti. Usa “Anteprima tema” per controllarla anche in scuro: i clienti vedono il tema del loro telefono.</p>
       </div>
     </div>
   )
@@ -223,7 +370,7 @@ function AdminList<T extends { id: string }>({
   addLabel: string
   emptyText: string
 }) {
-  const { move, remove, upsert } = useStore()
+  const { move, remove, upsert } = useOwner()
   return (
     <div className="flex flex-col gap-3">
       <div className="flex items-center justify-between gap-3">
@@ -348,7 +495,7 @@ function EditorDrawer({ open, onClose, title, description, onSave, children }: {
 // Premi
 
 function PrizesAdmin() {
-  const { prizes, upsert, newId } = useStore()
+  const { prizes, upsert, newId } = useOwner()
   const [draft, setDraft] = React.useState<Prize | null>(null)
   const [tried, setTried] = React.useState(false)
   const err = draft && { name: draft.name.trim() ? null : "Scrivi il nome del premio", cost: draft.cost >= 1 ? null : "Il costo deve essere almeno 1 punto" }
@@ -424,7 +571,7 @@ const DAYS = [
 ] as const
 
 function PromosAdmin() {
-  const { promos, upsert, newId, venue } = useStore()
+  const { promos, upsert, newId, venue } = useOwner()
   const [draft, setDraft] = React.useState<Promo | null>(null)
   const [tried, setTried] = React.useState(false)
   const titleErr = draft && !draft.title.trim() ? "Scrivi il titolo della promo" : null
@@ -510,7 +657,7 @@ const EVENT_TYPES: [EventType, string][] = [
 ]
 
 function EventsAdmin() {
-  const { events, upsert, newId, venue } = useStore()
+  const { events, upsert, newId, venue } = useOwner()
   const [draft, setDraft] = React.useState<FideliaEvent | null>(null)
   const [tried, setTried] = React.useState(false)
   const err = draft && {
@@ -620,7 +767,7 @@ function FeatureOff({ label }: { label: string }) {
   return (
     <div className="mb-3 flex flex-wrap items-center gap-3 rounded-2xl bg-warning-soft p-3.5 text-sm text-warning">
       <span className="flex-1 font-medium">{label}</span>
-      <Button variant="outline" size="sm" onClick={() => navigate("gestione", { tab: "regole" })}>
+      <Button variant="outline" size="sm" onClick={() => goSection("regole")}>
         Apri Regole e funzioni
       </Button>
     </div>
@@ -636,7 +783,7 @@ const fromHHMM = (v: string) => {
 }
 
 function HoursContacts() {
-  const { venue, updateVenue } = useStore()
+  const { venue, updateVenue } = useOwner()
   const setDay = (d: number, slots: [number, number][]) => updateVenue({ hours: venue.hours.map((x, i) => (i === d ? { ...x, slots } : x)) })
   const setLink = (k: keyof Venue["links"], v: string) => updateVenue({ links: { ...venue.links, [k]: v } })
   const LINKS: [keyof Venue["links"], string, string][] = [
@@ -738,7 +885,7 @@ function HoursContacts() {
 // ——— Regole e funzioni ———
 
 function Rules() {
-  const { venue, updateVenue, resetVenue } = useStore()
+  const { venue, updateVenue, resetVenue } = useOwner()
   const [pin, setPin] = React.useState("")
   const setFeature = (k: keyof Venue["features"], v: boolean) => updateVenue({ features: { ...venue.features, [k]: v } })
   const num = (v: string, min: number, max: number) => Math.min(max, Math.max(min, Number(v) || min))

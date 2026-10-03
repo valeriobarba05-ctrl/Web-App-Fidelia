@@ -39,7 +39,8 @@ import { MovementRow } from "@/components/fidelia/movement-row"
 import { PointsOdometer } from "@/components/fidelia/points-odometer"
 import { PrizeArt } from "@/components/fidelia/prize-art"
 import { QrCode } from "@/components/fidelia/qr-code"
-import { VenueThemePicker } from "@/components/fidelia/venue-theme-picker"
+import { VenueThemePicker } from "@/owner/venue-theme-picker"
+import { useVenue, useVenueAdmin } from "@/lib/venue"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -66,7 +67,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import { DEFAULT_EVENTS as EVENTS, DEFAULT_PRIZES as PRIZES, INITIAL_MOVEMENTS } from "@/lib/data"
 import { navigate } from "@/lib/router"
-import { toast, useStore } from "@/lib/store"
+import { toast } from "@/lib/store"
 import { cn } from "@/lib/utils"
 
 const SECTIONS = [
@@ -85,7 +86,8 @@ const SECTIONS = [
 ] as const
 
 export function DesignSystemPage() {
-  const { dark, setDark, authed } = useStore()
+  const { dark } = useVenue()
+  const { setPreviewDark } = useVenueAdmin()
   const [active, setActive] = React.useState<string>("fondamenta")
 
   React.useEffect(() => {
@@ -104,8 +106,8 @@ export function DesignSystemPage() {
     <div className="min-h-dvh bg-background">
       <header className="sticky top-0 z-30 border-b bg-background/90 backdrop-blur-md">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-x-6 gap-y-3 px-4 py-3 sm:px-8">
-          <Button variant="ghost" size="lg" onClick={() => navigate("home")}>
-            <RiArrowLeftLine /> {authed ? "Torna all'app" : "Apri l'app"}
+          <Button variant="ghost" size="lg" onClick={() => navigate("titolare")}>
+            <RiArrowLeftLine /> Torna alla gestione
           </Button>
           <div className="flex min-w-0 flex-1 flex-col">
             <span className="font-heading text-lg font-semibold">Fidelia Design System</span>
@@ -116,7 +118,7 @@ export function DesignSystemPage() {
             <Label htmlFor="ds-dark" className="text-sm">
               Scuro
             </Label>
-            <Switch id="ds-dark" checked={dark} onCheckedChange={setDark} />
+            <Switch id="ds-dark" checked={dark} onCheckedChange={setPreviewDark} />
           </div>
         </div>
       </header>

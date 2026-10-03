@@ -10,9 +10,9 @@ export type Route =
   | "locale"
   | "profilo"
   | "design-system"
-  | "gestione"
+  | "titolare"
 
-const ROUTES: Route[] = ["home", "tessera", "movimenti", "premi", "riscatto", "novita", "locale", "profilo", "design-system", "gestione"]
+const ROUTES: Route[] = ["home", "tessera", "movimenti", "premi", "riscatto", "novita", "locale", "profilo", "design-system", "titolare"]
 
 function parse(): { route: Route; params: URLSearchParams } {
   const [path, query] = location.hash.replace(/^#\/?/, "").split("?")

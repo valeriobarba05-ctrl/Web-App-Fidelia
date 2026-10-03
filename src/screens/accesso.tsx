@@ -1,10 +1,9 @@
 import * as React from "react"
-import { RiKey2Line, RiAddBoxLine, RiAndroidFill, RiAppleFill, RiEyeLine, RiEyeOffLine, RiGift2Line, RiMore2Fill, RiQrCodeLine, RiShare2Line, RiSparkling2Line } from "@remixicon/react"
+import { RiAddBoxLine, RiAndroidFill, RiAppleFill, RiEyeLine, RiEyeOffLine, RiGift2Line, RiMore2Fill, RiQrCodeLine, RiShare2Line, RiSparkling2Line } from "@remixicon/react"
 
 import { VenueMark } from "@/components/fidelia/loyalty-card"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -150,7 +149,6 @@ export function AccessoScreen() {
         </Card>
 
         <InstallHint />
-        <OwnerAccess />
       </section>
     </div>
   )
@@ -202,47 +200,5 @@ function InstallHint() {
         </p>
       </CardContent>
     </Card>
-  )
-}
-
-/** Ingresso del titolare: PIN impostato nella gestione (predefinito 1234 nella demo). */
-function OwnerAccess() {
-  const { venue, loginOwner } = useStore()
-  const [pin, setPin] = React.useState("")
-  const [error, setError] = React.useState(false)
-  return (
-    <Dialog onOpenChange={() => { setPin(""); setError(false) }}>
-      <DialogTrigger asChild>
-        <Button variant="ghost" size="lg" className="self-center text-muted-foreground">
-          <RiKey2Line /> Sei il titolare? Entra nella gestione
-        </Button>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Area titolare</DialogTitle>
-          <DialogDescription>Inserisci il PIN del locale per modificare contenuti, immagini, colori e regole. Nella demo il PIN è 1234.</DialogDescription>
-        </DialogHeader>
-        <form
-          id="owner"
-          className="flex flex-col gap-2"
-          onSubmit={(e) => {
-            e.preventDefault()
-            if (pin !== venue.ownerPin) return setError(true)
-            loginOwner()
-            navigate("gestione")
-            toast.success("Modalità titolare attiva")
-          }}
-        >
-          <Label htmlFor="pin">PIN</Label>
-          <Input id="pin" inputMode="numeric" autoComplete="one-time-code" maxLength={8} value={pin} onChange={(e) => { setPin(e.target.value.replace(/\D/g, "")); setError(false) }} aria-invalid={error} autoFocus className="text-center font-heading text-2xl tracking-[0.4em]" />
-          {error && <p role="alert" className="text-xs text-destructive">PIN errato. Riprova o chiedi il PIN a chi gestisce il locale.</p>}
-        </form>
-        <DialogFooter>
-          <Button type="submit" form="owner" size="lg" disabled={pin.length < 4}>
-            Entra
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
   )
 }

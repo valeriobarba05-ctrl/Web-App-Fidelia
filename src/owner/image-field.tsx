@@ -4,7 +4,7 @@ import { RiDeleteBin6Line, RiImageAddLine, RiLink, RiLoader4Line } from "@remixi
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { toast } from "@/lib/store"
+import { toast } from "sonner"
 import { cn, compressImage } from "@/lib/utils"
 
 /**

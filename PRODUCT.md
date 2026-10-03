@@ -8,10 +8,11 @@ Locale di esempio: **Osteria del Porto**.
 
 ## Per chi
 - **Cliente del locale** (utente principale): al telefono, in sala o in cassa, spesso con poca luce e poca pazienza. Deve mostrare il QR in due tocchi e capire subito quanti punti ha.
-- **Titolare**: entra con il PIN del locale ("Sei il titolare?" nella schermata di accesso) e gestisce tutto da **Gestione locale**:
+- **Titolare**: usa un'app separata (`#/titolare`, accesso con PIN) e gestisce tutto da lì:
   identità (nome, sigla, frase, logo, copertina, mappa), colori, premi, promo, eventi (con immagini), orari, contatti e link,
   regole dei punti (punti per euro, benvenuto, durata QR), funzioni attive (eventi, prenotazioni, promo, recensioni, compleanno) e PIN.
-  Il cliente non vede nessuna di queste impostazioni.
+  Il cliente non ha nessuna impostazione dell'app (né tema né colori: il tema segue il telefono) e non vede alcun accesso alla gestione.
+  Il suo profilo contiene solo i suoi dati: compleanno e consensi privacy.
 
 ## Funzioni (da mantenere)
 1. Installazione e accesso (Google o email, registrazione con 50 punti di benvenuto, istruzioni iPhone/Android)
@@ -23,7 +24,7 @@ Locale di esempio: **Osteria del Porto**.
 7. Promo del mese (punti doppi il martedì)
 8. Eventi con prenotazione e punti bonus
 9. Info del locale: orari, apertura calcolata, chiama/indicazioni/menù, recensione, social
-10. Profilo: compleanno, consensi separati (GDPR), colori del locale, tema
+10. Profilo: compleanno e consensi separati (GDPR)
 
 ## Regole
 - 1 € speso = 1 punto. Il QR della tessera ruota per impedire gli screenshot.
