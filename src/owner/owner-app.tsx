@@ -126,38 +126,6 @@ export function OwnerApp({ section }: { section: string }) {
 
 const goSection = (id: string) => navigate("titolare", { sezione: id })
 
-function ThemePreview({ className }: { className?: string }) {
-  const { previewDark, setPreviewDark } = useVenueAdmin()
-  const value = previewDark === null ? "auto" : previewDark ? "scuro" : "chiaro"
-  return (
-    <div className={cn("flex flex-col gap-2", className)}>
-      <span className="text-xs text-sidebar-muted">Anteprima tema</span>
-      <div role="radiogroup" aria-label="Anteprima tema" className="grid grid-cols-3 gap-1 rounded-2xl bg-sidebar-accent p-1">
-        {(
-          [
-            ["auto", "Sistema", null],
-            ["chiaro", "Chiaro", false],
-            ["scuro", "Scuro", true],
-          ] as const
-        ).map(([id, label, v]) => (
-          <button
-            key={id}
-            role="radio"
-            aria-checked={value === id}
-            onClick={() => setPreviewDark(v)}
-            className={cn(
-              "h-8 rounded-xl text-xs font-medium text-sidebar-muted outline-none transition-colors focus-visible:ring-3 focus-visible:ring-sidebar-ring/40",
-              value === id && "bg-sidebar-primary text-sidebar-primary-foreground",
-            )}
-          >
-            {label}
-          </button>
-        ))}
-      </div>
-    </div>
-  )
-}
-
 function OwnerSidebar({ current, onLogout }: { current: string; onLogout: () => void }) {
   const { venue } = useVenue()
   return (
@@ -186,7 +154,6 @@ function OwnerSidebar({ current, onLogout }: { current: string; onLogout: () => 
         ))}
       </nav>
       <div className="mt-auto flex flex-col gap-3">
-        <ThemePreview />
         <a href="#/home" target="_blank" rel="noopener" className="flex h-10 items-center gap-2.5 rounded-2xl px-3 text-sm font-medium text-sidebar-muted outline-none hover:bg-sidebar-accent hover:text-sidebar-foreground focus-visible:ring-3 focus-visible:ring-sidebar-ring/40">
           <RiEyeLine className="size-4" /> Apri l'app clienti
         </a>
@@ -346,7 +313,7 @@ function Identity() {
       <div className="flex flex-col gap-3 lg:sticky lg:top-10">
         <span className="px-1 text-sm font-semibold">Anteprima della tessera</span>
         <TicketCard venue={venue} member={{ name: "Cliente di esempio", code: "FDL-0000", points: 340 }} next={visible.prizes.find((p) => p.cost > 340) ?? null} />
-        <p className="px-1 text-xs text-muted-foreground">Così la vedono i clienti. Usa “Anteprima tema” per controllarla anche in scuro: i clienti vedono il tema del loro telefono.</p>
+        <p className="px-1 text-xs text-muted-foreground">Così la vedono i clienti.</p>
       </div>
     </div>
   )

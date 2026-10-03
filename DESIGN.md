@@ -30,7 +30,7 @@ da questi vengono generati `--primary`, `--primary-soft`, `--brand` (superficie 
 alzando o abbassando la luminosità finché ogni coppia supera **WCAG AA 4,5:1** in chiaro e in scuro.
 
 ## Leggibilità
-- Tema scuro: sfondo **nero puro** (`#000`), card grafite `oklch(0.17)`, bordi al 14%. Nel tema scuro il primario diventa chiaro con testo scuro.
+- L'app usa **solo il tema chiaro** (`THEME_MODE = "light"`). Token scuri pronti ma non attivi: sfondo **nero puro** (`#000`), card grafite `oklch(0.17)`, bordi al 14%. Nel tema scuro il primario diventa chiaro con testo scuro.
 - Tessera, saldo e pannello di accesso usano `--brand`, sempre scuro con testo chiaro e numeri oro, in entrambi i temi.
 - Testo su foto caricate: sempre sopra un velo scuro o di marca.
 - `npm run check:contrast` verifica tutte le coppie testo/sfondo per ogni preset (più colori "difficili") in entrambi i temi; deve passare prima di ogni rilascio.

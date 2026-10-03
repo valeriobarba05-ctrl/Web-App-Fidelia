@@ -17,6 +17,12 @@ export const THEME_PRESETS: ThemePreset[] = [
   { id: "antracite", name: "Antracite", brand: "#1f1f1f", highlight: "#d9a441" },
 ]
 
+/**
+ * Modalità tema dell'app. "light" = sempre chiaro (scelta attuale).
+ * "system" = segue il telefono: i token scuri sono già pronti e verificati in globals.css.
+ */
+export const THEME_MODE: "light" | "system" = "light"
+
 const toOklch = converter("oklch")
 const AA = 4.5
 

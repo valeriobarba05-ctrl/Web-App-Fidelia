@@ -38,7 +38,7 @@ Regola: i file fuori da `src/mock/` non devono sapere da dove arrivano i dati. O
 
 ## 2. Due app separate
 
-- **App cliente** (`src/screens`, layout `src/screens/app-shell.tsx`): il cliente **non configura nulla**. Il tema segue il telefono (`prefers-color-scheme`); colori, contenuti e funzioni li decide il locale. Nel profilo ci sono solo i suoi dati: compleanno e consensi privacy (obbligatori per GDPR).
+- **App cliente** (`src/screens`, layout `src/screens/app-shell.tsx`): il cliente **non configura nulla**. Il tema è chiaro; colori, contenuti e funzioni li decide il locale. Nel profilo ci sono solo i suoi dati: compleanno e consensi privacy (obbligatori per GDPR).
 - **App titolare** (`src/owner`): unico punto che scrive la configurazione del locale. In demo è protetta da PIN; **in produzione serve un login vero lato server** e i permessi di scrittura vanno verificati dal backend.
 
 Possono essere due build/deploy distinti: condividono solo `components/`, `lib/`, `styles/`, `types.ts`.
@@ -85,7 +85,7 @@ Tutte le scritture passano da `useVenueAdmin()` (`updateVenue`, `upsert`, `remov
 
 1. **Mai colori scritti a mano** nei componenti: solo classi dei token (`bg-primary`, `text-muted-foreground`, `bg-brand`, …). Il titolare cambia i colori e tutto deve seguirli.
 2. **Leggibilità:** `npm run check:contrast` deve passare. Se si aggiunge una nuova coppia testo/sfondo, aggiungerla in `scripts/check-contrast.ts`.
-3. **Tema scuro:** sfondo nero puro; la classe `dark` su `<html>` la gestisce `applyTheme()`. Nell'app cliente segue sempre il sistema.
+3. **Tema:** l'app è **sempre in tema chiaro** (`THEME_MODE = "light"` in `src/lib/themes.ts`). I token scuri (sfondo nero puro) sono pronti e verificati: per attivarli in futuro basta `THEME_MODE = "system"`.
 4. **Testo sopra le foto caricate:** sempre su velo (`EventArt` con `scrim`, gradienti già presenti). Non togliere i veli.
 5. **Touch target** ≥ 44px per le azioni principali al telefono (taglie `xl` e `icon-xl` del Button).
 6. **Movimento:** un solo momento firmato (il rullo dei punti, `PointsOdometer`). `prefers-reduced-motion` è rispettato globalmente.

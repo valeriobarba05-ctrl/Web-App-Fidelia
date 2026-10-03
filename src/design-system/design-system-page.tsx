@@ -116,7 +116,7 @@ export function DesignSystemPage() {
           <div className="flex items-center gap-2">
             <RiMoonLine className="size-4 text-muted-foreground" />
             <Label htmlFor="ds-dark" className="text-sm">
-              Scuro
+              Token scuri (non attivi nell'app)
             </Label>
             <Switch id="ds-dark" checked={dark} onCheckedChange={setPreviewDark} />
           </div>

@@ -3,7 +3,7 @@ import { toast } from "sonner"
 
 import { DEFAULT_EVENTS, DEFAULT_PRIZES, DEFAULT_PROMOS, DEFAULT_VENUE } from "@/mock/data"
 import type { FideliaEvent, Prize, Promo, Venue } from "@/types"
-import { applyTheme } from "@/lib/themes"
+import { applyTheme, THEME_MODE } from "@/lib/themes"
 import { safeStorage, saveStorage } from "@/lib/utils"
 
 /**
@@ -63,10 +63,10 @@ function useVenueValue() {
     return () => window.removeEventListener("storage", on)
   }, [])
 
-  // Tema: segue il sistema del dispositivo. Solo l'app titolare può forzare un'anteprima.
+  // Tema: chiaro fisso (THEME_MODE). Solo la pagina del design system può mostrare un'anteprima dei token scuri.
   const systemDark = useSystemDark()
   const [previewDark, setPreviewDark] = React.useState<boolean | null>(null)
-  const dark = previewDark ?? systemDark
+  const dark = previewDark ?? (THEME_MODE === "system" ? systemDark : false)
   React.useEffect(() => applyTheme(state.venue.brandColor, state.venue.highlightColor, dark), [state.venue.brandColor, state.venue.highlightColor, dark])
 
   const visible = React.useMemo(
