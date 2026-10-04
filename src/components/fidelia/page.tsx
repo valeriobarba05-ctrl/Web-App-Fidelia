@@ -19,7 +19,7 @@ export function PageHeader({
   className?: string
 }) {
   return (
-    <header className={cn("mx-auto flex w-full max-w-6xl items-end gap-3 px-4 pt-6 pb-4 sm:px-6 lg:px-10 lg:pt-10", className)}>
+    <header className={cn("mx-auto flex w-full max-w-6xl items-end gap-3 px-4 pt-[max(1.5rem,env(safe-area-inset-top))] pb-4 sm:px-6 lg:px-10 lg:pt-10", className)}>
       {onBack && (
         <Button variant="secondary" size="icon-xl" className="mb-0.5 rounded-full" aria-label="Indietro" onClick={onBack}>
           <RiArrowLeftLine />

@@ -5,6 +5,7 @@ function Toaster(props: ToasterProps) {
   return (
     <Sonner
       position="top-center"
+      mobileOffset={{ top: "max(12px, env(safe-area-inset-top))", left: 12, right: 12 }}
       toastOptions={{
         classNames: {
           toast:

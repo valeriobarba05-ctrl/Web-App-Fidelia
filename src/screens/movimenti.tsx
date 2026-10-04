@@ -41,7 +41,7 @@ export function MovimentiScreen() {
                 ["Visite", String(user.visits)],
               ].map(([k, v]) => (
                 <div key={k} className="flex flex-col gap-0.5 rounded-2xl bg-white/12 px-3 py-2.5">
-                  <dt className="text-[11px] opacity-90">{k}</dt>
+                  <dt className="text-xs opacity-90">{k}</dt>
                   <dd className="font-heading text-lg font-semibold tabular">{v}</dd>
                 </div>
               ))}

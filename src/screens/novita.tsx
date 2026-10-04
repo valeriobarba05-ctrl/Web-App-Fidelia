@@ -30,7 +30,7 @@ import { eventDate } from "@/lib/format"
 import type { EventType, FideliaEvent } from "@/types"
 import { navigate } from "@/mock/router"
 import { toast, useStore } from "@/mock/store"
-import { cn } from "@/lib/utils"
+import { cn, haptic } from "@/lib/utils"
 
 export function NovitaScreen({ tab, eventId }: { tab: string; eventId: string | null }) {
   const { venue } = useStore()
@@ -207,7 +207,7 @@ function EventsPanel({ initial }: { initial: string | null }) {
                   <div className="relative isolate flex size-[72px] shrink-0 flex-col items-center justify-center overflow-hidden rounded-2xl text-white">
                     <EventArt type={e.type} image={e.image} />
                     <span className="font-heading text-[22px] leading-none font-bold tabular">{d.day}</span>
-                    <span className="text-[11px] font-semibold uppercase">{d.month}</span>
+                    <span className="text-xs font-semibold uppercase">{d.month}</span>
                   </div>
                   <div className="flex min-w-0 flex-1 flex-col gap-1">
                     <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
@@ -270,7 +270,7 @@ function BookingSheet({ event, onDone }: { event: FideliaEvent; onDone: () => vo
           ].map(({ icon: Icon, k, v }) => (
             <div key={k} className="flex flex-col items-center gap-1 rounded-2xl bg-muted p-3">
               <Icon className="size-4 text-muted-foreground" />
-              <span className="text-[11px] text-muted-foreground">{k}</span>
+              <span className="text-xs text-muted-foreground">{k}</span>
               <span className="text-[13px] font-semibold">{v}</span>
             </div>
           ))}
@@ -326,6 +326,7 @@ function BookingSheet({ event, onDone }: { event: FideliaEvent; onDone: () => vo
             size="xl"
             onClick={() => {
               book(event.id, guests)
+              haptic()
               toast.success("Prenotazione confermata", { description: `${event.title} · ${guests} ${guests === 1 ? "persona" : "persone"}. Riceverai +${event.bonusPoints} punti alla serata.` })
               onDone()
             }}

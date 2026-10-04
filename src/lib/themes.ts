@@ -1,4 +1,11 @@
-import { clampChroma, converter, formatCss, parse, wcagContrast, type Oklch } from "culori"
+import type { Oklch } from "culori"
+// Entry "fn" di culori: solo gli spazi colore registrati qui finiscono nel bundle.
+import { clampChroma, converter, formatCss, modeLrgb, modeOklab, modeOklch, modeRgb, parse, useMode, wcagContrast } from "culori/fn"
+
+useMode(modeRgb)
+useMode(modeLrgb)
+useMode(modeOklab)
+useMode(modeOklch)
 
 /**
  * Colori del locale.
@@ -95,7 +102,7 @@ export function applyTheme(brandColor: string, highlightColor: string, dark: boo
   root.classList.add("theme-switching")
   root.classList.toggle("dark", dark)
   for (const [k, v] of Object.entries(generateTheme(brandColor, highlightColor, dark))) root.style.setProperty(k, v)
-  document.querySelector('meta[name="theme-color"]')?.setAttribute("content", dark ? "#000000" : "#1c1917")
+  document.querySelector('meta[name="theme-color"]')?.setAttribute("content", dark ? "#000000" : "#f8f6f5")
   window.setTimeout(() => root.classList.remove("theme-switching"), 320)
 }
 

@@ -17,7 +17,7 @@ export const EVENT_ICON = { karaoke: RiMicLine, live: RiMusic2Line, degustazione
 export function EventArt({ type, image, className, scrim = true }: { type: EventType; image?: string; className?: string; scrim?: boolean }) {
   return (
     <div aria-hidden className={cn("absolute inset-0 -z-10 overflow-hidden", className)}>
-      <img src={image || EVENT_ART[type]} alt="" className="absolute inset-0 size-full scale-105 object-cover transition-transform duration-700 ease-(--ease-out-expo) group-hover/event:scale-110" />
+      <img src={image || EVENT_ART[type]} alt="" loading="lazy" decoding="async" className="absolute inset-0 size-full scale-105 object-cover transition-transform duration-700 ease-(--ease-out-expo) group-hover/event:scale-110" />
       {scrim && <div className="absolute inset-0 bg-[linear-gradient(to_top,rgb(0_0_0/0.9),rgb(0_0_0/0.55)_55%,rgb(0_0_0/0.2))]" />}
     </div>
   )

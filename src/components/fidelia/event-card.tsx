@@ -46,7 +46,7 @@ export function EventCard({
         </div>
         <div className="flex min-w-[54px] flex-col items-center rounded-2xl bg-white/90 px-2 py-1.5 text-stone-900 backdrop-blur-md">
           <span className="font-heading text-xl leading-none font-bold tabular">{d.day}</span>
-          <span className="text-[11px] font-semibold uppercase">{d.month}</span>
+          <span className="text-xs font-semibold uppercase">{d.month}</span>
         </div>
       </div>
       <div className="flex flex-col gap-2 p-5 pt-20">

@@ -14,7 +14,8 @@ import { pointsRule } from "@/lib/format"
 import { navigate, useNow } from "@/mock/router"
 import { DEMO } from "@/mock/demo"
 import { toast, useStore } from "@/mock/store"
-import { cn } from "@/lib/utils"
+import { cn, haptic } from "@/lib/utils"
+import { useWakeLock } from "@/lib/use-wake-lock"
 
 /** QR dinamico: si rigenera ogni N secondi, così uno screenshot non vale. */
 export function useRotatingCode(seconds: number) {
@@ -25,6 +26,7 @@ export function useRotatingCode(seconds: number) {
 }
 
 export function TesseraScreen() {
+  useWakeLock()
   const { user, venue } = useStore()
   const { cycle, left, ratio } = useRotatingCode(venue.qrRefreshSeconds)
   const [bright, setBright] = React.useState(false)
@@ -137,6 +139,7 @@ function SimulateVisit() {
             if (invalid) return
             const gained = registerVisit(value, venueState)
             setOpen(false)
+            haptic([12, 60, 12])
             toast.success(`+${gained} punti accreditati`, { description: `Conto da ${value.toLocaleString("it-IT", { minimumFractionDigits: 2 })} €` })
           }}
         >

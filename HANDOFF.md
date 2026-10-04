@@ -91,4 +91,12 @@ Tutte le scritture passano da `useVenueAdmin()` (`updateVenue`, `upsert`, `remov
 6. **Movimento:** un solo momento firmato (il rullo dei punti, `PointsOdometer`). `prefers-reduced-motion` è rispettato globalmente.
 7. Dettagli in **Drawer** dal basso, conferme distruttive in **Dialog**, feedback in **toast**.
 
+8. **Mobile first** (la maggior parte dei clienti usa il telefono):
+   - area tattile minima 44×44 px su schermi touch: la garantisce `globals.css` (`@media (pointer: coarse)`) per Button, Switch, Tabs, ToggleGroup e radio; per pulsanti fatti a mano aggiungere la classe `touch-target`;
+   - testi ≥ 12 px; input a 16 px su mobile (niente zoom automatico di iOS);
+   - margini sicuri (notch e barra Home) con `env(safe-area-inset-*)` su intestazioni, barra in basso e toast;
+   - schermo sempre acceso mentre il QR è visibile (`useWakeLock` in Tessera e Riscatto), vibrazione breve di conferma (`haptic()`);
+   - schermate secondarie caricate al bisogno (`React.lazy` in `App.tsx`) con `ScreenSkeleton` durante il caricamento;
+   - PWA installabile: `public/manifest.webmanifest`, icone PNG (anche maskable), meta per iPhone in `index.html`. Manca il service worker per l'uso offline: da aggiungere lato sviluppo (es. `vite-plugin-pwa`).
+
 Riferimenti: `DESIGN.md` (decisioni visive), `PRODUCT.md` (prodotto e funzioni), `#/design-system` (catalogo vivo).

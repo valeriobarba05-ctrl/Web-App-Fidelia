@@ -52,7 +52,7 @@ export function AppShell({ route, children }: { route: Route; children: React.Re
   return (
     <div className="min-h-dvh lg:grid lg:grid-cols-[272px_1fr]">
       <Sidebar route={route} />
-      <div className="flex min-w-0 flex-col pb-28 lg:pb-12">{children}</div>
+      <div className="flex min-w-0 flex-col pb-[calc(7rem+env(safe-area-inset-bottom))] lg:pb-12">{children}</div>
       <BottomNav route={route} />
     </div>
   )
@@ -140,7 +140,7 @@ function BottomNav({ route }: { route: Route }) {
             href={`#/${item.route}`}
             aria-current={active ? "page" : undefined}
             className={cn(
-              "flex h-14 min-w-0 flex-1 flex-col items-center justify-center gap-0.5 rounded-[18px] text-[11px] font-medium text-inverted-muted outline-none transition-colors focus-visible:ring-3 focus-visible:ring-ring/40",
+              "flex h-14 min-w-0 flex-1 flex-col items-center justify-center gap-0.5 rounded-[18px] text-xs font-medium text-inverted-muted outline-none transition-colors focus-visible:ring-3 focus-visible:ring-ring/40",
               active && "bg-white/12 text-inverted-foreground",
             )}
           >

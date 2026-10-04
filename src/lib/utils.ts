@@ -54,3 +54,12 @@ export async function compressImage(file: File, max = 1200, quality = 0.8): Prom
   const webp = canvas.toDataURL("image/webp", quality)
   return webp.startsWith("data:image/webp") ? webp : canvas.toDataURL("image/jpeg", quality)
 }
+
+/** Piccola vibrazione di conferma (Android; iOS la ignora). */
+export function haptic(pattern: number | number[] = 12) {
+  try {
+    navigator.vibrate?.(pattern)
+  } catch {
+    /* non supportato */
+  }
+}

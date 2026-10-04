@@ -13,12 +13,14 @@ import { Empty, EmptyDescription, EmptyMedia, EmptyTitle } from "@/components/ui
 import { navigate, useNow } from "@/mock/router"
 import { DEMO } from "@/mock/demo"
 import { toast, useStore } from "@/mock/store"
-import { cn } from "@/lib/utils"
+import { cn, haptic } from "@/lib/utils"
+import { useWakeLock } from "@/lib/use-wake-lock"
 
 export function RiscattoScreen() {
   const { user, redemption, cancelRedeem, confirmRedeem, startRedeem, prizes, venue } = useStore()
   const [done, setDone] = React.useState<string | null>(null)
   const now = useNow(500)
+  useWakeLock(!!redemption && !done)
 
   if (done)
     return (
@@ -147,6 +149,7 @@ export function RiscattoScreen() {
                     const name = prize.name
                     confirmRedeem(prize)
                     setDone(name)
+                    haptic([12, 60, 12])
                     toast.success(`Premio riscattato · −${prize.cost} punti`)
                   }}
                 >

@@ -14,7 +14,7 @@ const FALLBACK = { bar: MAP.vino, cucina: MAP.antipasto, esperienza: MAP.cena } 
 
 export function PrizeArt({ id, image, category, className, locked }: { id: string; image?: string; category?: keyof typeof FALLBACK; className?: string; locked?: boolean }) {
   if (image)
-    return <img src={image} alt="" className={cn("size-14 shrink-0 rounded-2xl object-cover transition-[filter]", locked && "grayscale-[0.6]", className)} />
+    return <img src={image} alt="" loading="lazy" decoding="async" className={cn("size-14 shrink-0 rounded-2xl object-cover transition-[filter]", locked && "grayscale-[0.6]", className)} />
   const { Icon, tint } = MAP[id as keyof typeof MAP] ?? FALLBACK[category ?? "bar"]
   return (
     <div

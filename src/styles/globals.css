@@ -194,6 +194,9 @@
   }
   html {
     color-scheme: light;
+    /* niente ritardo né doppio-tap-zoom sui controlli, niente rimbalzo della pagina intera */
+    touch-action: manipulation;
+    overscroll-behavior-y: none;
     caret-color: var(--primary);
     accent-color: var(--primary);
     -webkit-tap-highlight-color: transparent;
@@ -214,6 +217,25 @@
   a { text-underline-offset: 3px; }
   :focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
   input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.6; cursor: pointer; }
+}
+
+
+/*
+ * Telefono: ogni controllo ha un'area tattile di almeno 44×44 px, anche se disegnato più piccolo
+ * (interruttori, schede, filtri, pulsanti sm/lg). L'area si allarga con uno pseudo-elemento invisibile.
+ */
+@media (pointer: coarse) {
+  :where([data-slot="button"], [data-slot="switch"], [data-slot="tabs-trigger"], [data-slot="toggle-group-item"], [role="radio"], .touch-target) {
+    position: relative;
+  }
+  :where([data-slot="button"], [data-slot="switch"], [data-slot="tabs-trigger"], [data-slot="toggle-group-item"], [role="radio"], .touch-target)::after {
+    content: "";
+    position: absolute;
+    top: min(0px, calc((100% - 44px) / 2));
+    bottom: min(0px, calc((100% - 44px) / 2));
+    left: min(0px, calc((100% - 44px) / 2));
+    right: min(0px, calc((100% - 44px) / 2));
+  }
 }
 
 @utility tabular { font-variant-numeric: tabular-nums; }

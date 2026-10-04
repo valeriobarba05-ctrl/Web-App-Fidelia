@@ -171,12 +171,12 @@ function OwnerSidebar({ current, onLogout }: { current: string; onLogout: () => 
 function OwnerMobileBar({ current, onLogout }: { current: string; onLogout: () => void }) {
   const { venue } = useVenue()
   return (
-    <div className="sticky top-0 z-30 flex flex-col gap-2 bg-sidebar px-4 pt-3 pb-2 text-sidebar-foreground lg:hidden">
+    <div className="sticky top-0 z-30 flex flex-col gap-2 bg-sidebar px-4 pt-[max(0.75rem,env(safe-area-inset-top))] pb-2 text-sidebar-foreground lg:hidden">
       <div className="flex items-center gap-3">
         <VenueMark initials={venue.initials} logo={venue.logo} className="size-8 rounded-xl text-xs" />
         <span className="flex min-w-0 flex-1 flex-col">
           <span className="truncate text-sm font-semibold">{venue.name}</span>
-          <span className="text-[11px] text-sidebar-muted">Gestione del locale</span>
+          <span className="text-xs text-sidebar-muted">Gestione del locale</span>
         </span>
         <Button asChild variant="glass" size="sm">
           <a href="#/home" target="_blank" rel="noopener">
@@ -194,7 +194,7 @@ function OwnerMobileBar({ current, onLogout }: { current: string; onLogout: () =
             onClick={() => goSection(id)}
             aria-current={current === id ? "page" : undefined}
             className={cn(
-              "flex h-9 shrink-0 items-center gap-1.5 rounded-2xl px-3 text-[13px] font-medium text-sidebar-muted outline-none focus-visible:ring-3 focus-visible:ring-sidebar-ring/40",
+              "touch-target flex h-9 shrink-0 items-center gap-1.5 rounded-2xl px-3 text-[13px] font-medium text-sidebar-muted outline-none focus-visible:ring-3 focus-visible:ring-sidebar-ring/40",
               current === id && "bg-sidebar-primary text-sidebar-primary-foreground",
             )}
           >
@@ -439,7 +439,7 @@ function EditorDrawer({ open, onClose, title, description, onSave, children }: {
         </DrawerHeader>
         <form
           id="editor"
-          className="flex min-h-0 flex-col gap-4 overflow-y-auto px-5 py-2"
+          className="flex min-h-0 flex-col gap-4 overflow-y-auto overscroll-contain px-5 py-2"
           onSubmit={(e) => {
             e.preventDefault()
             onSave()
@@ -656,7 +656,7 @@ function EventsAdmin() {
               <div className="relative isolate flex size-12 flex-col items-center justify-center overflow-hidden rounded-2xl text-white">
                 <EventArt type={e.type} image={e.image} />
                 <span className="font-heading text-base leading-none font-bold">{d.day}</span>
-                <span className="text-[10px] font-semibold uppercase">{d.month}</span>
+                <span className="text-[11px] font-semibold uppercase">{d.month}</span>
               </div>
             ),
             title: e.title,

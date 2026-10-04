@@ -164,7 +164,7 @@ export function LocaleScreen() {
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex h-14 flex-col items-center justify-center gap-1 rounded-2xl bg-muted text-[11px] font-medium outline-none transition-colors hover:bg-primary hover:text-primary-foreground focus-visible:ring-3 focus-visible:ring-ring/30"
+                    className="flex h-14 flex-col items-center justify-center gap-1 rounded-2xl bg-muted text-xs font-medium outline-none transition-colors hover:bg-primary hover:text-primary-foreground focus-visible:ring-3 focus-visible:ring-ring/30"
                   >
                     <Icon className="size-5" />
                     {label}
