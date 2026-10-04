@@ -869,21 +869,25 @@ function OwnerAccounts() {
             const me = account?.email.toLowerCase() === e.toLowerCase()
             return (
               <li key={e} className="flex items-center gap-3 rounded-2xl bg-muted p-3">
-                <span className="min-w-0 flex-1 truncate text-sm font-medium">{e}</span>
-                {me && <Badge variant="success">Sei tu</Badge>}
-                <Button
-                  variant="ghost"
-                  size="icon-lg"
-                  aria-label={`Rimuovi ${e}`}
-                  disabled={me}
-                  title={me ? "Non puoi togliere l'account con cui sei entrato" : undefined}
-                  onClick={() => {
-                    updateVenue({ ownerEmails: venue.ownerEmails.filter((x) => x !== e) })
-                    toast("Accesso rimosso", { description: e })
-                  }}
-                >
-                  <RiDeleteBin6Line />
-                </Button>
+                <span className="flex min-w-0 flex-1 flex-col gap-0.5">
+                  <span className="text-sm font-medium break-all">{e}</span>
+                  {me && <span className="text-xs text-muted-foreground">È l'account con cui sei entrato: per toglierlo entra con un altro account abilitato.</span>}
+                </span>
+                {me ? (
+                  <Badge variant="success">Sei tu</Badge>
+                ) : (
+                  <Button
+                    variant="ghost"
+                    size="icon-lg"
+                    aria-label={`Rimuovi ${e}`}
+                    onClick={() => {
+                      updateVenue({ ownerEmails: venue.ownerEmails.filter((x) => x !== e) })
+                      toast("Accesso rimosso", { description: e })
+                    }}
+                  >
+                    <RiDeleteBin6Line />
+                  </Button>
+                )}
               </li>
             )
           })}

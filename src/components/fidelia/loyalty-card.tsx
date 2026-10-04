@@ -107,9 +107,17 @@ export function TicketCard({
   cut?: number
 }) {
   const ref = React.useRef<HTMLDivElement>(null)
+  const reduced = React.useRef(false)
+  React.useEffect(() => {
+    const mq = matchMedia("(prefers-reduced-motion: reduce)")
+    reduced.current = mq.matches
+    const on = (e: MediaQueryListEvent) => (reduced.current = e.matches)
+    mq.addEventListener("change", on)
+    return () => mq.removeEventListener("change", on)
+  }, [])
   const move = (e: React.PointerEvent) => {
     const el = ref.current
-    if (!el || matchMedia("(prefers-reduced-motion: reduce)").matches) return
+    if (!el || reduced.current) return
     const r = el.getBoundingClientRect()
     const x = (e.clientX - r.left) / r.width
     const y = (e.clientY - r.top) / r.height
@@ -134,7 +142,9 @@ export function TicketCard({
         onPointerMove={move}
         onPointerLeave={leave}
         onPointerUp={leave}
-        className="ticket-notch relative isolate overflow-hidden rounded-[24px] bg-brand text-brand-foreground shadow-[0_22px_44px_-20px_color-mix(in_oklch,var(--brand)_75%,black),0_2px_6px_-2px_rgb(0_0_0/0.18)] transition-transform duration-300 ease-(--ease-out-expo) [transform:rotateX(var(--rx,0deg))_rotateY(var(--ry,0deg))] [transform-style:preserve-3d]"
+        onPointerCancel={leave}
+        onLostPointerCapture={leave}
+        className="ticket-notch relative isolate overflow-hidden rounded-[24px] bg-brand text-brand-foreground shadow-ticket transition-transform duration-300 ease-(--ease-out-expo) [transform:rotateX(var(--rx,0deg))_rotateY(var(--ry,0deg))] [transform-style:preserve-3d]"
         style={{ ["--ticket-cut" as string]: `${cut}px` }}
       >
         {/* trama di sicurezza */}
@@ -143,7 +153,7 @@ export function TicketCard({
         {/* riflesso che segue il dito */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 -z-10 opacity-[calc(var(--sheen,0)*0.55)] transition-opacity duration-300 [background:radial-gradient(circle_at_var(--mx,30%)_var(--my,0%),rgb(255_255_255/0.22),transparent_45%)]"
+          className="pointer-events-none absolute inset-0 -z-10 opacity-[calc(var(--sheen,0)*0.55)] transition-opacity duration-300 [background:radial-gradient(circle_at_var(--mx,30%)_var(--my,0%),color-mix(in_oklch,var(--brand-foreground)_24%,transparent),transparent_45%)]"
         />
 
         <div className="flex flex-col justify-between gap-4 px-5 pt-5 pb-4" style={{ height: cut }}>

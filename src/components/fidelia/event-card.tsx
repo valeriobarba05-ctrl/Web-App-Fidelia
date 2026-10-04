@@ -27,7 +27,7 @@ export function EventCard({
       type="button"
       onClick={onOpen}
       className={cn(
-        "group/event relative isolate flex w-full flex-col justify-end overflow-hidden rounded-[24px] text-left text-white shadow-[0_14px_34px_-16px_rgb(12_10_9/0.6)] outline-none transition-transform duration-300 ease-(--ease-out-expo) hover:-translate-y-0.5 focus-visible:ring-3 focus-visible:ring-ring/50 active:scale-[0.99]",
+        "group/event relative isolate flex w-full flex-col justify-end overflow-hidden rounded-[24px] text-left text-white shadow-float outline-none transition-transform duration-300 ease-(--ease-out-expo) hover:-translate-y-0.5 focus-visible:ring-3 focus-visible:ring-ring/50 active:scale-[0.99]",
         tall ? "min-h-[320px]" : "min-h-[240px]",
         className,
       )}
@@ -50,7 +50,7 @@ export function EventCard({
         </div>
       </div>
       <div className="flex flex-col gap-2 p-5 pt-20">
-        <h3 className="font-heading text-[24px] leading-tight font-semibold tracking-[-0.01em] [text-shadow:0_1px_12px_rgb(0_0_0/0.35)]">{event.title}</h3>
+        <h3 className="font-heading text-[24px] leading-tight font-semibold tracking-[-0.01em] text-on-photo">{event.title}</h3>
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[13px] font-medium text-white/90">
           <span className="flex items-center gap-1.5">
             <RiTimeLine className="size-4" /> {d.weekday} · {event.time}

@@ -94,7 +94,7 @@ export function AccessoScreen() {
 
       {/* Form */}
       <section className="-mt-14 flex flex-col gap-4 px-4 pb-10 sm:px-10 lg:mt-0 lg:justify-center lg:py-14">
-        <Card className="shadow-[0_20px_50px_-20px_rgb(12_10_9/0.35)] lg:shadow-sm">
+        <Card className="shadow-overlay lg:shadow-sm">
           <CardContent className="flex flex-col gap-5">
             <Tabs value={mode} onValueChange={(v) => { setMode(v as typeof mode); setSubmitted(false) }}>
               <TabsList className="h-10 w-full">

@@ -61,7 +61,7 @@ export function WalletPassPreview({
   return (
     <figure
       aria-label={`Anteprima della tessera nel wallet: ${venue.name}, ${fmtPoints(member.points)} punti`}
-      className={cn("mx-auto flex w-full max-w-[320px] flex-col overflow-hidden rounded-[14px] bg-brand text-brand-foreground shadow-[0_18px_40px_-18px_rgb(0_0_0/0.45)]", className)}
+      className={cn("mx-auto flex w-full max-w-[320px] flex-col overflow-hidden rounded-[14px] bg-brand text-brand-foreground shadow-overlay", className)}
     >
       {/* intestazione: logo + nome (logoText) · campo header: punti */}
       <div className="flex items-center gap-2.5 px-3.5 pt-3 pb-2.5">
@@ -77,7 +77,7 @@ export function WalletPassPreview({
         {image ? (
           <>
             <img src={image} alt="" className="absolute inset-0 -z-10 size-full object-cover" />
-            <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_top,rgb(0_0_0/0.55),transparent_70%)]" />
+            <div className="absolute inset-0 -z-10 scrim-strip" />
           </>
         ) : (
           <div aria-hidden className="absolute inset-0 -z-10 bg-[repeating-linear-gradient(115deg,color-mix(in_oklch,var(--highlight)_22%,transparent)_0_2px,transparent_2px_14px)]" />

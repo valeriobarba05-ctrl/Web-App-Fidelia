@@ -61,7 +61,7 @@ export function LocaleScreen() {
       </div>
       <PageBody className="relative z-10 -mt-12 lg:grid lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:items-start lg:gap-8">
         <div className="flex flex-col gap-4">
-          <Card className="shadow-[0_14px_34px_-16px_rgb(12_10_9/0.25)]">
+          <Card className="shadow-float">
             <CardContent className="flex flex-col gap-4">
               <div className="flex items-center gap-3.5">
                 <VenueMark className="size-14 text-lg" />

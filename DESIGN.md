@@ -36,6 +36,13 @@ alzando o abbassando la luminosità finché ogni coppia supera **WCAG AA 4,5:1**
 - `npm run check:contrast` verifica tutte le coppie testo/sfondo per ogni preset (più colori "difficili") in entrambi i temi; deve passare prima di ogni rilascio.
 - Niente testo con opacità sotto l'85% su superfici colorate; i secondari usano token dedicati (`--muted-foreground`, `--inverted-muted`, `--sidebar-muted`).
 
+## Elevazione e veli
+- Ombre solo da token: `shadow-float` (card sopra contenuti/foto), `shadow-overlay` (barra in basso, pannelli, anteprima wallet), `shadow-ticket` (tessera, tinta del brand), `shadow-points` (pulsante Tessera, tinta oro).
+- Testo sopra foto caricate: `scrim-photo` (eventi), `scrim-strip` (wallet), `text-on-photo`.
+
+## Movimento ridotto
+Con "riduci movimento" spariscono spostamenti, ingrandimenti e rotazioni (rullo dei punti, inclinazione della tessera); restano dissolvenze e cambi di colore da 160 ms. Il saldo che cambia compare con una dissolvenza (`data-motion="fade"`).
+
 ## Firma
 1. **Tessera‑biglietto** (`LoyaltyCard`): due tacche laterali (utility `ticket-notch`) e una perforazione: sopra chi sei e il saldo, sotto cosa fare adesso.
 2. **Contatore a rullo** (`PointsOdometer`): il saldo scorre come un contatore meccanico quando cambia (900 ms, ease-out-expo). Unico movimento "firmato".

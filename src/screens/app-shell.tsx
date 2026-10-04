@@ -134,7 +134,7 @@ function BottomNav({ route }: { route: Route }) {
   return (
     <nav
       aria-label="Principale"
-      className="fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-40 mx-auto flex max-w-md items-center justify-between rounded-[24px] bg-inverted p-1.5 text-inverted-foreground shadow-[0_16px_40px_-12px_rgb(0_0_0/0.45)] ring-1 ring-white/10 lg:hidden"
+      className="fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-40 mx-auto flex max-w-md items-center justify-between rounded-[24px] bg-inverted p-1.5 text-inverted-foreground shadow-overlay ring-1 ring-white/10 lg:hidden"
     >
       {nav.map((item) => {
         const active = isActive(item, route)
@@ -146,7 +146,7 @@ function BottomNav({ route }: { route: Route }) {
               href="#/tessera"
               aria-current={active ? "page" : undefined}
               aria-label="Tessera"
-              className="-my-4 flex size-14 shrink-0 items-center justify-center rounded-[20px] bg-highlight text-highlight-foreground shadow-[0_10px_24px_-8px_color-mix(in_oklch,var(--highlight)_80%,black)] outline-none transition-transform active:scale-95 focus-visible:ring-3 focus-visible:ring-highlight/50"
+              className="-my-4 flex size-14 shrink-0 items-center justify-center rounded-[20px] bg-highlight text-highlight-foreground shadow-points outline-none transition-transform active:scale-95 focus-visible:ring-3 focus-visible:ring-highlight/50"
             >
               <RiQrCodeLine className="size-6" />
             </a>

@@ -1,11 +1,35 @@
+import * as React from "react"
+
 import { cn } from "@/lib/utils"
 
 /**
  * Signature move: il saldo punti scorre come un contatore meccanico
  * quando cambia (visita registrata, premio riscattato).
  */
+function useReducedMotion() {
+  const [reduced, setReduced] = React.useState(() => typeof matchMedia !== "undefined" && matchMedia("(prefers-reduced-motion: reduce)").matches)
+  React.useEffect(() => {
+    const mq = matchMedia("(prefers-reduced-motion: reduce)")
+    const on = (e: MediaQueryListEvent) => setReduced(e.matches)
+    mq.addEventListener("change", on)
+    return () => mq.removeEventListener("change", on)
+  }, [])
+  return reduced
+}
+
 export function PointsOdometer({ value, className, label = "punti" }: { value: number; className?: string; label?: string }) {
+  const reduced = useReducedMotion()
   const chars = value.toLocaleString("it-IT").split("")
+  // Riduci movimento: niente rullo, il nuovo saldo compare con una dissolvenza.
+  if (reduced)
+    return (
+      <span className={cn("inline-flex items-baseline font-heading font-semibold tabular leading-none tracking-[-0.03em]", className)}>
+        <span key={value} data-motion="fade" aria-live="polite">
+          {value.toLocaleString("it-IT")}
+          <span className="sr-only"> {label}</span>
+        </span>
+      </span>
+    )
   return (
     <span className={cn("inline-flex items-baseline font-heading font-semibold tabular leading-none tracking-[-0.03em]", className)}>
       <span className="sr-only">

@@ -69,7 +69,7 @@ export function AddToWalletRow() {
         </span>
         <span className="flex min-w-0 flex-1 flex-col">
           <span className="text-sm font-medium">{inWallet ? "La tessera è nel tuo wallet" : "Aggiungi la tessera al wallet"}</span>
-          <span className="truncate text-xs text-muted-foreground">{inWallet ? "Si aggiorna da sola a ogni visita" : "Sempre a portata di mano, anche senza aprire l'app"}</span>
+          <span className="text-xs text-muted-foreground">{inWallet ? "Si aggiorna da sola a ogni visita" : "Sempre con te, anche senza aprire l'app"}</span>
         </span>
         {inWallet ? <RiCheckboxCircleFill className="size-5 text-success" aria-label="Aggiunta" /> : <RiArrowRightSLine className="size-5 text-muted-foreground" />}
       </button>
