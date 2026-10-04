@@ -8,6 +8,7 @@ import { RiArrowRightSLine, RiCheckboxCircleFill, RiWallet3Line } from "@remixic
 
 import { TicketCard, VenueMark } from "@/components/fidelia/loyalty-card"
 import { suggestedWallets, WalletButton, WalletPassPreview, type WalletPlatform } from "@/components/fidelia/wallet"
+import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from "@/components/ui/item"
 import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
 import { haptic } from "@/lib/utils"
 import { nextPrize, toast, useStore } from "@/mock/store"
@@ -60,19 +61,18 @@ export function AddToWalletRow() {
   const next = nextPrize(visible.prizes, user.points)
   return (
     <>
-      <button
-        onClick={() => setOpen(true)}
-        className="flex items-center gap-3 rounded-2xl bg-card p-3.5 text-left shadow-sm ring-1 ring-foreground/5 outline-none transition-colors hover:bg-muted focus-visible:ring-3 focus-visible:ring-ring/30"
-      >
-        <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-inverted text-inverted-foreground">
-          <RiWallet3Line className="size-5" />
-        </span>
-        <span className="flex min-w-0 flex-1 flex-col">
-          <span className="text-sm font-medium">{inWallet ? "La tessera è nel tuo wallet" : "Aggiungi la tessera al wallet"}</span>
-          <span className="text-xs text-muted-foreground">{inWallet ? "Si aggiorna da sola a ogni visita" : "Sempre con te, anche senza aprire l'app"}</span>
-        </span>
-        {inWallet ? <RiCheckboxCircleFill className="size-5 text-success" aria-label="Aggiunta" /> : <RiArrowRightSLine className="size-5 text-muted-foreground" />}
-      </button>
+      <Item variant="outline" asChild>
+        <button onClick={() => setOpen(true)}>
+          <ItemMedia variant="icon" className="bg-inverted text-inverted-foreground">
+            <RiWallet3Line />
+          </ItemMedia>
+          <ItemContent>
+            <ItemTitle>{inWallet ? "La tessera è nel tuo wallet" : "Aggiungi la tessera al wallet"}</ItemTitle>
+            <ItemDescription className="text-xs">{inWallet ? "Si aggiorna da sola a ogni visita" : "Sempre con te, anche senza aprire l'app"}</ItemDescription>
+          </ItemContent>
+          {inWallet ? <RiCheckboxCircleFill className="size-5 text-success" aria-label="Aggiunta" /> : <RiArrowRightSLine className="size-5 text-muted-foreground" />}
+        </button>
+      </Item>
       <Drawer open={open} onOpenChange={setOpen}>
         <DrawerContent>
           <DrawerHeader>

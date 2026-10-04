@@ -9,10 +9,12 @@ import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { pointsRule } from "@/lib/format"
 import { navigate } from "@/mock/router"
-import { DEMO_ACCOUNTS, roleFor, useSession } from "@/mock/session"
+import { DEMO_ACCOUNTS, KNOWN_EMAILS, roleFor, useSession } from "@/mock/session"
 import { toast, useStore } from "@/mock/store"
 import type { Account } from "@/types"
 import { Badge } from "@/components/ui/badge"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Item, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item"
 import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
 
 function GoogleMark() {
@@ -27,7 +29,7 @@ function GoogleMark() {
 }
 
 export function AccessoScreen() {
-  const { venue } = useStore()
+  const { venue, user, openCard } = useStore()
   const { signIn } = useSession()
   const [chooser, setChooser] = React.useState(false)
   const [mode, setMode] = React.useState<"accedi" | "registrati">("registrati")
@@ -44,14 +46,25 @@ export function AccessoScreen() {
 
   /** Unico ingresso: dopo l'accesso l'app prende la strada del titolare o del cliente. */
   const enter = (account: Account, welcome: boolean) => {
+    const owner = roleFor(account, venue.ownerEmails) === "titolare"
+    const known = KNOWN_EMAILS.includes(account.email.toLowerCase()) || user.email.toLowerCase() === account.email.toLowerCase()
+    // "Accedi" con un'email senza tessera: lo diciamo e proponiamo di crearla, invece di entrare a vuoto.
+    if (!owner && !known && !welcome && account.provider === "email") {
+      setMode("registrati")
+      setSubmitted(false)
+      if (!name) setName(account.email.split("@")[0])
+      toast("Nessuna tessera con questa email", { description: "Creala adesso: bastano nome, email e password." })
+      return
+    }
+    if (!owner) openCard(account, known ? 0 : venue.welcomePoints)
     signIn(account)
-    if (roleFor(account, venue.ownerEmails) === "titolare") {
+    if (owner) {
       navigate("titolare")
       toast.success(`Ciao ${account.name.split(" ")[0]}, sei nella gestione`, { description: venue.name })
       return
     }
     navigate("home")
-    toast.success(welcome && venue.welcomePoints > 0 ? `Benvenuto! +${venue.welcomePoints} punti di benvenuto` : "Bentornato!", { description: venue.name })
+    toast.success(!known && venue.welcomePoints > 0 ? `Tessera creata! +${venue.welcomePoints} punti di benvenuto` : `Bentornato, ${account.name.split(" ")[0]}!`, { description: venue.name })
   }
 
   return (
@@ -93,7 +106,7 @@ export function AccessoScreen() {
       </section>
 
       {/* Form */}
-      <section className="-mt-14 flex flex-col gap-4 px-4 pb-10 sm:px-10 lg:mt-0 lg:justify-center lg:py-14">
+      <section className="relative z-10 -mt-14 flex flex-col gap-4 px-4 pb-10 sm:px-10 lg:mt-0 lg:justify-center lg:py-14">
         <Card className="shadow-overlay lg:shadow-sm">
           <CardContent className="flex flex-col gap-5">
             <Tabs value={mode} onValueChange={(v) => { setMode(v as typeof mode); setSubmitted(false) }}>
@@ -239,22 +252,25 @@ function GoogleAccountSheet({ open, onOpenChange, onPick }: { open: boolean; onO
             const owner = roleFor(a, venue.ownerEmails) === "titolare"
             return (
               <li key={a.email}>
-                <button
-                  onClick={() => {
-                    onOpenChange(false)
-                    onPick(a)
-                  }}
-                  className="flex w-full items-center gap-3 rounded-2xl p-3 text-left outline-none transition-colors hover:bg-muted focus-visible:ring-3 focus-visible:ring-ring/30"
-                >
-                  <span className={owner ? "flex size-11 shrink-0 items-center justify-center rounded-full bg-inverted font-semibold text-inverted-foreground" : "flex size-11 shrink-0 items-center justify-center rounded-full bg-primary font-semibold text-primary-foreground"}>
-                    {a.name.split(" ").map((p) => p[0]).join("")}
-                  </span>
-                  <span className="flex min-w-0 flex-1 flex-col">
-                    <span className="text-sm font-medium">{a.name}</span>
-                    <span className="truncate text-xs text-muted-foreground">{a.email}</span>
-                  </span>
-                  <Badge variant={owner ? "highlight" : "secondary"}>{owner ? "Titolare" : "Cliente"}</Badge>
-                </button>
+                <Item size="sm" asChild>
+                  <button
+                    onClick={() => {
+                      onOpenChange(false)
+                      onPick(a)
+                    }}
+                  >
+                    <Avatar size="lg">
+                      <AvatarFallback className={owner ? "bg-inverted text-inverted-foreground" : "bg-primary text-primary-foreground"}>
+                        {a.name.split(" ").map((p) => p[0]).join("")}
+                      </AvatarFallback>
+                    </Avatar>
+                    <ItemContent className="gap-0">
+                      <ItemTitle>{a.name}</ItemTitle>
+                      <ItemDescription className="truncate text-xs">{a.email}</ItemDescription>
+                    </ItemContent>
+                    <Badge variant={owner ? "highlight" : "secondary"}>{owner ? "Titolare" : "Cliente"}</Badge>
+                  </button>
+                </Item>
               </li>
             )
           })}

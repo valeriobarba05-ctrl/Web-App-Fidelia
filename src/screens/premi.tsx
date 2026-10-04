@@ -19,10 +19,10 @@ import { cn, fmtPoints } from "@/lib/utils"
 
 type Filter = "tutti" | "disponibili" | "bloccati"
 
-export function PremiScreen({ initial }: { initial?: string | null }) {
+export function PremiScreen({ initial, initialFilter }: { initial?: string | null; initialFilter?: string | null }) {
   const { user, redemption, startRedeem, visible, venue, prizes: allPrizes } = useStore()
   const PRIZES = visible.prizes
-  const [filter, setFilter] = React.useState<Filter>("tutti")
+  const [filter, setFilter] = React.useState<Filter>(initialFilter === "disponibili" || initialFilter === "bloccati" ? initialFilter : "tutti")
   const [openId, setOpenId] = React.useState<string | null>(initial ?? null)
   const open = PRIZES.find((p) => p.id === openId) ?? null
   const available = PRIZES.filter((p) => p.cost <= user.points).length

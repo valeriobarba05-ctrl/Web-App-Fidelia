@@ -53,6 +53,8 @@ Il titolare può vedere l'app come un cliente ("Apri l'app clienti"): compare un
 In produzione: Google Identity Services sul client → il server verifica il token → restituisce account e ruolo. **Il ruolo lo decide sempre il server**, e ogni scrittura della configurazione va autorizzata lato server.
 Il foglio "Scegli un account" (`GoogleAccountSheet`) è solo per la demo e va eliminato.
 
+**Registrazione:** un account nuovo riceve una tessera nuova (nome inserito, codice nuovo, punti di benvenuto, movimento "Regalo di benvenuto"): `openCard()` in `src/mock/store.tsx` mostra cosa deve restituire il server. "Accedi" con un'email senza tessera non entra: porta su "Crea la tessera" con un messaggio.
+
 Possono essere due build/deploy distinti: condividono solo `components/`, `lib/`, `styles/`, `types.ts`.
 
 ---

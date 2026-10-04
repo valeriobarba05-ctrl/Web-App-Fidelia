@@ -234,6 +234,7 @@
  * Telefono: ogni controllo ha un'area tattile di almeno 44×44 px, anche se disegnato più piccolo
  * (interruttori, schede, filtri, pulsanti sm/lg). L'area si allarga con uno pseudo-elemento invisibile.
  */
+@layer base {
 @media (pointer: coarse) {
   :where([data-slot="button"], [data-slot="switch"], [data-slot="tabs-trigger"], [data-slot="toggle-group-item"], [role="radio"], .touch-target) {
     position: relative;
@@ -246,6 +247,7 @@
     left: min(0px, calc((100% - 44px) / 2));
     right: min(0px, calc((100% - 44px) / 2));
   }
+}
 }
 
 @utility tabular { font-variant-numeric: tabular-nums; }

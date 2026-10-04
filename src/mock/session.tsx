@@ -20,6 +20,9 @@ export const DEMO_ACCOUNTS: Account[] = [
 
 const KEY = "fidelia:sessione:v1"
 
+/** Account che nella demo hanno già una tessera (gli altri, all'accesso, ne ricevono una nuova). */
+export const KNOWN_EMAILS = ["giulia@email.it"]
+
 /** Il titolare entra SOLO con il suo account Google; l'accesso via email porta sempre all'app cliente. */
 export function roleFor(account: Account, ownerEmails: string[]): Role {
   const owner = account.provider === "google" && ownerEmails.some((e) => e.trim().toLowerCase() === account.email.trim().toLowerCase())

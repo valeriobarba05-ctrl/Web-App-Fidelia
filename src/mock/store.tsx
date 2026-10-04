@@ -49,6 +49,34 @@ function useStoreValue() {
 
   const actions = React.useMemo(
     () => ({
+      /**
+       * Apre la tessera dell'account appena entrato. Se è un account nuovo (o diverso da quello salvato)
+       * nasce una tessera vuota con il suo nome e i punti di benvenuto. In produzione lo fa il server.
+       */
+      openCard: (account: { name: string; email: string }, welcomePoints: number) =>
+        setState((s) => {
+          if (s.user.email.toLowerCase() === account.email.toLowerCase()) return s
+          // la cliente demo ritrova la sua tessera di esempio
+          if (account.email.toLowerCase() === INITIAL.user.email.toLowerCase()) return INITIAL
+          const [firstName, ...rest] = account.name.trim().split(/\s+/)
+          const now = new Date()
+          return {
+            ...INITIAL,
+            user: {
+              firstName: firstName || "Cliente",
+              lastName: rest.join(" "),
+              email: account.email,
+              cardCode: "FDL-" + String(1000 + Math.floor(Math.random() * 9000)),
+              memberSince: now.toLocaleDateString("it-IT", { day: "numeric", month: "long", year: "numeric" }),
+              birthday: "",
+              points: welcomePoints,
+              totalEarned: welcomePoints,
+              totalRedeemed: 0,
+              visits: 0,
+            },
+            movements: welcomePoints > 0 ? [{ id: uid(), label: "Regalo di benvenuto", date: now.toISOString().slice(0, 16), points: welcomePoints, kind: "gift" }] : [],
+          }
+        }),
       setBirthday: (birthday: string) => patch((s) => ({ user: { ...s.user, birthday } })),
       setConsent: (k: keyof Consents, v: boolean) => patch((s) => ({ consents: { ...s.consents, [k]: v } })),
       setNotify: (k: "promo" | "events", v: boolean) => patch((s) => ({ notify: { ...s.notify, [k]: v } })),

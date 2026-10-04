@@ -1,27 +1,24 @@
 import {
   RiArrowRightLine,
   RiArrowRightSLine,
-  RiCalendarEventLine,
   RiGift2Line,
   RiHistoryLine,
   RiNotification3Line,
   RiQrCodeLine,
   RiSparkling2Fill,
-  RiStarSmileLine,
 } from "@remixicon/react"
 
 import { PageBody, SectionTitle, UserMenu } from "@/screens/app-shell"
 import { EventCard } from "@/components/fidelia/event-card"
 import { AddToWalletRow, LoyaltyCard } from "@/screens/parts"
 import { MovementRow } from "@/components/fidelia/movement-row"
-import { PrizeArt } from "@/components/fidelia/prize-art"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { Alert, AlertAction, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { Item, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemTitle } from "@/components/ui/item"
 import { Card, CardContent } from "@/components/ui/card"
-import { ItemGroup } from "@/components/ui/item"
 import { navigate } from "@/mock/router"
 import { useStore } from "@/mock/store"
-import { fmtPoints } from "@/lib/utils"
 
 function greeting() {
   const h = new Date().getHours()
@@ -68,41 +65,37 @@ export function HomeScreen() {
             </div>
           </LoyaltyCard>
 
-          <AddToWalletRow />
-
           {redemption && (
-            <button
-              onClick={() => navigate("riscatto")}
-              className="flex items-center gap-3 rounded-2xl bg-warning-soft p-4 text-left text-warning outline-none transition-colors focus-visible:ring-3 focus-visible:ring-ring/30"
-            >
-              <span className="relative flex size-2.5">
-                <span className="absolute inline-flex size-full animate-ping rounded-full bg-highlight opacity-75" />
-                <span className="relative inline-flex size-2.5 rounded-full bg-highlight" />
-              </span>
-              <span className="flex-1 text-sm font-medium">Hai un riscatto in corso: mostra il QR in cassa</span>
-              <RiArrowRightSLine className="size-5" />
-            </button>
+            <Alert variant="warning">
+              <RiQrCodeLine />
+              <AlertTitle>Riscatto in corso</AlertTitle>
+              <AlertDescription>Mostra il QR monouso in cassa.</AlertDescription>
+              <AlertAction>
+                <Button size="sm" variant="outline" className="border-current/30 bg-transparent text-current hover:bg-white/40 hover:text-current" onClick={() => navigate("riscatto")}>
+                  Apri
+                </Button>
+              </AlertAction>
+            </Alert>
           )}
 
-          <nav aria-label="Azioni rapide" className="grid auto-cols-fr grid-flow-col gap-2">
-            {[
-              { label: "Premi", icon: RiGift2Line, to: () => navigate("premi"), on: true },
-              { label: "Eventi", icon: RiCalendarEventLine, to: () => navigate("novita", { tab: "eventi" }), on: venue.features.events },
-              { label: "Movimenti", icon: RiHistoryLine, to: () => navigate("movimenti"), on: true },
-              { label: "Recensisci", icon: RiStarSmileLine, to: () => window.open(venue.links.review, "_blank", "noopener"), on: venue.features.reviews && !!venue.links.review },
-            ].filter((a) => a.on).map(({ label, icon: Icon, to }) => (
-              <button
-                key={label}
-                onClick={to}
-                className="flex flex-col items-center gap-2 rounded-2xl bg-card py-3.5 text-xs font-medium shadow-sm ring-1 ring-foreground/5 outline-none transition-[background-color,transform] hover:bg-muted focus-visible:ring-3 focus-visible:ring-ring/30 active:scale-[0.97] dark:ring-foreground/10"
-              >
-                <span className="flex size-10 items-center justify-center rounded-xl bg-primary-soft text-primary-soft-foreground">
-                  <Icon className="size-5" />
-                </span>
-                {label}
+          <AddToWalletRow />
+
+          {unlocked.length > 0 && (
+            <Item variant="outline" asChild>
+              <button onClick={() => navigate("premi", { filtro: "disponibili" })}>
+                <ItemMedia variant="icon" className="bg-success-soft text-success">
+                  <RiGift2Line />
+                </ItemMedia>
+                <ItemContent>
+                  <ItemTitle>
+                    {unlocked.length === 1 ? "1 premio pronto da riscattare" : `${unlocked.length} premi pronti da riscattare`}
+                  </ItemTitle>
+                  <ItemDescription className="text-xs">{unlocked.map((p) => p.name).join(" · ")}</ItemDescription>
+                </ItemContent>
+                <RiArrowRightSLine className="size-5 text-muted-foreground" />
               </button>
-            ))}
-          </nav>
+            </Item>
+          )}
 
           <section aria-labelledby="ultimi" className="flex flex-col gap-2.5">
             <SectionTitle
@@ -170,38 +163,6 @@ export function HomeScreen() {
           </section>
           )}
 
-          <section aria-labelledby="premi-home" className="flex flex-col gap-2.5">
-            <SectionTitle
-              id="premi-home"
-              action={
-                unlocked.length > 0 && (
-                  <Badge variant="success" size="lg">
-                    {unlocked.length} sbloccati
-                  </Badge>
-                )
-              }
-            >
-              I tuoi premi
-            </SectionTitle>
-            <div className="-mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-1 no-scrollbar sm:mx-0 sm:px-0">
-              {PRIZES.map((p) => {
-                const ok = p.cost <= user.points
-                return (
-                  <button
-                    key={p.id}
-                    onClick={() => navigate("premi", { premio: p.id })}
-                    className="flex w-[156px] shrink-0 snap-start flex-col gap-3 rounded-[20px] bg-card p-3.5 text-left shadow-sm ring-1 ring-foreground/5 outline-none transition-[background-color,transform] hover:bg-muted focus-visible:ring-3 focus-visible:ring-ring/30 active:scale-[0.98] dark:ring-foreground/10"
-                  >
-                    <PrizeArt id={p.id} image={p.image} category={p.category} locked={!ok} className="size-12" />
-                    <span className="line-clamp-1 text-sm font-medium">{p.name}</span>
-                    <span className={ok ? "text-xs font-semibold text-success" : "text-xs text-muted-foreground"}>
-                      {ok ? "Disponibile" : `${fmtPoints(p.cost)} punti`}
-                    </span>
-                  </button>
-                )
-              })}
-            </div>
-          </section>
         </div>
       </PageBody>
     </>

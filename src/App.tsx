@@ -45,7 +45,9 @@ export function App() {
   return (
     <VenueProvider>
       <SessionProvider>
-        <Router />
+        <StoreProvider>
+          <Router />
+        </StoreProvider>
         <Toaster />
       </SessionProvider>
     </VenueProvider>
@@ -66,18 +68,14 @@ function Router() {
   if (route === "design-system")
     return (
       <React.Suspense fallback={null}>
-        <StoreProvider>
-          <DesignSystemPage />
-        </StoreProvider>
+        <DesignSystemPage />
       </React.Suspense>
     );
 
   // Nessun account: la stessa schermata di accesso per cliente e titolare.
   if (!account)
     return (
-      <StoreProvider>
-        <AccessoScreen />
-      </StoreProvider>
+      <AccessoScreen />
     );
 
   // Ramo titolare: la gestione. Un cliente che apre #/titolare torna alla sua app.
@@ -88,9 +86,7 @@ function Router() {
       </React.Suspense>
     );
   return (
-    <StoreProvider>
-      <CustomerApp route={route === "titolare" ? "home" : route} params={params} preview={role === "titolare"} />
-    </StoreProvider>
+    <CustomerApp route={route === "titolare" ? "home" : route} params={params} preview={role === "titolare"} />
   );
 }
 
@@ -105,6 +101,7 @@ function CustomerApp({ route, params, preview }: ReturnType<typeof useRoute> & {
           <PremiScreen
             key={params.get("premio") ?? ""}
             initial={params.get("premio")}
+            initialFilter={params.get("filtro")}
           />
         )}
         {route === "riscatto" && <RiscattoScreen />}

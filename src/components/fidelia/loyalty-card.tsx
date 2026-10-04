@@ -148,8 +148,7 @@ export function TicketCard({
         style={{ ["--ticket-cut" as string]: `${cut}px` }}
       >
         {/* trama di sicurezza */}
-        <Guilloche className="-top-24 -right-28 -z-10 size-[340px] text-brand-foreground opacity-[0.13]" />
-        <Guilloche className="-bottom-40 -left-36 -z-10 size-[300px] rotate-45 text-highlight opacity-[0.12]" />
+        <Guilloche className="-top-24 -right-28 -z-10 size-[340px] text-brand-foreground opacity-[0.11]" />
         {/* riflesso che segue il dito */}
         <div
           aria-hidden
@@ -168,7 +167,7 @@ export function TicketCard({
           <div className="flex items-end justify-between gap-3">
             <div className="flex flex-col gap-1">
               <span className="text-xs font-medium tracking-[0.08em] uppercase opacity-90">Saldo punti</span>
-              <PointsOdometer value={user.points} className="text-[56px] text-highlight [text-shadow:0_2px_18px_color-mix(in_oklch,var(--highlight)_35%,transparent)]" />
+              <PointsOdometer value={user.points} className="text-[56px] text-highlight" />
             </div>
             {next && !stamps && (
               <div className="mb-1 flex max-w-[48%] flex-col items-end gap-1 text-right">
