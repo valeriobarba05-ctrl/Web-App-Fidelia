@@ -26,9 +26,9 @@ const withHex = (vars: Record<string, string>) =>
 const strip = (vars: Record<string, string>) => Object.fromEntries(Object.entries(vars).map(([k, v]) => [k.replace(/^--/, ""), v]))
 
 const tokens = {
-  $description: "Fidelia Design System · shadcn preset b1LObiUpkf (rhea · taupe · emerald · Montserrat/Figtree · Remix Icon · radius 0.625rem)",
+  $description: "Fidelia Design System · shadcn preset b1LObiUpjd (rhea · taupe · emerald · Montserrat/Figtree · Remix Icon · radius small 0.45rem)",
   font: { sans: "Montserrat", heading: "Figtree", icons: "Remix Icon (Line; Fill per voce attiva)" },
-  radius: { base: "0.625rem", control: "1.125rem (rounded-2xl)", card: "24px" },
+  radius: { base: "0.45rem (small)", control: "0.81rem (rounded-2xl)", card: "1.17rem (rounded-4xl)" },
   motion: { easeOutExpo: "cubic-bezier(0.16, 1, 0.3, 1)", fast: "150-200ms", medium: "500-700ms", odometer: "900ms" },
   color: { light: withHex(block(":root")), dark: withHex(block(".dark")) },
   venueThemes: Object.fromEntries(

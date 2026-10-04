@@ -1,7 +1,7 @@
 /*
  * Fidelia Design System — token layer
- * Base: shadcn/ui preset b1LObiUpkf
- *   style rhea · base taupe · theme emerald · radius medium (0.625rem)
+ * Base: shadcn/ui preset b1LObiUpjd
+ *   style rhea · base taupe · theme emerald · radius small (0.45rem)
  *   font Montserrat · heading Figtree · icons Remix · menu inverted + bold accent · charts lime
  * Fidelia layer: --highlight (punti/oro), --success, --warning, --ticket-*, venue theming.
  */
@@ -100,7 +100,7 @@
 }
 
 :root {
-  --radius: 0.625rem;
+  --radius: 0.45rem; /* preset b1LObiUpjd: radius "small" */
 
   /* taupe base (light) — muted-foreground scurito per AA anche su --muted */
   --background: oklch(1 0 0);

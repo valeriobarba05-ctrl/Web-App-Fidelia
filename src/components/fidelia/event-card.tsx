@@ -27,7 +27,7 @@ export function EventCard({
       type="button"
       onClick={onOpen}
       className={cn(
-        "group/event relative isolate flex w-full flex-col justify-end overflow-hidden rounded-[24px] text-left text-white shadow-float outline-none transition-transform duration-300 ease-(--ease-out-expo) hover:-translate-y-0.5 focus-visible:ring-3 focus-visible:ring-ring/50 active:scale-[0.99]",
+        "group/event relative isolate flex w-full flex-col justify-end overflow-hidden rounded-4xl text-left text-white shadow-float outline-none transition-transform duration-300 ease-(--ease-out-expo) hover:-translate-y-0.5 focus-visible:ring-3 focus-visible:ring-ring/50 active:scale-[0.99]",
         tall ? "min-h-[320px]" : "min-h-[240px]",
         className,
       )}

@@ -11,7 +11,7 @@ npm run check:contrast   # leggibilità WCAG AA di tutti i colori, chiaro e scur
 npm run tokens           # rigenera design-tokens.json
 ```
 
-Stack: React 19 · TypeScript · Vite · Tailwind CSS v4 · shadcn/ui (preset `b1LObiUpkf`: stile rhea, base taupe, tema emerald, Montserrat + Figtree, Remix Icon) · Radix UI · vaul · sonner.
+Stack: React 19 · TypeScript · Vite · Tailwind CSS v4 · shadcn/ui (preset `b1LObiUpjd`: stile rhea, base taupe, tema emerald, Montserrat + Figtree, Remix Icon) · Radix UI · vaul · sonner.
 
 ---
 

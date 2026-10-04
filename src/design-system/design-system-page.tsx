@@ -112,7 +112,7 @@ export function DesignSystemPage() {
           </Button>
           <div className="flex min-w-0 flex-1 flex-col">
             <span className="font-heading text-lg font-semibold">Fidelia Design System</span>
-            <span className="text-xs text-muted-foreground">shadcn/ui · preset b1LObiUpkf · rhea / taupe / emerald</span>
+            <span className="text-xs text-muted-foreground">shadcn/ui · preset b1LObiUpjd · rhea / taupe / emerald</span>
           </div>
           <div className="flex items-center gap-2">
             <RiMoonLine className="size-4 text-muted-foreground" />
@@ -184,20 +184,20 @@ function Specimen({ label, children, className }: { label: string; children: Rea
   return (
     <div className="flex flex-col gap-2">
       <span className="text-xs font-medium text-muted-foreground">{label}</span>
-      <div className={cn("flex flex-wrap items-center gap-3 rounded-[20px] border bg-surface p-5", className)}>{children}</div>
+      <div className={cn("flex flex-wrap items-center gap-3 rounded-3xl border bg-surface p-5", className)}>{children}</div>
     </div>
   )
 }
 
 function Intro() {
   const rows = [
-    ["Stile", "rhea", "raggi morbidi rounded-2xl, card 24px con ring sottile"],
+    ["Stile", "rhea", "controlli rounded-2xl, card rounded-4xl con ring sottile"],
     ["Colore base", "taupe", "neutri caldi per sfondi, testi e bordi"],
     ["Tema", "emerald", "primario; sovrascrivibile dai “Colori del locale”"],
     ["Font", "Montserrat", "testo, etichette, controlli"],
     ["Titoli", "Figtree", "titoli e numeri del saldo"],
     ["Icone", "Remix Icon", "Line di default, Fill per lo stato attivo"],
-    ["Raggio", "medium · 0.625rem", "scala sm → 4xl derivata"],
+    ["Raggio", "small · 0.45rem", "scala sm → 4xl derivata"],
     ["Menu", "inverted · bold", "menu e toast scuri, voce attiva piena"],
     ["Grafici", "lime", "chart-1 … chart-5"],
   ]
@@ -209,14 +209,14 @@ function Intro() {
     >
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
         {rows.map(([k, v, d]) => (
-          <div key={k} className="flex flex-col gap-1 rounded-[20px] border p-4">
+          <div key={k} className="flex flex-col gap-1 rounded-3xl border p-4">
             <span className="text-xs text-muted-foreground">{k}</span>
             <span className="font-heading text-lg font-semibold">{v}</span>
             <span className="text-sm text-muted-foreground">{d}</span>
           </div>
         ))}
       </div>
-      <div className="flex flex-col gap-3 rounded-[20px] bg-muted p-5">
+      <div className="flex flex-col gap-3 rounded-3xl bg-muted p-5">
         <span className="text-sm font-medium">Colori del locale (li sceglie il titolare): prova a cambiarli, tutta la pagina segue.</span>
         <VenueThemePicker />
       </div>
@@ -239,7 +239,7 @@ function Colors() {
           <h3 className="text-sm font-semibold">{g.name}</h3>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-6">
             {g.tokens.map(([bg, fg]) => (
-              <div key={bg} className="flex flex-col overflow-hidden rounded-[20px] border">
+              <div key={bg} className="flex flex-col overflow-hidden rounded-3xl border">
                 <div className="flex h-20 items-end p-3 text-sm font-semibold" style={{ background: `var(--${bg})`, color: fg ? `var(--${fg})` : undefined }}>
                   {fg ? "Aa 340" : ""}
                 </div>
@@ -270,7 +270,7 @@ function Legibility() {
           ["Testo su foto", "Velo scuro o di marca sotto ogni testo che sta su un'immagine caricata."],
           ["Controllo automatico", "npm run check:contrast verifica tutte le coppie, per ogni colore e in entrambi i temi."],
         ].map(([k, v]) => (
-          <div key={k} className="flex flex-col gap-1 rounded-[20px] border p-4">
+          <div key={k} className="flex flex-col gap-1 rounded-3xl border p-4">
             <span className="font-heading text-base font-semibold">{k}</span>
             <span className="text-sm text-muted-foreground">{v}</span>
           </div>
@@ -293,7 +293,7 @@ function Typography() {
   ]
   return (
     <Section id="tipografia" title="Tipografia" lead="Figtree dà voce ai titoli e ai numeri; Montserrat regge testo e controlli. I numeri del saldo usano cifre tabellari, così non “ballano” quando cambiano.">
-      <div className="flex flex-col divide-y rounded-[20px] border">
+      <div className="flex flex-col divide-y rounded-3xl border">
         {scale.map(([meta, cls, sample]) => (
           <div key={meta} className="grid gap-2 p-5 md:grid-cols-[220px_1fr] md:items-baseline">
             <span className="text-xs text-muted-foreground">{meta}</span>
@@ -307,7 +307,7 @@ function Typography() {
 
 function Shape() {
   return (
-    <Section id="forma" title="Forma ed elevazione" lead="Raggio base medium (0.625rem). Rhea porta controlli e badge a rounded-2xl e le card a 24px. L'elevazione è morbida e con offset; la tessera ha un'ombra tinta del primario.">
+    <Section id="forma" title="Forma ed elevazione" lead="Raggio base small (0.45rem). Rhea porta controlli e badge a rounded-2xl e le card a rounded-4xl. L'elevazione è morbida e con offset; la tessera ha un'ombra tinta del primario.">
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 xl:grid-cols-7">
         {["sm", "md", "lg", "xl", "2xl", "3xl", "4xl"].map((r) => (
           <div key={r} className="flex flex-col gap-2">
@@ -323,7 +323,7 @@ function Shape() {
           ["Tessera · tinta", "shadow-[0_18px_40px_-18px_color-mix(in_oklch,var(--primary)_70%,black)] bg-primary"],
         ].map(([k, c]) => (
           <div key={k} className="flex flex-col gap-2">
-            <div className={cn("h-24 rounded-[24px] bg-card", c)} />
+            <div className={cn("h-24 rounded-4xl bg-card", c)} />
             <span className="text-xs text-muted-foreground">{k}</span>
           </div>
         ))}
@@ -359,7 +359,7 @@ function Motion() {
       title="Movimento"
       lead="Un solo momento firmato: il contatore dei punti che scorre come un rullo meccanico quando il saldo cambia. Il resto si muove poco e sempre con ease-out esponenziale (cubic-bezier(0.16, 1, 0.3, 1)). Con “riduci movimento” attivo, tutto diventa istantaneo."
     >
-      <div className="flex flex-wrap items-center gap-6 rounded-[24px] bg-inverted p-6 text-inverted-foreground">
+      <div className="flex flex-wrap items-center gap-6 rounded-4xl bg-inverted p-6 text-inverted-foreground">
         <PointsOdometer value={n} className="text-[64px] text-highlight" />
         <div className="flex gap-2">
           <Button variant="glass" size="xl" onClick={() => setN((v) => Math.max(0, v - 100))}>
@@ -376,7 +376,7 @@ function Motion() {
           ["Medio · 500–700ms", "progress, comparsa liste (rise), QR che si rigenera"],
           ["Firma · 900ms", "rullo dei punti"],
         ].map(([k, v]) => (
-          <div key={k} className="rounded-[20px] border p-4">
+          <div key={k} className="rounded-3xl border p-4">
             <div className="text-sm font-semibold">{k}</div>
             <div className="text-sm text-muted-foreground">{v}</div>
           </div>
@@ -487,7 +487,7 @@ function Forms() {
 
 function Containers() {
   return (
-    <Section id="contenitori" title="Card e liste" lead="Card rhea: 24px di raggio, ring al 5%, spaziatura interna 20px (16px nella taglia sm). Le liste usano Item dentro una card, mai card dentro card.">
+    <Section id="contenitori" title="Card e liste" lead="Card rhea: raggio rounded-4xl (≈19px), ring al 5%, spaziatura interna 20px (16px nella taglia sm). Le liste usano Item dentro una card, mai card dentro card.">
       <div className="grid gap-4 lg:grid-cols-2">
         <Card>
           <CardHeader>
@@ -547,7 +547,7 @@ function Containers() {
             <EmptyTitle>Stato vuoto</EmptyTitle>
             <EmptyDescription>Spiega perché è vuoto e cosa fare dopo.</EmptyDescription>
           </Empty>
-          <div className="flex items-center gap-3 rounded-[20px] border p-4">
+          <div className="flex items-center gap-3 rounded-3xl border p-4">
             <Skeleton className="size-10 rounded-xl" />
             <div className="flex flex-1 flex-col gap-2">
               <Skeleton className="h-3.5 w-2/3" />
@@ -645,8 +645,8 @@ function Patterns() {
         </div>
         <div className="flex flex-col gap-2">
           <span className="text-xs font-medium text-muted-foreground">QrCode · reale e scansionabile, rigenerato a ogni ciclo</span>
-          <div className="flex items-center gap-4 rounded-[20px] border p-5">
-            <div className="size-40 rounded-[20px] border p-2">
+          <div className="flex items-center gap-4 rounded-3xl border p-5">
+            <div className="size-40 rounded-3xl border p-2">
               <QrCode value={`FIDELIA:FDL-4821:${seed}`} label="QR di esempio" />
             </div>
             <Button variant="outline" size="lg" onClick={() => setSeed((s) => s + 1)}>
@@ -656,7 +656,7 @@ function Patterns() {
         </div>
         <div className="flex flex-col gap-2">
           <span className="text-xs font-medium text-muted-foreground">WalletPassPreview · la tessera nel wallet (colori derivati dai token)</span>
-          <div className="flex flex-col items-center gap-4 rounded-[20px] border p-5">
+          <div className="flex flex-col items-center gap-4 rounded-3xl border p-5">
             <WalletPassPreview venue={{ name: "Osteria del Porto", initials: "OP" }} member={{ name: "Giulia Russo", code: "FDL-4821", points: 340 }} nextPrize="Dolce della casa" />
             <div className="flex flex-wrap justify-center gap-2">
               <WalletButton platform="apple" />
@@ -671,7 +671,7 @@ function Patterns() {
         </div>
         <div className="flex flex-col gap-2">
           <span className="text-xs font-medium text-muted-foreground">PrizeArt · tinte per categoria, desaturate se bloccate</span>
-          <div className="flex flex-wrap gap-3 rounded-[20px] border p-5">
+          <div className="flex flex-wrap gap-3 rounded-3xl border p-5">
             {PRIZES.map((p, i) => (
               <PrizeArt key={p.id} id={p.id} category={p.category} locked={i > 1} />
             ))}

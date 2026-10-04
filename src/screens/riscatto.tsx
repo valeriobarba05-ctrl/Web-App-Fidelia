@@ -79,7 +79,7 @@ export function RiscattoScreen() {
     <>
       <PageHeader title="Riscatta premio" onBack={() => navigate("premi")} />
       <PageBody className="lg:grid lg:grid-cols-[minmax(0,420px)_minmax(0,1fr)] lg:items-start lg:gap-8">
-        <Card className="items-stretch gap-5 rounded-[28px]">
+        <Card className="items-stretch gap-5 rounded-4xl">
           <CardContent className="flex flex-col items-center gap-5">
             <div className="flex w-full items-center gap-3">
               <PrizeArt id={prize.id} image={prize.image} category={prize.category} className="size-[52px]" />
@@ -103,7 +103,7 @@ export function RiscattoScreen() {
               </Badge>
             )}
 
-            <div className={cn("relative w-full max-w-[250px] rounded-[22px] border-2 border-dashed p-3 transition-[filter,opacity] duration-500", expired && "opacity-40 blur-[3px]")}>
+            <div className={cn("relative w-full max-w-[250px] rounded-3xl border-2 border-dashed p-3 transition-[filter,opacity] duration-500", expired && "opacity-40 blur-[3px]")}>
               <QrCode value={`FIDELIA-RISCATTO:${redemption.code}`} label="QR monouso per il riscatto del premio" />
             </div>
             <div className="flex flex-col items-center gap-1">

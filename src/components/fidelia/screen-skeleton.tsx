@@ -8,7 +8,7 @@ export function ScreenSkeleton() {
   return (
     <div role="status" aria-label="Caricamento" className="mx-auto flex w-full max-w-6xl flex-col gap-5 px-4 pt-[max(1.5rem,env(safe-area-inset-top))] sm:px-6 lg:px-10 lg:pt-10">
       <Skeleton className="h-9 w-2/3 max-w-xs" />
-      <Skeleton className="h-44 w-full rounded-[24px]" />
+      <Skeleton className="h-44 w-full rounded-4xl" />
       <div className="flex flex-col gap-3">
         {[0, 1, 2].map((i) => (
           <div key={i} className="flex items-center gap-3">

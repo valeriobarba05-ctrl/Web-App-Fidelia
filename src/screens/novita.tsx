@@ -202,7 +202,7 @@ function EventsPanel({ initial }: { initial: string | null }) {
                 <button
                   key={e.id}
                   onClick={() => setOpenId(e.id)}
-                  className="group/event flex items-center gap-3.5 rounded-[20px] bg-card p-3 text-left shadow-sm ring-1 ring-foreground/5 outline-none transition-colors hover:bg-muted focus-visible:ring-3 focus-visible:ring-ring/30 dark:ring-foreground/10"
+                  className="group/event flex items-center gap-3.5 rounded-3xl bg-card p-3 text-left shadow-sm ring-1 ring-foreground/5 outline-none transition-colors hover:bg-muted focus-visible:ring-3 focus-visible:ring-ring/30 dark:ring-foreground/10"
                 >
                   <div className="relative isolate flex size-[72px] shrink-0 flex-col items-center justify-center overflow-hidden rounded-2xl text-white">
                     <EventArt type={e.type} image={e.image} />
@@ -251,7 +251,7 @@ function BookingSheet({ event, onDone }: { event: FideliaEvent; onDone: () => vo
 
   return (
     <>
-      <div className="relative isolate mx-4 mt-3 flex h-36 items-end overflow-hidden rounded-[20px] p-4 text-white">
+      <div className="relative isolate mx-4 mt-3 flex h-36 items-end overflow-hidden rounded-3xl p-4 text-white">
         <EventArt type={event.type} image={event.image} />
         <Badge variant="glass" size="lg">
           {d.weekday} {d.day} {d.month} · {event.time}

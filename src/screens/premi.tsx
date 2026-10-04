@@ -32,7 +32,7 @@ export function PremiScreen({ initial, initialFilter }: { initial?: string | nul
     <>
       <PageHeader title="Premi" description="Si riscattano in cassa con un QR monouso. I punti vengono scalati solo dopo la scansione." />
       <PageBody>
-        <div className="flex flex-col gap-4 rounded-[24px] bg-inverted p-5 text-inverted-foreground ring-white/10 sm:flex-row dark:ring-1 sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-4 rounded-4xl bg-inverted p-5 text-inverted-foreground ring-white/10 sm:flex-row dark:ring-1 sm:items-center sm:justify-between">
           <div className="flex items-center gap-4">
             <span className="flex size-12 items-center justify-center rounded-2xl bg-highlight text-highlight-foreground">
               <RiGift2Line className="size-6" />

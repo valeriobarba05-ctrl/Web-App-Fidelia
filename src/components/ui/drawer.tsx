@@ -16,7 +16,7 @@ function DrawerContent({ className, children, ...props }: React.ComponentProps<t
       <DrawerPrimitive.Content
         data-slot="drawer-content"
         className={cn(
-          "fixed inset-x-2 bottom-2 z-50 mx-auto flex max-h-[88dvh] max-w-lg flex-col rounded-[min(var(--radius-4xl),24px)] border border-border bg-card text-sm text-card-foreground shadow-xl outline-none",
+          "fixed inset-x-2 bottom-2 z-50 mx-auto flex max-h-[88dvh] max-w-lg flex-col rounded-4xl border border-border bg-card text-sm text-card-foreground shadow-xl outline-none",
           className,
         )}
         {...props}

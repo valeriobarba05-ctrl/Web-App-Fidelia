@@ -144,7 +144,7 @@ export function TicketCard({
         onPointerUp={leave}
         onPointerCancel={leave}
         onLostPointerCapture={leave}
-        className="ticket-notch relative isolate overflow-hidden rounded-[24px] bg-brand text-brand-foreground shadow-ticket transition-transform duration-300 ease-(--ease-out-expo) [transform:rotateX(var(--rx,0deg))_rotateY(var(--ry,0deg))] [transform-style:preserve-3d]"
+        className="ticket-notch relative isolate overflow-hidden rounded-4xl bg-brand text-brand-foreground shadow-ticket transition-transform duration-300 ease-(--ease-out-expo) [transform:rotateX(var(--rx,0deg))_rotateY(var(--ry,0deg))] [transform-style:preserve-3d]"
         style={{ ["--ticket-cut" as string]: `${cut}px` }}
       >
         {/* trama di sicurezza */}

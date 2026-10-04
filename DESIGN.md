@@ -3,15 +3,15 @@
 Fonte unica: `src/styles/globals.css` (token) + `src/components/ui` (componenti shadcn) + `src/components/fidelia` (pattern).
 Documentazione viva: apri l'app su `#/design-system`.
 
-## Base: preset shadcn `b1LObiUpkf`
+## Base: preset shadcn `b1LObiUpjd`
 | Asse | Valore |
 |---|---|
-| Stile | **rhea** — controlli e badge `rounded-2xl`, card `rounded-[min(radius-4xl,24px)]` con `ring-1 ring-foreground/5` e `shadow-sm`, input riempiti `bg-input/50` senza bordo |
+| Stile | **rhea** — controlli e badge `rounded-2xl`, card `rounded-4xl` con `ring-1 ring-foreground/5` e `shadow-sm`, input riempiti `bg-input/50` senza bordo |
 | Colore base | **taupe** (neutri caldi, OKLCH dal registry shadcn) |
 | Tema | **emerald** — `--primary: oklch(0.508 0.118 165.612)` |
 | Font | **Montserrat** (testo) · **Figtree** (titoli e numeri) |
 | Icone | **Remix Icon** (`@remixicon/react`): Line, Fill solo per la nav attiva |
-| Raggio | **medium** `0.625rem`, scala `sm → 4xl` |
+| Raggio | **small** `0.45rem`, scala `sm → 4xl` (controlli `rounded-2xl` ≈ 13px, card `rounded-4xl` ≈ 19px). Nessun raggio in px nei componenti: cambiando `--radius` cambia tutto in proporzione |
 | Menu | **inverted + bold**: menu e toast scuri (`--popover` = taupe 900), voce evidenziata piena col primario |
 | Grafici | **lime** `--chart-1…5` |
 

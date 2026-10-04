@@ -45,7 +45,7 @@ export function TesseraScreen() {
       <PageBody className="lg:grid lg:grid-cols-[minmax(0,440px)_minmax(0,1fr)] lg:items-start lg:gap-8">
         <LoyaltyCard cut={172} stamps={false} className="mx-auto w-full max-w-[440px]">
           <div className="flex flex-col items-center gap-4 pt-1">
-            <div className={cn("w-full rounded-[20px] bg-white p-3 transition-[max-width] duration-500 ease-(--ease-out-expo)", bright ? "max-w-[340px]" : "max-w-[260px]")}>
+            <div className={cn("w-full rounded-3xl bg-white p-3 transition-[max-width] duration-500 ease-(--ease-out-expo)", bright ? "max-w-[340px]" : "max-w-[260px]")}>
               <QrCode value={`FIDELIA:${user.cardCode}:${cycle}`} label={`QR della tessera ${user.cardCode}`} />
             </div>
             <div className="flex w-full max-w-[260px] flex-col gap-2">

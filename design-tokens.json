@@ -1,14 +1,14 @@
 {
-  "$description": "Fidelia Design System · shadcn preset b1LObiUpkf (rhea · taupe · emerald · Montserrat/Figtree · Remix Icon · radius 0.625rem)",
+  "$description": "Fidelia Design System · shadcn preset b1LObiUpjd (rhea · taupe · emerald · Montserrat/Figtree · Remix Icon · radius small 0.45rem)",
   "font": {
     "sans": "Montserrat",
     "heading": "Figtree",
     "icons": "Remix Icon (Line; Fill per voce attiva)"
   },
   "radius": {
-    "base": "0.625rem",
-    "control": "1.125rem (rounded-2xl)",
-    "card": "24px"
+    "base": "0.45rem (small)",
+    "control": "0.81rem (rounded-2xl)",
+    "card": "1.17rem (rounded-4xl)"
   },
   "motion": {
     "easeOutExpo": "cubic-bezier(0.16, 1, 0.3, 1)",

@@ -134,7 +134,7 @@ function BottomNav({ route }: { route: Route }) {
   return (
     <nav
       aria-label="Principale"
-      className="fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-40 mx-auto flex max-w-md items-center justify-between rounded-[24px] bg-inverted p-1.5 text-inverted-foreground shadow-overlay ring-1 ring-white/10 lg:hidden"
+      className="fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-40 mx-auto flex max-w-md items-center justify-between rounded-4xl bg-inverted p-1.5 text-inverted-foreground shadow-overlay ring-1 ring-white/10 lg:hidden"
     >
       {nav.map((item) => {
         const active = isActive(item, route)
@@ -146,7 +146,7 @@ function BottomNav({ route }: { route: Route }) {
               href="#/tessera"
               aria-current={active ? "page" : undefined}
               aria-label="Tessera"
-              className="-my-4 flex size-14 shrink-0 items-center justify-center rounded-[20px] bg-highlight text-highlight-foreground shadow-points outline-none transition-transform active:scale-95 focus-visible:ring-3 focus-visible:ring-highlight/50"
+              className="-my-4 flex size-14 shrink-0 items-center justify-center rounded-3xl bg-highlight text-highlight-foreground shadow-points outline-none transition-transform active:scale-95 focus-visible:ring-3 focus-visible:ring-highlight/50"
             >
               <RiQrCodeLine className="size-6" />
             </a>
@@ -157,7 +157,7 @@ function BottomNav({ route }: { route: Route }) {
             href={`#/${item.route}`}
             aria-current={active ? "page" : undefined}
             className={cn(
-              "flex h-14 min-w-0 flex-1 flex-col items-center justify-center gap-0.5 rounded-[18px] text-xs font-medium text-inverted-muted outline-none transition-colors focus-visible:ring-3 focus-visible:ring-ring/40",
+              "flex h-14 min-w-0 flex-1 flex-col items-center justify-center gap-0.5 rounded-2xl text-xs font-medium text-inverted-muted outline-none transition-colors focus-visible:ring-3 focus-visible:ring-ring/40",
               active && "bg-white/12 text-inverted-foreground",
             )}
           >

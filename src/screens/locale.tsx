@@ -52,7 +52,7 @@ export function LocaleScreen() {
 
   return (
     <>
-      <div className="mx-auto w-full max-w-6xl overflow-hidden lg:mt-10 lg:rounded-[28px]">
+      <div className="mx-auto w-full max-w-6xl overflow-hidden lg:mt-10 lg:rounded-4xl">
         {venue.cover ? (
           <img src={venue.cover} alt={`Foto del locale ${venue.name}`} className="h-[220px] w-full object-cover lg:h-[300px]" />
         ) : (

@@ -356,7 +356,7 @@ function AdminList<T extends { id: string }>({
           {items.map((item, i) => {
             const r = render(item)
             return (
-              <li key={item.id} className={cn("flex flex-wrap items-center gap-3 rounded-[20px] bg-card p-3 shadow-sm ring-1 ring-foreground/5 dark:ring-foreground/10", r.active === false && "bg-muted/60")}>
+              <li key={item.id} className={cn("flex flex-wrap items-center gap-3 rounded-3xl bg-card p-3 shadow-sm ring-1 ring-foreground/5 dark:ring-foreground/10", r.active === false && "bg-muted/60")}>
                 {r.media}
                 <button type="button" onClick={() => onEdit(item)} className="flex min-w-0 flex-1 basis-[11rem] flex-col gap-1 text-left outline-none focus-visible:underline">
                   <span className="flex items-center gap-2 font-heading text-base font-semibold">
