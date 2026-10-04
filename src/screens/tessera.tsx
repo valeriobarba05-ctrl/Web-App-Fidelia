@@ -2,7 +2,7 @@ import * as React from "react"
 import { RiFlashlightLine, RiHistoryLine, RiRefreshLine, RiStore2Line } from "@remixicon/react"
 
 import { PageBody, PageHeader } from "@/screens/app-shell"
-import { LoyaltyCard } from "@/screens/parts"
+import { LoyaltyCard, WalletButtons } from "@/screens/parts"
 import { QrCode } from "@/components/fidelia/qr-code"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -43,7 +43,7 @@ export function TesseraScreen() {
         }
       />
       <PageBody className="lg:grid lg:grid-cols-[minmax(0,440px)_minmax(0,1fr)] lg:items-start lg:gap-8">
-        <LoyaltyCard cut={172} className="mx-auto w-full max-w-[440px]">
+        <LoyaltyCard cut={172} stamps={false} className="mx-auto w-full max-w-[440px]">
           <div className="flex flex-col items-center gap-4 pt-1">
             <div className={cn("w-full rounded-[20px] bg-white p-3 transition-[max-width] duration-500 ease-(--ease-out-expo)", bright ? "max-w-[340px]" : "max-w-[260px]")}>
               <QrCode value={`FIDELIA:${user.cardCode}:${cycle}`} label={`QR della tessera ${user.cardCode}`} />
@@ -74,6 +74,16 @@ export function TesseraScreen() {
                 <span className="text-xs font-normal text-muted-foreground">Sfondo bianco e QR più grande, per lo scanner</span>
               </Label>
               <Switch id="bright" checked={bright} onCheckedChange={setBright} />
+            </CardContent>
+          </Card>
+
+          <Card size="sm">
+            <CardHeader>
+              <CardTitle>Tessera nel wallet</CardTitle>
+              <CardDescription>Aggiungila al wallet del telefono: la apri dalla schermata di blocco, anche senza internet.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <WalletButtons />
             </CardContent>
           </Card>
 

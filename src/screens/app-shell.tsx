@@ -1,5 +1,6 @@
 import * as React from "react"
 import {
+  RiEyeLine,
   RiCalendarEventFill,
   RiCalendarEventLine,
   RiGift2Fill,
@@ -48,12 +49,28 @@ function useNav() {
   return NAV.filter((n) => n.route !== "novita" || venue.features.events || venue.features.promos)
 }
 
-export function AppShell({ route, children }: { route: Route; children: React.ReactNode }) {
+export function AppShell({ route, preview, children }: { route: Route; preview?: boolean; children: React.ReactNode }) {
   return (
     <div className="min-h-dvh lg:grid lg:grid-cols-[272px_1fr]">
       <Sidebar route={route} />
-      <div className="flex min-w-0 flex-col pb-[calc(7rem+env(safe-area-inset-bottom))] lg:pb-12">{children}</div>
+      <div className="flex min-w-0 flex-col pb-[calc(7rem+env(safe-area-inset-bottom))] lg:pb-12">
+        {preview && <OwnerPreviewBar />}
+        {children}
+      </div>
       <BottomNav route={route} />
+    </div>
+  )
+}
+
+/** Il titolare sta guardando l'app come la vede un cliente (dati di esempio). */
+function OwnerPreviewBar() {
+  return (
+    <div className="sticky top-0 z-30 flex items-center gap-3 bg-inverted px-4 pt-[max(0.5rem,env(safe-area-inset-top))] pb-2 text-sm text-inverted-foreground">
+      <RiEyeLine className="size-4 shrink-0 text-highlight" />
+      <span className="min-w-0 flex-1 truncate">Anteprima: l'app come la vede un cliente</span>
+      <Button variant="glass" size="sm" onClick={() => navigate("titolare")}>
+        Torna alla gestione
+      </Button>
     </div>
   )
 }

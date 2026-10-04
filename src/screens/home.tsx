@@ -12,16 +12,15 @@ import {
 
 import { PageBody, SectionTitle, UserMenu } from "@/screens/app-shell"
 import { EventCard } from "@/components/fidelia/event-card"
-import { LoyaltyCard } from "@/screens/parts"
+import { AddToWalletRow, LoyaltyCard } from "@/screens/parts"
 import { MovementRow } from "@/components/fidelia/movement-row"
 import { PrizeArt } from "@/components/fidelia/prize-art"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { ItemGroup } from "@/components/ui/item"
-import { Progress } from "@/components/ui/progress"
 import { navigate } from "@/mock/router"
-import { nextPrize, useStore } from "@/mock/store"
+import { useStore } from "@/mock/store"
 import { fmtPoints } from "@/lib/utils"
 
 function greeting() {
@@ -32,7 +31,6 @@ function greeting() {
 export function HomeScreen() {
   const { user, movements, bookings, redemption, venue, visible } = useStore()
   const PRIZES = visible.prizes
-  const next = nextPrize(PRIZES, user.points)
   const unlocked = PRIZES.filter((p) => p.cost <= user.points)
   const promoToday = visible.promos.find((p) => p.days?.includes(new Date().getDay()))
   const promo = promoToday ?? visible.promos[0]
@@ -59,11 +57,6 @@ export function HomeScreen() {
         <div className="flex flex-col gap-5">
           <LoyaltyCard>
             <div className="flex flex-col gap-3">
-              {next ? (
-                <Progress value={(user.points / next.cost) * 100} aria-label={`Progresso verso ${next.name}`} className="h-2 bg-white/20" indicatorClassName="bg-highlight" />
-              ) : (
-                <span className="text-sm">Hai sbloccato tutti i premi del catalogo.</span>
-              )}
               <div className="flex gap-2">
                 <Button variant="highlight" size="xl" className="flex-1" onClick={() => navigate("tessera")}>
                   <RiQrCodeLine /> Mostra tessera
@@ -74,6 +67,8 @@ export function HomeScreen() {
               </div>
             </div>
           </LoyaltyCard>
+
+          <AddToWalletRow />
 
           {redemption && (
             <button

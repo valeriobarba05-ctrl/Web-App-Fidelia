@@ -4,7 +4,8 @@ import { ScreenSkeleton } from "@/components/fidelia/screen-skeleton";
 import { AppShell } from "@/screens/app-shell";
 import { Toaster } from "@/components/ui/sonner";
 import { useRoute } from "@/mock/router";
-import { StoreProvider, useStore } from "@/mock/store";
+import { StoreProvider } from "@/mock/store";
+import { SessionProvider, useSession } from "@/mock/session";
 import { useVenueAdmin, VenueProvider } from "@/mock/venue";
 import { AccessoScreen } from "@/screens/accesso";
 import { HomeScreen } from "@/screens/home";
@@ -30,7 +31,7 @@ const RiscattoScreen = React.lazy(() =>
 const TesseraScreen = React.lazy(() =>
   import("@/screens/tessera").then((m) => ({ default: m.TesseraScreen })),
 );
-// Due app separate che condividono solo i contenuti del locale (in sola lettura per il cliente).
+// Un solo accesso, due rami: cliente (app tessera) e titolare (gestione). Condividono solo i contenuti del locale.
 const OwnerApp = React.lazy(() =>
   import("@/owner/owner-app").then((m) => ({ default: m.OwnerApp })),
 );
@@ -43,8 +44,10 @@ const DesignSystemPage = React.lazy(() =>
 export function App() {
   return (
     <VenueProvider>
-      <Router />
-      <Toaster />
+      <SessionProvider>
+        <Router />
+        <Toaster />
+      </SessionProvider>
     </VenueProvider>
   );
 }
@@ -52,6 +55,7 @@ export function App() {
 function Router() {
   const { route, params } = useRoute();
   const { setPreviewDark } = useVenueAdmin();
+  const { account, role } = useSession();
   const ownerSide = route === "titolare" || route === "design-system";
 
   // Fuori dalla gestione il tema torna sempre quello del dispositivo.
@@ -59,12 +63,6 @@ function Router() {
     if (!ownerSide) setPreviewDark(null);
   }, [ownerSide, setPreviewDark]);
 
-  if (route === "titolare")
-    return (
-      <React.Suspense fallback={null}>
-        <OwnerApp section={params.get("sezione") ?? "identita"} />
-      </React.Suspense>
-    );
   if (route === "design-system")
     return (
       <React.Suspense fallback={null}>
@@ -73,18 +71,32 @@ function Router() {
         </StoreProvider>
       </React.Suspense>
     );
+
+  // Nessun account: la stessa schermata di accesso per cliente e titolare.
+  if (!account)
+    return (
+      <StoreProvider>
+        <AccessoScreen />
+      </StoreProvider>
+    );
+
+  // Ramo titolare: la gestione. Un cliente che apre #/titolare torna alla sua app.
+  if (route === "titolare" && role === "titolare")
+    return (
+      <React.Suspense fallback={null}>
+        <OwnerApp section={params.get("sezione") ?? "identita"} />
+      </React.Suspense>
+    );
   return (
     <StoreProvider>
-      <CustomerApp route={route} params={params} />
+      <CustomerApp route={route === "titolare" ? "home" : route} params={params} preview={role === "titolare"} />
     </StoreProvider>
   );
 }
 
-function CustomerApp({ route, params }: ReturnType<typeof useRoute>) {
-  const { authed } = useStore();
-  if (!authed) return <AccessoScreen />;
+function CustomerApp({ route, params, preview }: ReturnType<typeof useRoute> & { preview: boolean }) {
   return (
-    <AppShell route={route}>
+    <AppShell route={route} preview={preview}>
       <React.Suspense fallback={<ScreenSkeleton />}>
         {route === "home" && <HomeScreen />}
         {route === "tessera" && <TesseraScreen />}

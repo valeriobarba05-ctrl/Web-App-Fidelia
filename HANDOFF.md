@@ -5,7 +5,7 @@ Questo repository contiene **il design di Fidelia in codice**: design system, co
 
 ```bash
 npm install
-npm run dev              # app cliente: http://localhost:5173/#/home  ·  app titolare: /#/titolare (PIN demo 1234)
+npm run dev              # http://localhost:5173 → "Continua con Google" → scegli Giulia (cliente) o Marco (titolare)
 npm run typecheck
 npm run check:contrast   # leggibilità WCAG AA di tutti i colori, chiaro e scuro: deve restare verde
 npm run tokens           # rigenera design-tokens.json
@@ -28,7 +28,8 @@ Stack: React 19 · TypeScript · Vite · Tailwind CSS v4 · shadcn/ui (preset `b
 | `src/screens/` | Schermate dell'app **cliente** | Tenere il markup; collegare i dati reali. |
 | `src/owner/` | App del **titolare** (gestione locale) | Tenere il markup; collegare le scritture all'API. |
 | `src/screens/parts.tsx` | Versioni "collegate" di `TicketCard`/`VenueMark` | Riscrivere sull'API. |
-| `src/mock/` | **Tutto finto**: dati di esempio, stato in `localStorage`, PIN, router a hash, controlli demo | **Sostituire.** |
+| `src/mock/` | **Tutto finto**: dati di esempio, stato in `localStorage`, sessione con selettore account Google di prova, router a hash, controlli demo, aggiunta al wallet | **Sostituire.** |
+| `docs/WALLET.md` | Specifica della tessera nel wallet (Apple/Google): colori, campi, immagini, flusso | Seguire. |
 | `src/design-system/` | Pagina documentazione viva (`#/design-system`) | Facoltativa in produzione. |
 | `design-tokens.json` | Token esportati (OKLCH + HEX) per altri stack | Rigenerare con `npm run tokens`. |
 
@@ -39,7 +40,18 @@ Regola: i file fuori da `src/mock/` non devono sapere da dove arrivano i dati. O
 ## 2. Due app separate
 
 - **App cliente** (`src/screens`, layout `src/screens/app-shell.tsx`): il cliente **non configura nulla**. Il tema è chiaro; colori, contenuti e funzioni li decide il locale. Nel profilo ci sono solo i suoi dati: compleanno e consensi privacy (obbligatori per GDPR).
-- **App titolare** (`src/owner`): unico punto che scrive la configurazione del locale. In demo è protetta da PIN; **in produzione serve un login vero lato server** e i permessi di scrittura vanno verificati dal backend.
+- **App titolare** (`src/owner`): unico punto che scrive la configurazione del locale.
+
+### Un solo accesso, due rami
+La web app ha **una sola schermata di accesso** (`screens/accesso.tsx`). Dopo il login:
+- account Google presente in `venue.ownerEmails` → ruolo **titolare** → gestione (`#/titolare`);
+- qualsiasi altro account (Google o email) → ruolo **cliente** → app della tessera.
+
+Regole (in `src/mock/session.tsx`, `roleFor()`): il titolare entra **solo con Google**; l'accesso via email porta sempre all'app cliente. Gli account abilitati si gestiscono in Gestione → Regole e funzioni → "Accesso alla gestione" (non si può togliere l'account con cui si è entrati).
+Il titolare può vedere l'app come un cliente ("Apri l'app clienti"): compare una barra "Anteprima… Torna alla gestione".
+
+In produzione: Google Identity Services sul client → il server verifica il token → restituisce account e ruolo. **Il ruolo lo decide sempre il server**, e ogni scrittura della configurazione va autorizzata lato server.
+Il foglio "Scegli un account" (`GoogleAccountSheet`) è solo per la demo e va eliminato.
 
 Possono essere due build/deploy distinti: condividono solo `components/`, `lib/`, `styles/`, `types.ts`.
 
@@ -71,7 +83,8 @@ Tutte le scritture passano da `useVenueAdmin()` (`updateVenue`, `upsert`, `remov
 | Demo | Produzione |
 |---|---|
 | Stato in `localStorage` (`src/mock/store.tsx`, `venue.tsx`) | API + database. La configurazione del locale è unica per tutti i clienti. |
-| PIN `1234` per il titolare | Login con account e ruoli verificati dal server. |
+| Selettore account Google di prova, ruolo calcolato nel browser | Google Identity Services + verifica del token e ruolo lato server. |
+| "Aggiungi al wallet" segna solo uno stato | Apple: `.pkpass` firmato dal server; Google: link "Save to Google Wallet" con JWT firmato. Vedi `docs/WALLET.md`. |
 | QR della tessera = `FIDELIA:<codice>:<ciclo>` generato nel browser | **Token firmato dal server** che ruota ogni `qrRefreshSeconds` (tipo TOTP); la cassa lo valida. Il componente `QrCode` disegna qualsiasi stringa. |
 | Codice di riscatto generato nel browser | Creato dal server, monouso, con scadenza `redeemValidityMinutes`. I punti si scalano **solo** quando la cassa lo valida. |
 | Pulsanti "Simula" (Tessera) e "Scansiona" (Riscatto) | Non esistono: li nasconde la build con `VITE_DEMO=false` (`src/mock/demo.ts`). |

@@ -4,6 +4,7 @@ import { toast } from "sonner"
 import { INITIAL_MOVEMENTS, INITIAL_USER } from "@/mock/data"
 import type { Movement, Prize } from "@/types"
 import { safeStorage, saveStorage } from "@/lib/utils"
+import { useSession } from "@/mock/session"
 import { useVenue, type VenueState } from "@/mock/venue"
 
 /**
@@ -15,23 +16,24 @@ type Redemption = { prizeId: string; code: string; expiresAt: number }
 type Consents = { marketing: boolean; profiling: boolean; push: boolean }
 
 type CustomerState = {
-  authed: boolean
   user: typeof INITIAL_USER
   movements: Movement[]
   redemption: Redemption | null
   bookings: Record<string, number>
   consents: Consents
   notify: { promo: boolean; events: boolean }
+  /** tessera già aggiunta al wallet (in produzione: lo sa il server dal callback di Apple/Google) */
+  wallet: { apple: boolean; google: boolean }
 }
 
 const INITIAL: CustomerState = {
-  authed: false,
   user: INITIAL_USER,
   movements: INITIAL_MOVEMENTS,
   redemption: null,
   bookings: {},
   consents: { marketing: true, profiling: false, push: true },
   notify: { promo: false, events: true },
+  wallet: { apple: false, google: false },
 }
 
 const KEY = "fidelia:cliente:v1"
@@ -47,11 +49,11 @@ function useStoreValue() {
 
   const actions = React.useMemo(
     () => ({
-      login: () => patch({ authed: true }),
-      logout: () => patch({ authed: false }),
       setBirthday: (birthday: string) => patch((s) => ({ user: { ...s.user, birthday } })),
       setConsent: (k: keyof Consents, v: boolean) => patch((s) => ({ consents: { ...s.consents, [k]: v } })),
       setNotify: (k: "promo" | "events", v: boolean) => patch((s) => ({ notify: { ...s.notify, [k]: v } })),
+      /** Demo. In produzione: Apple → scarica il .pkpass firmato dal server; Google → apre il link "Save to Google Wallet" (JWT firmato). */
+      addToWallet: (p: "apple" | "google") => patch((s) => ({ wallet: { ...(s.wallet ?? { apple: false, google: false }), [p]: true } })),
 
       /** Demo: simula la cassa che scansiona la tessera dopo un conto. */
       registerVisit: (amount: number, venue: VenueState) => {
@@ -108,7 +110,8 @@ export function useStore() {
   const ctx = React.useContext(StoreContext)
   if (!ctx) throw new Error("useStore outside StoreProvider")
   const venue = useVenue()
-  return { ...ctx, ...venue, venueState: venue as VenueState }
+  const session = useSession()
+  return { ...ctx, ...venue, venueState: venue as VenueState, account: session.account, logout: session.signOut }
 }
 
 export function nextPrize(prizes: Prize[], points: number) {

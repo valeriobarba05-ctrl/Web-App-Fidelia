@@ -8,16 +8,16 @@ Locale di esempio: **Osteria del Porto**.
 
 ## Per chi
 - **Cliente del locale** (utente principale): al telefono, in sala o in cassa, spesso con poca luce e poca pazienza. Deve mostrare il QR in due tocchi e capire subito quanti punti ha.
-- **Titolare**: usa un'app separata (`#/titolare`, accesso con PIN) e gestisce tutto da lì:
+- **Titolare**: entra dalla stessa web app con il **suo account Google**; l'app riconosce l'account e apre la gestione, da cui configura:
   identità (nome, sigla, frase, logo, copertina, mappa), colori, premi, promo, eventi (con immagini), orari, contatti e link,
-  regole dei punti (punti per euro, benvenuto, durata QR), funzioni attive (eventi, prenotazioni, promo, recensioni, compleanno) e PIN.
+  regole dei punti (punti per euro, benvenuto, durata QR), funzioni attive (eventi, prenotazioni, promo, recensioni, compleanno), immagine della tessera nel wallet e account Google abilitati alla gestione.
   Il cliente non ha nessuna impostazione dell'app (né tema né colori: il tema segue il telefono) e non vede alcun accesso alla gestione.
   Il suo profilo contiene solo i suoi dati: compleanno e consensi privacy.
 
 ## Funzioni (da mantenere)
 1. Installazione e accesso (Google o email, registrazione con 50 punti di benvenuto, istruzioni iPhone/Android)
 2. Home: saldo, prossimo premio, azioni rapide, ultimi movimenti, promo, prossimo evento
-3. Tessera con QR dinamico (si rinnova ogni 30 s), luminosità massima
+3. Tessera con QR dinamico (si rinnova ogni 30 s), luminosità massima, **aggiunta ad Apple Wallet / Google Wallet**
 4. Saldo e movimenti, filtrabili
 5. Catalogo premi con progresso verso ogni premio
 6. Riscatto con QR monouso valido 10 minuti; i punti si scalano solo dopo la scansione

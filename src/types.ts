@@ -82,9 +82,19 @@ export type Venue = {
   phone: string
   links: { menu: string; maps: string; review: string; instagram: string; facebook: string; tiktok: string; whatsapp: string; privacy: string }
   hours: Hours
-  /** SOLO DEMO: in produzione l'accesso del titolare è un vero login lato server */
-  ownerPin: string
+  /** Immagine orizzontale della tessera nel wallet (Apple "strip", Google "hero"). Facoltativa. */
+  walletImage: string
+  /**
+   * Account Google che entrano come TITOLARE (gestione del locale).
+   * Chiunque altro accede come cliente. In produzione il ruolo lo decide il server dopo il login Google.
+   */
+  ownerEmails: string[]
 }
+
+export type Role = "cliente" | "titolare"
+
+/** Account con cui si è entrati (Google o email). */
+export type Account = { name: string; email: string; avatar?: string; provider: "google" | "email" }
 
 export type Customer = {
   firstName: string

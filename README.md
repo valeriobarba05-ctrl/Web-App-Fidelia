@@ -11,7 +11,8 @@ npm run build
 ```
 
 - App: `#/home` (al primo avvio mostra Accesso: qualsiasi email valida + password ≥ 8 caratteri, o "Continua con Google")
-- App del titolare (separata): `#/titolare`, PIN **1234** (si cambia in Regole e funzioni). Ha login, sessione e navigazione propri.
+- Accesso unico: **Continua con Google** → nella demo scegli *Giulia* (cliente) o *Marco* (titolare, apre la gestione). Gli account titolare si gestiscono in Gestione → Regole e funzioni.
+- Tessera nel wallet (Apple/Google): design e specifica in `docs/WALLET.md`.
 - Design system vivo: `#/design-system`
 - Controllo leggibilità: `npm run check:contrast`
 - Demo interattive: *Simula* nella Tessera (accredita punti da un conto), *Scansiona* nel Riscatto (scala i punti), prenotazione eventi, consensi, colori del locale, tema scuro. Lo stato si salva in `localStorage` (le immagini vengono ridimensionate e compresse prima del salvataggio). In produzione la configurazione del locale andrebbe su un server.

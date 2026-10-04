@@ -7,7 +7,6 @@ import {
   RiCoupon3Line,
   RiDeleteBin6Line,
   RiEyeLine,
-  RiKey2Line,
   RiLogoutBoxRLine,
   RiPaletteLine,
   RiGift2Line,
@@ -22,6 +21,8 @@ import { PageBody, PageHeader } from "@/components/fidelia/page"
 import { EventArt } from "@/components/fidelia/event-art"
 import { ImageField } from "@/owner/image-field"
 import { TicketCard, VenueMark } from "@/components/fidelia/loyalty-card"
+import { WalletPassPreview } from "@/components/fidelia/wallet"
+import { walletColors } from "@/lib/themes"
 import { PrizeArt } from "@/components/fidelia/prize-art"
 import { VenueThemePicker } from "@/owner/venue-theme-picker"
 import { Badge } from "@/components/ui/badge"
@@ -42,7 +43,7 @@ import type { EventType, FideliaEvent, Prize, Promo, Venue } from "@/types"
 import { navigate } from "@/mock/router"
 import { toast } from "sonner"
 
-import { safeStorage, saveStorage } from "@/lib/utils"
+import { useSession } from "@/mock/session"
 import { useVenue, useVenueAdmin } from "@/mock/venue"
 import { cn, fmtPoints } from "@/lib/utils"
 
@@ -89,27 +90,23 @@ const SECTIONS = [
   { id: "regole", label: "Regole e funzioni", icon: RiSettings3Line, desc: "Come si guadagnano i punti e quali parti dell'app sono attive." },
 ] as const
 
-const OWNER_KEY = "fidelia:titolare:v1"
-function useOwnerSession() {
-  const [authed, setAuthed] = React.useState(() => safeStorage(OWNER_KEY, { authed: false }).authed)
-  React.useEffect(() => void saveStorage(OWNER_KEY, { authed }), [authed])
-  return { authed, login: () => setAuthed(true), logout: () => setAuthed(false) }
-}
-
 /** Contenuti del locale in lettura + scrittura: esiste solo qui, nell'app del titolare. */
 function useOwner() {
   return { ...useVenue(), ...useVenueAdmin() }
 }
 
 export function OwnerApp({ section }: { section: string }) {
-  const session = useOwnerSession()
-  if (!session.authed) return <OwnerLogin onLogin={session.login} />
+  const { signOut } = useSession()
+  const logout = () => {
+    signOut()
+    navigate("home")
+  }
   const current = SECTIONS.find((s) => s.id === section) ?? SECTIONS[0]
   return (
     <div className="min-h-dvh lg:grid lg:grid-cols-[280px_1fr]">
-      <OwnerSidebar current={current.id} onLogout={session.logout} />
+      <OwnerSidebar current={current.id} onLogout={logout} />
       <div className="flex min-w-0 flex-col pb-12">
-        <OwnerMobileBar current={current.id} onLogout={session.logout} />
+        <OwnerMobileBar current={current.id} onLogout={logout} />
         <PageHeader title={current.label} description={current.desc} />
         <PageBody>
           {current.id === "identita" && <Identity />}
@@ -125,6 +122,23 @@ export function OwnerApp({ section }: { section: string }) {
 }
 
 const goSection = (id: string) => navigate("titolare", { sezione: id })
+
+/** Account Google con cui il titolare è entrato. */
+function OwnerAccount() {
+  const { account } = useSession()
+  if (!account) return null
+  return (
+    <div className="flex items-center gap-3 rounded-2xl bg-sidebar-accent p-3">
+      <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-highlight text-sm font-semibold text-highlight-foreground">
+        {account.name.split(" ").map((p) => p[0]).join("").slice(0, 2)}
+      </span>
+      <span className="flex min-w-0 flex-col">
+        <span className="truncate text-sm font-medium">{account.name}</span>
+        <span className="truncate text-xs text-sidebar-muted">{account.email}</span>
+      </span>
+    </div>
+  )
+}
 
 function OwnerSidebar({ current, onLogout }: { current: string; onLogout: () => void }) {
   const { venue } = useVenue()
@@ -160,6 +174,7 @@ function OwnerSidebar({ current, onLogout }: { current: string; onLogout: () => 
         <a href="#/design-system" className="flex h-10 items-center gap-2.5 rounded-2xl px-3 text-sm font-medium text-sidebar-muted outline-none hover:bg-sidebar-accent hover:text-sidebar-foreground focus-visible:ring-3 focus-visible:ring-sidebar-ring/40">
           <RiPaletteLine className="size-4" /> Design system
         </a>
+        <OwnerAccount />
         <button onClick={onLogout} className="flex h-10 items-center gap-2.5 rounded-2xl px-3 text-left text-sm font-medium text-sidebar-muted outline-none hover:bg-sidebar-accent hover:text-sidebar-foreground focus-visible:ring-3 focus-visible:ring-sidebar-ring/40">
           <RiLogoutBoxRLine className="size-4" /> Esci dalla gestione
         </button>
@@ -207,66 +222,11 @@ function OwnerMobileBar({ current, onLogout }: { current: string; onLogout: () =
   )
 }
 
-function OwnerLogin({ onLogin }: { onLogin: () => void }) {
-  const { venue } = useVenue()
-  const [pin, setPin] = React.useState("")
-  const [error, setError] = React.useState(false)
-  return (
-    <div className="flex min-h-dvh items-center justify-center bg-sidebar px-4 py-10 text-sidebar-foreground">
-      <div className="flex w-full max-w-sm flex-col gap-6">
-        <div className="flex flex-col items-center gap-3 text-center">
-          <VenueMark initials={venue.initials} logo={venue.logo} className="size-14 text-lg" />
-          <h1 className="font-heading text-2xl font-semibold">Gestione di {venue.name}</h1>
-          <p className="text-sm text-sidebar-muted">Area riservata al titolare. I clienti usano l'app della tessera e non vedono nulla di questa sezione.</p>
-        </div>
-        <Card>
-          <CardContent>
-            <form
-              className="flex flex-col gap-3"
-              onSubmit={(e) => {
-                e.preventDefault()
-                if (pin !== venue.ownerPin) return setError(true)
-                onLogin()
-                toast.success("Benvenuto nella gestione")
-              }}
-            >
-              <Label htmlFor="owner-pin">PIN del locale</Label>
-              <Input
-                id="owner-pin"
-                inputMode="numeric"
-                autoComplete="one-time-code"
-                maxLength={8}
-                value={pin}
-                onChange={(e) => {
-                  setPin(e.target.value.replace(/\D/g, ""))
-                  setError(false)
-                }}
-                aria-invalid={error}
-                autoFocus
-                className="h-12 text-center font-heading text-2xl tracking-[0.4em]"
-              />
-              {error ? (
-                <p role="alert" className="text-xs text-destructive">
-                  PIN errato. Riprova.
-                </p>
-              ) : (
-                <p className="text-xs text-muted-foreground">Nella demo il PIN è 1234: cambialo in Regole e funzioni.</p>
-              )}
-              <Button type="submit" size="xl" disabled={pin.length < 4}>
-                <RiKey2Line /> Entra
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  )
-}
-
 // ——— Identità: nome, immagini, colori, con anteprima della tessera ———
 
 function Identity() {
   const { venue, updateVenue, visible } = useOwner()
+  const wc = walletColors(venue.brandColor, venue.highlightColor)
   return (
     <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_400px] lg:items-start">
       <div className="flex flex-col gap-5">
@@ -306,6 +266,45 @@ function Identity() {
           </CardHeader>
           <CardContent>
             <VenueThemePicker />
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="font-semibold">Tessera nel wallet</CardTitle>
+            <CardDescription>I clienti possono aggiungere la tessera ad Apple Wallet e Google Wallet. Colori e logo arrivano da qui; puoi aggiungere un'immagine orizzontale.</CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-5 sm:grid-cols-[minmax(0,1fr)_280px] sm:items-start">
+            <div className="flex flex-col gap-4">
+              <ImageField
+                id="v-wallet"
+                label="Immagine della tessera (facoltativa)"
+                aspect="aspect-[3/1]"
+                max={1125}
+                value={venue.walletImage}
+                onChange={(walletImage) => updateVenue({ walletImage })}
+                hint="Orizzontale 3:1, per esempio 1125 × 375 px. Il saldo ci va sopra: meglio una foto senza testo."
+              />
+              <div className="flex flex-col gap-2">
+                <span className="text-sm font-medium">Colori del pass</span>
+                <div className="flex flex-wrap gap-2 text-xs">
+                  {(
+                    [
+                      ["Sfondo", wc.background],
+                      ["Testo", wc.foreground],
+                      ["Etichette", wc.label],
+                    ] as const
+                  ).map(([k, v]) => (
+                    <span key={k} className="flex items-center gap-2 rounded-xl border px-2.5 py-1.5">
+                      <span className="size-4 rounded-md ring-1 ring-foreground/10" style={{ background: v }} />
+                      {k} <code className="font-mono text-muted-foreground uppercase">{v}</code>
+                    </span>
+                  ))}
+                </div>
+                <span className="text-xs text-muted-foreground">Calcolati dai colori del locale, con contrasto garantito.</span>
+              </div>
+            </div>
+            <WalletPassPreview venue={venue} member={{ name: "Cliente di esempio", code: "FDL-0000", points: 340 }} nextPrize={visible.prizes.find((p) => p.cost > 340)?.name} image={venue.walletImage} />
           </CardContent>
         </Card>
       </div>
@@ -850,11 +849,73 @@ function HoursContacts() {
   )
 }
 
+// ——— Accesso alla gestione: account Google del titolare (e dei gestori) ———
+
+function OwnerAccounts() {
+  const { venue, updateVenue } = useOwner()
+  const { account } = useSession()
+  const [email, setEmail] = React.useState("")
+  const valid = /^\S+@\S+\.\S+$/.test(email)
+  const exists = venue.ownerEmails.some((e) => e.toLowerCase() === email.trim().toLowerCase())
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="font-semibold">Accesso alla gestione</CardTitle>
+        <CardDescription>Chi entra nell'app con uno di questi account Google vede la gestione; tutti gli altri vedono l'app cliente.</CardDescription>
+      </CardHeader>
+      <CardContent className="flex flex-col gap-3">
+        <ul className="flex flex-col gap-2">
+          {venue.ownerEmails.map((e) => {
+            const me = account?.email.toLowerCase() === e.toLowerCase()
+            return (
+              <li key={e} className="flex items-center gap-3 rounded-2xl bg-muted p-3">
+                <span className="min-w-0 flex-1 truncate text-sm font-medium">{e}</span>
+                {me && <Badge variant="success">Sei tu</Badge>}
+                <Button
+                  variant="ghost"
+                  size="icon-lg"
+                  aria-label={`Rimuovi ${e}`}
+                  disabled={me}
+                  title={me ? "Non puoi togliere l'account con cui sei entrato" : undefined}
+                  onClick={() => {
+                    updateVenue({ ownerEmails: venue.ownerEmails.filter((x) => x !== e) })
+                    toast("Accesso rimosso", { description: e })
+                  }}
+                >
+                  <RiDeleteBin6Line />
+                </Button>
+              </li>
+            )
+          })}
+        </ul>
+        <form
+          className="flex gap-2"
+          onSubmit={(ev) => {
+            ev.preventDefault()
+            if (!valid || exists) return
+            updateVenue({ ownerEmails: [...venue.ownerEmails, email.trim()] })
+            toast.success("Accesso aggiunto", { description: email.trim() })
+            setEmail("")
+          }}
+        >
+          <Label htmlFor="r-owner" className="sr-only">
+            Aggiungi un account Google
+          </Label>
+          <Input id="r-owner" type="email" inputMode="email" placeholder="email@gmail.com" value={email} onChange={(ev) => setEmail(ev.target.value)} aria-invalid={exists} />
+          <Button type="submit" size="lg" className="h-10" disabled={!valid || exists}>
+            <RiAddLine /> Aggiungi
+          </Button>
+        </form>
+        {exists && <p className="text-xs text-destructive">Questo account ha già accesso.</p>}
+      </CardContent>
+    </Card>
+  )
+}
+
 // ——— Regole e funzioni ———
 
 function Rules() {
   const { venue, updateVenue, resetVenue } = useOwner()
-  const [pin, setPin] = React.useState("")
   const setFeature = (k: keyof Venue["features"], v: boolean) => updateVenue({ features: { ...venue.features, [k]: v } })
   const num = (v: string, min: number, max: number) => Math.min(max, Math.max(min, Number(v) || min))
   return (
@@ -906,32 +967,7 @@ function Rules() {
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="font-semibold">PIN del titolare</CardTitle>
-          <CardDescription>Serve per entrare in questa gestione. Usa da 4 a 8 cifre.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form
-            className="flex gap-2"
-            onSubmit={(e) => {
-              e.preventDefault()
-              if (!/^\d{4,8}$/.test(pin)) return toast.error("PIN non valido", { description: "Usa da 4 a 8 cifre." })
-              updateVenue({ ownerPin: pin })
-              setPin("")
-              toast.success("PIN aggiornato")
-            }}
-          >
-            <Label htmlFor="r-pin" className="sr-only">
-              Nuovo PIN
-            </Label>
-            <Input id="r-pin" inputMode="numeric" placeholder="Nuovo PIN" value={pin} onChange={(e) => setPin(e.target.value.replace(/\D/g, "").slice(0, 8))} />
-            <Button type="submit" size="lg" className="h-10" disabled={pin.length < 4}>
-              Cambia
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
+      <OwnerAccounts />
 
       <Card className="ring-destructive/30">
         <CardHeader>

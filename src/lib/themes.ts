@@ -1,6 +1,6 @@
 import type { Oklch } from "culori"
 // Entry "fn" di culori: solo gli spazi colore registrati qui finiscono nel bundle.
-import { clampChroma, converter, formatCss, modeLrgb, modeOklab, modeOklch, modeRgb, parse, useMode, wcagContrast } from "culori/fn"
+import { clampChroma, converter, formatCss, formatHex, modeLrgb, modeOklab, modeOklch, modeRgb, parse, useMode, wcagContrast } from "culori/fn"
 
 useMode(modeRgb)
 useMode(modeLrgb)
@@ -31,6 +31,7 @@ export const THEME_PRESETS: ThemePreset[] = [
 export const THEME_MODE: "light" | "system" = "light"
 
 const toOklch = converter("oklch")
+const toRgb = converter("rgb")
 const AA = 4.5
 
 const mk = (l: number, c: number, h: number): Oklch => clampChroma({ mode: "oklch", l: Math.min(1, Math.max(0, l)), c, h }, "oklch") as Oklch
@@ -107,3 +108,23 @@ export function applyTheme(brandColor: string, highlightColor: string, dark: boo
 }
 
 export const contrast = cr
+
+/**
+ * Colori per la tessera nel wallet (Apple pass.json / Google Wallet loyaltyClass), in HEX/RGB
+ * come li vogliono le due piattaforme. Derivati dagli stessi token dell'app: il pass è coerente e leggibile.
+ */
+export function walletColors(brandColor: string, highlightColor: string) {
+  const t = generateTheme(brandColor, highlightColor, false)
+  const hex = (v: string) => formatHex(parse(v)!)
+  const rgb = (v: string) => {
+    const c = toRgb(parse(v)!)!
+    return `rgb(${Math.round(c.r * 255)}, ${Math.round(c.g * 255)}, ${Math.round(c.b * 255)})`
+  }
+  return {
+    background: hex(t["--brand"]),
+    foreground: hex(t["--brand-foreground"]),
+    label: hex(t["--highlight"]),
+    apple: { backgroundColor: rgb(t["--brand"]), foregroundColor: rgb(t["--brand-foreground"]), labelColor: rgb(t["--highlight"]) },
+    google: { hexBackgroundColor: hex(t["--brand"]) },
+  }
+}

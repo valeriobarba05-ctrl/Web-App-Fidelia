@@ -9,7 +9,11 @@ import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { pointsRule } from "@/lib/format"
 import { navigate } from "@/mock/router"
+import { DEMO_ACCOUNTS, roleFor, useSession } from "@/mock/session"
 import { toast, useStore } from "@/mock/store"
+import type { Account } from "@/types"
+import { Badge } from "@/components/ui/badge"
+import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
 
 function GoogleMark() {
   return (
@@ -23,7 +27,9 @@ function GoogleMark() {
 }
 
 export function AccessoScreen() {
-  const { login, venue } = useStore()
+  const { venue } = useStore()
+  const { signIn } = useSession()
+  const [chooser, setChooser] = React.useState(false)
   const [mode, setMode] = React.useState<"accedi" | "registrati">("registrati")
   const [show, setShow] = React.useState(false)
   const [email, setEmail] = React.useState("")
@@ -36,8 +42,14 @@ export function AccessoScreen() {
   const nameErr = mode === "registrati" && name.trim().length < 2 ? "Scrivi il tuo nome" : null
   const hasErr = !!(emailErr || pwdErr || nameErr)
 
-  const enter = (welcome: boolean) => {
-    login()
+  /** Unico ingresso: dopo l'accesso l'app prende la strada del titolare o del cliente. */
+  const enter = (account: Account, welcome: boolean) => {
+    signIn(account)
+    if (roleFor(account, venue.ownerEmails) === "titolare") {
+      navigate("titolare")
+      toast.success(`Ciao ${account.name.split(" ")[0]}, sei nella gestione`, { description: venue.name })
+      return
+    }
     navigate("home")
     toast.success(welcome && venue.welcomePoints > 0 ? `Benvenuto! +${venue.welcomePoints} punti di benvenuto` : "Bentornato!", { description: venue.name })
   }
@@ -90,9 +102,10 @@ export function AccessoScreen() {
                 <TabsTrigger value="accedi">Accedi</TabsTrigger>
               </TabsList>
               <TabsContent value={mode} className="pt-4">
-                <Button variant="outline" size="xl" className="w-full" onClick={() => enter(mode === "registrati")}>
+                <Button variant="outline" size="xl" className="w-full" onClick={() => setChooser(true)}>
                   <GoogleMark /> Continua con Google
                 </Button>
+                <p className="mt-2.5 text-center text-xs text-muted-foreground">Sei il titolare? Entra con il tuo account Google: si apre la gestione del locale.</p>
                 <div className="my-4 flex items-center gap-3 text-xs text-muted-foreground">
                   <span className="h-px flex-1 bg-border" /> oppure con email <span className="h-px flex-1 bg-border" />
                 </div>
@@ -102,7 +115,7 @@ export function AccessoScreen() {
                   onSubmit={(e) => {
                     e.preventDefault()
                     setSubmitted(true)
-                    if (!hasErr) enter(mode === "registrati")
+                    if (!hasErr) enter({ name: name.trim() || email.split("@")[0], email: email.trim(), provider: "email" }, mode === "registrati")
                   }}
                 >
                   {mode === "registrati" && (
@@ -150,6 +163,7 @@ export function AccessoScreen() {
 
         <InstallHint />
       </section>
+      <GoogleAccountSheet open={chooser} onOpenChange={setChooser} onPick={(a) => enter(a, mode === "registrati")} />
     </div>
   )
 }
@@ -200,5 +214,69 @@ function InstallHint() {
         </p>
       </CardContent>
     </Card>
+  )
+}
+
+/**
+ * DEMO del selettore account Google. In produzione questo foglio NON esiste:
+ * il pulsante apre Google Identity Services e il server restituisce account e ruolo.
+ */
+function GoogleAccountSheet({ open, onOpenChange, onPick }: { open: boolean; onOpenChange: (o: boolean) => void; onPick: (a: Account) => void }) {
+  const { venue } = useStore()
+  const [other, setOther] = React.useState("")
+  const valid = /^\S+@\S+\.\S+$/.test(other)
+  return (
+    <Drawer open={open} onOpenChange={onOpenChange}>
+      <DrawerContent>
+        <DrawerHeader>
+          <DrawerTitle className="flex items-center gap-2">
+            <GoogleMark /> Scegli un account
+          </DrawerTitle>
+          <DrawerDescription>Demo: in produzione qui si apre l'accesso Google del telefono.</DrawerDescription>
+        </DrawerHeader>
+        <ul className="flex flex-col gap-1 px-3 pb-2">
+          {DEMO_ACCOUNTS.map((a) => {
+            const owner = roleFor(a, venue.ownerEmails) === "titolare"
+            return (
+              <li key={a.email}>
+                <button
+                  onClick={() => {
+                    onOpenChange(false)
+                    onPick(a)
+                  }}
+                  className="flex w-full items-center gap-3 rounded-2xl p-3 text-left outline-none transition-colors hover:bg-muted focus-visible:ring-3 focus-visible:ring-ring/30"
+                >
+                  <span className={owner ? "flex size-11 shrink-0 items-center justify-center rounded-full bg-inverted font-semibold text-inverted-foreground" : "flex size-11 shrink-0 items-center justify-center rounded-full bg-primary font-semibold text-primary-foreground"}>
+                    {a.name.split(" ").map((p) => p[0]).join("")}
+                  </span>
+                  <span className="flex min-w-0 flex-1 flex-col">
+                    <span className="text-sm font-medium">{a.name}</span>
+                    <span className="truncate text-xs text-muted-foreground">{a.email}</span>
+                  </span>
+                  <Badge variant={owner ? "highlight" : "secondary"}>{owner ? "Titolare" : "Cliente"}</Badge>
+                </button>
+              </li>
+            )
+          })}
+        </ul>
+        <form
+          className="flex gap-2 px-5 pt-1 pb-5"
+          onSubmit={(e) => {
+            e.preventDefault()
+            if (!valid) return
+            onOpenChange(false)
+            onPick({ name: other.split("@")[0], email: other.trim(), provider: "google" })
+          }}
+        >
+          <Label htmlFor="g-other" className="sr-only">
+            Usa un altro account Google
+          </Label>
+          <Input id="g-other" type="email" placeholder="Usa un altro account Google" value={other} onChange={(e) => setOther(e.target.value)} />
+          <Button type="submit" size="lg" className="h-10" disabled={!valid}>
+            Entra
+          </Button>
+        </form>
+      </DrawerContent>
+    </Drawer>
   )
 }

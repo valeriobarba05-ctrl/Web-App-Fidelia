@@ -35,6 +35,7 @@ import {
 
 import { EventCard } from "@/components/fidelia/event-card"
 import { TicketCard } from "@/components/fidelia/loyalty-card"
+import { WalletButton, WalletPassPreview } from "@/components/fidelia/wallet"
 import { MovementRow } from "@/components/fidelia/movement-row"
 import { PointsOdometer } from "@/components/fidelia/points-odometer"
 import { PrizeArt } from "@/components/fidelia/prize-art"
@@ -639,7 +640,7 @@ function Patterns() {
     <Section id="pattern" title="Pattern Fidelia" lead="Gli elementi che rendono Fidelia riconoscibile. La tessera è un biglietto: due tacche laterali e una perforazione separano chi sei (sopra) da cosa fai adesso (sotto).">
       <div className="grid gap-6 lg:grid-cols-2">
         <div className="flex flex-col gap-2">
-          <span className="text-xs font-medium text-muted-foreground">TicketCard · tessera-biglietto</span>
+          <span className="text-xs font-medium text-muted-foreground">TicketCard · tessera-biglietto con trama guilloché, timbri verso il premio e riflesso al tocco</span>
           <TicketCard venue={{ name: "Osteria del Porto", initials: "OP" }} member={{ name: "Giulia Russo", code: "FDL-4821", points: 340 }} next={PRIZES[3]} />
         </div>
         <div className="flex flex-col gap-2">
@@ -651,6 +652,17 @@ function Patterns() {
             <Button variant="outline" size="lg" onClick={() => setSeed((s) => s + 1)}>
               Rigenera <RiArrowRightLine />
             </Button>
+          </div>
+        </div>
+        <div className="flex flex-col gap-2">
+          <span className="text-xs font-medium text-muted-foreground">WalletPassPreview · la tessera nel wallet (colori derivati dai token)</span>
+          <div className="flex flex-col items-center gap-4 rounded-[20px] border p-5">
+            <WalletPassPreview venue={{ name: "Osteria del Porto", initials: "OP" }} member={{ name: "Giulia Russo", code: "FDL-4821", points: 340 }} nextPrize="Dolce della casa" />
+            <div className="flex flex-wrap justify-center gap-2">
+              <WalletButton platform="apple" />
+              <WalletButton platform="google" />
+            </div>
+            <p className="max-w-sm text-center text-xs text-muted-foreground">I pulsanti sono segnaposto: in produzione vanno usati i badge ufficiali Apple e Google (vedi docs/WALLET.md).</p>
           </div>
         </div>
         <div className="flex flex-col gap-2">
