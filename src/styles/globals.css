@@ -1,0 +1,312 @@
+/*
+ * Fidelia Design System — token layer
+ * Struttura: shadcn/ui preset b1LObiUpjd (stile rhea · radius small 0.45rem · icone Remix · menu inverted + bold · chart lime)
+ * Brand:     Fidelia – Materiale Grafico v1 (palette, tipografia, logo, elementi, motivi)
+ *   colori  Verde Petrolio #123C3A · Oro #FFD36E · Crema #F5F1EA · Sabbia #EFE9DF · Nero #16181B · Grigio #5B5F66
+ *   font    Bricolage Grotesque (titoli, numeri, logo) · Manrope (testo e interfaccia)
+ *   proporz. 60% Crema/Sabbia · 30% Verde · 10% Oro (solo premi e traguardi)
+ */
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "@fontsource-variable/bricolage-grotesque";
+@import "@fontsource-variable/manrope";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: "Manrope Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Bricolage Grotesque Variable", "Manrope Variable", ui-sans-serif, sans-serif;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Fidelia semantic layer */
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-primary-soft: var(--primary-soft);
+  --color-primary-soft-foreground: var(--primary-soft-foreground);
+  --color-highlight: var(--highlight);
+  --color-highlight-foreground: var(--highlight-foreground);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-surface: var(--surface);
+  --color-destructive-soft: var(--destructive-soft);
+  --color-sidebar-muted: var(--sidebar-muted);
+  --color-inverted-muted: var(--inverted-muted);
+  --color-brand-tonal: var(--brand-tonal);
+  --color-brand-muted: var(--brand-muted);
+  --color-amber: var(--amber);
+  --color-inverted: var(--inverted);
+  --color-inverted-foreground: var(--inverted-foreground);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Elevazione: ogni ombra dell'app viene da qui (niente valori sparsi nei componenti) */
+  --shadow-float: 0 10px 24px -16px oklch(0.2 0.03 190 / 0.22);
+  --shadow-overlay: 0 14px 32px -16px oklch(0.2 0.03 190 / 0.32);
+  --shadow-ticket: 0 16px 32px -20px color-mix(in oklch, var(--brand) 70%, black);
+  --shadow-points: 0 10px 24px -8px color-mix(in oklch, var(--highlight) 80%, black);
+  --animate-rise: rise 0.5s var(--ease-out-expo) both;
+  --animate-pop: pop 0.45s var(--ease-out-expo) both;
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(8px); filter: blur(4px); }
+    to { opacity: 1; transform: none; filter: none; }
+  }
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes pop {
+    0% { transform: scale(0.92); }
+    60% { transform: scale(1.04); }
+    100% { transform: scale(1); }
+  }
+}
+
+:root {
+  --radius: 0.45rem; /* preset b1LObiUpjd: radius "small" */
+
+  /* palette Fidelia (02 Colori/Fidelia-colori.css) */
+  --background: #F5F1EA; /* Crema: fondo principale */
+  --foreground: #16181B; /* Nero */
+  --card: #FFFFFF; /* Bianco_Card: le superfici si separano col colore, non con ombre forti */
+  --card-foreground: #16181B;
+  --popover: var(--brand); /* menu "inverted": sul colore di marca */
+  --popover-foreground: var(--brand-foreground);
+  --secondary: #EFE9DF; /* Sabbia */
+  --secondary-foreground: #16181B;
+  --muted: #EFE9DF;
+  --muted-foreground: #5B5F66; /* Grigio_Testo */
+  --accent: #EFE9DF;
+  --accent-foreground: #16181B;
+  --destructive: #B3261E; /* Errore */
+  --destructive-soft: #FBE7E5;
+  --border: #E6E0D6; /* Bordo */
+  --input: #CFC7BA; /* Bordo_Input */
+
+  /* tema del locale: sovrascritto a runtime da applyTheme() (src/lib/themes.ts). Predefinito = brand Fidelia */
+  --primary: #123C3A; /* Verde_Petrolio */
+  --primary-foreground: #F5F1EA;
+  --primary-soft: oklch(0.95 0.025 186);
+  --primary-soft-foreground: #123C3A;
+  --ring: #123C3A;
+  --brand: #123C3A;
+  --brand-foreground: #F5F1EA; /* Crema su Verde_Petrolio 10,8:1 */
+  --brand-tonal: #2A5552; /* Verde_Tonale */
+  --brand-muted: oklch(0.86 0.02 186);
+  --highlight: #FFD36E; /* Oro: solo premi, traguardi, riscatto */
+  --highlight-foreground: #16181B;
+
+  /* lime charts */
+  --chart-1: oklch(0.897 0.196 126.665);
+  --chart-2: oklch(0.768 0.233 130.85);
+  --chart-3: oklch(0.648 0.2 131.684);
+  --chart-4: oklch(0.532 0.157 131.589);
+  --chart-5: oklch(0.453 0.124 130.933);
+
+  --sidebar: var(--brand);
+  --sidebar-foreground: var(--brand-foreground);
+  --sidebar-muted: var(--brand-muted);
+  --sidebar-primary: var(--brand-tonal);
+  --sidebar-primary-foreground: var(--brand-foreground);
+  --sidebar-accent: var(--brand-tonal);
+  --sidebar-accent-foreground: var(--brand-foreground);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: var(--highlight);
+
+  /* Fidelia layer */
+  --surface: #F5F1EA;
+  --inverted: var(--brand); /* barra in basso, promo: il 30% verde del brand */
+  --inverted-foreground: var(--brand-foreground);
+  --inverted-muted: var(--brand-muted);
+  --success: #1F7A4D; /* Successo */
+  --success-soft: #E3F2EA;
+  --warning: #7A5200; /* Oro_Testo */
+  --warning-soft: #FFF4DC; /* Oro_Tenue */
+  --amber: #E2A43A; /* Ambra: solo decorativo, mai testo */
+}
+
+/* Tema scuro (non attivo: THEME_MODE = "light"). */
+.dark {
+  --background: oklch(0 0 0);
+  --foreground: oklch(0.97 0.003 67.8);
+  --card: oklch(0.17 0.004 49);
+  --card-foreground: oklch(0.97 0.003 67.8);
+  --popover: oklch(0.955 0.003 40); /* inverted: menu chiaro su nero */
+  --popover-foreground: oklch(0.16 0.006 45);
+  --secondary: oklch(0.25 0.006 45);
+  --secondary-foreground: oklch(0.97 0.003 67.8);
+  --muted: oklch(0.25 0.006 45);
+  --muted-foreground: oklch(0.78 0.012 45);
+  --accent: oklch(0.25 0.006 45);
+  --accent-foreground: oklch(0.97 0.003 67.8);
+  --destructive: oklch(0.72 0.17 22);
+  --destructive-soft: oklch(0.28 0.07 22);
+  --border: oklch(1 0 0 / 14%);
+  --input: oklch(1 0 0 / 18%);
+
+  --sidebar: oklch(0.12 0.004 49);
+  --sidebar-accent: oklch(0.22 0.006 45);
+  --sidebar-border: oklch(1 0 0 / 12%);
+
+  --surface: oklch(0 0 0);
+  --inverted: oklch(0.2 0.006 45);
+  --inverted-foreground: oklch(0.97 0.003 67.8);
+  --inverted-muted: oklch(0.8 0.01 45);
+  --success: oklch(0.8 0.15 163);
+  --success-soft: oklch(0.27 0.06 168);
+  --warning: oklch(0.86 0.13 85);
+  --warning-soft: oklch(0.29 0.06 70);
+}
+
+/* Cambio tema morbido: solo colori, solo durante lo switch. */
+.theme-switching,
+.theme-switching * {
+  transition: background-color 0.28s ease, color 0.28s ease, border-color 0.28s ease, fill 0.28s ease !important;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    color-scheme: light;
+    /* niente ritardo né doppio-tap-zoom sui controlli, niente rimbalzo della pagina intera */
+    touch-action: manipulation;
+    overscroll-behavior-y: none;
+    caret-color: var(--primary);
+    accent-color: var(--primary);
+    -webkit-tap-highlight-color: transparent;
+    scrollbar-color: color-mix(in oklch, var(--foreground) 22%, transparent) transparent;
+    scrollbar-width: thin;
+  }
+  html.dark { color-scheme: dark; }
+  body {
+    @apply bg-surface text-foreground font-sans antialiased;
+    font-feature-settings: "tnum" 0, "ss01" 1;
+    min-height: 100dvh;
+  }
+  h1, h2, h3, h4 { @apply font-heading; text-wrap: balance; }
+  ::selection {
+    background: color-mix(in oklch, var(--highlight) 55%, transparent);
+    color: var(--foreground);
+  }
+  a { text-underline-offset: 3px; }
+  :focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+  input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.6; cursor: pointer; }
+}
+
+
+/*
+ * Telefono: ogni controllo ha un'area tattile di almeno 44×44 px, anche se disegnato più piccolo
+ * (interruttori, schede, filtri, pulsanti sm/lg). L'area si allarga con uno pseudo-elemento invisibile.
+ */
+@layer base {
+@media (pointer: coarse) {
+  :where([data-slot="button"], [data-slot="switch"], [data-slot="tabs-trigger"], [data-slot="toggle-group-item"], [role="radio"], .touch-target) {
+    position: relative;
+  }
+  :where([data-slot="button"], [data-slot="switch"], [data-slot="tabs-trigger"], [data-slot="toggle-group-item"], [role="radio"], .touch-target)::after {
+    content: "";
+    position: absolute;
+    top: min(0px, calc((100% - 44px) / 2));
+    bottom: min(0px, calc((100% - 44px) / 2));
+    left: min(0px, calc((100% - 44px) / 2));
+    right: min(0px, calc((100% - 44px) / 2));
+  }
+}
+}
+
+@utility tabular { font-variant-numeric: tabular-nums; }
+
+/* caption del brand: 11/14 · 700 · maiuscolo · +0,06em (l'unico stile in maiuscolo) */
+@utility caption {
+  font-size: 11px;
+  line-height: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Veli per il testo sopra le foto caricate dal titolare: garantiscono la leggibilità su qualsiasi immagine. */
+@utility scrim-photo {
+  background: linear-gradient(to top, oklch(0 0 0 / 0.9), oklch(0 0 0 / 0.55) 55%, oklch(0 0 0 / 0.2));
+}
+@utility scrim-strip {
+  background: linear-gradient(to top, oklch(0 0 0 / 0.55), transparent 70%);
+}
+@utility text-on-photo {
+  text-shadow: 0 1px 12px oklch(0 0 0 / 0.35);
+}
+
+/* Ticket edge: two semicircular notches cut into the sides (the tessera signature). */
+@utility ticket-notch {
+  --notch: 14px;
+  --notch-y: var(--ticket-cut, 62%);
+  mask:
+    radial-gradient(circle var(--notch) at 0 var(--notch-y), transparent 98%, #000 100%) left / 51% 100% no-repeat,
+    radial-gradient(circle var(--notch) at 100% var(--notch-y), transparent 98%, #000 100%) right / 51% 100% no-repeat;
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+/*
+ * Riduci movimento: niente spostamenti, ingrandimenti o rotazioni; restano dissolvenze e cambi di colore
+ * brevi, così chi ha questa preferenza vede comunque la conferma di un'azione (es. il saldo che cambia).
+ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-property: color, background-color, border-color, outline-color, fill, stroke, opacity !important;
+    transition-duration: 160ms !important;
+    scroll-behavior: auto !important;
+  }
+  /* animazioni di sola opacità marcate come sicure */
+  [data-motion="fade"] {
+    animation: fade-in 0.35s ease-out both !important;
+  }
+}

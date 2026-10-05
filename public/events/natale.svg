@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice">
+    <defs>
+      <radialGradient id="bg" cx="50%" cy="40%" r="85%"><stop offset="0" stop-color="#1d4d36"/><stop offset=".6" stop-color="#0e2a1f"/><stop offset="1" stop-color="#050d09"/></radialGradient>
+      <radialGradient id="glow" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#ffd36e" stop-opacity=".55"/><stop offset="1" stop-color="#ffd36e" stop-opacity="0"/></radialGradient>
+    </defs>
+    <rect width="800" height="500" fill="url(#bg)"/>
+    <circle cx="400" cy="230" r="260" fill="url(#glow)"/>
+    <circle cx="80" cy="80" r="26" fill="#ffd36e" opacity="0.55"/><circle cx="170" cy="200" r="16" fill="#e23b3b" opacity="0.55"/><circle cx="90" cy="380" r="30" fill="#ffd36e" opacity="0.4"/><circle cx="690" cy="90" r="30" fill="#e23b3b" opacity="0.45"/><circle cx="720" cy="280" r="20" fill="#ffd36e" opacity="0.55"/><circle cx="620" cy="420" r="28" fill="#fff" opacity="0.3"/><circle cx="250" cy="60" r="12" fill="#fff" opacity="0.5"/><circle cx="560" cy="50" r="14" fill="#ffd36e" opacity="0.6"/>
+    <polygon points="400,60 300,210 340,210 260,320 320,320 230,440 570,440 480,320 540,320 460,210 500,210" fill="#2e7d4f"/>
+    <polygon points="400,60 400,440 570,440 480,320 540,320 460,210 500,210" fill="#1f5a3a"/>
+    <rect x="380" y="440" width="40" height="40" fill="#5b3a1e"/>
+    <path d="M300 250 Q400 290 470 235 M285 365 Q400 410 520 350" stroke="#ffd36e" stroke-width="6" fill="none" stroke-dasharray="2 14" stroke-linecap="round"/>
+    <circle cx="340" cy="270" r="11" fill="#e23b3b" opacity="1"/><circle cx="430" cy="300" r="11" fill="#ffd36e" opacity="1"/><circle cx="470" cy="250" r="9" fill="#fff" opacity="1"/><circle cx="300" cy="390" r="12" fill="#ffd36e" opacity="1"/><circle cx="400" cy="380" r="11" fill="#e23b3b" opacity="1"/><circle cx="500" cy="395" r="12" fill="#fff" opacity="1"/><circle cx="370" cy="190" r="9" fill="#ffd36e" opacity="1"/><circle cx="425" cy="175" r="9" fill="#e23b3b" opacity="1"/>
+    <polygon points="400,22 411,52 443,52 417,70 427,100 400,82 373,100 383,70 357,52 389,52" fill="#ffd36e"/>
+    <g fill="#fff" opacity=".8"><circle cx="30" cy="10" r="3"/><circle cx="140" cy="107" r="3"/><circle cx="260" cy="204" r="3"/><circle cx="520" cy="301" r="3"/><circle cx="650" cy="398" r="3"/><circle cx="760" cy="15" r="3"/><circle cx="200" cy="112" r="3"/><circle cx="600" cy="209" r="3"/><circle cx="700" cy="306" r="3"/><circle cx="330" cy="403" r="3"/></g></svg>
