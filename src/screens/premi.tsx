@@ -113,14 +113,14 @@ function PrizeCard({ prize, points, onOpen }: { prize: Prize; points: number; on
         <div className="flex items-start gap-3.5">
           <PrizeArt id={prize.id} image={prize.image} category={prize.category} locked={!ok} />
           <div className="flex min-w-0 flex-1 flex-col gap-1">
-            <span className="font-heading text-base font-semibold">{prize.name}</span>
+            <span className="font-heading text-base font-bold">{prize.name}</span>
             <span className="text-xs text-muted-foreground">{prize.note}</span>
           </div>
           {ok ? <Badge variant="success">Disponibile</Badge> : <RiLockLine className="size-4 text-muted-foreground" aria-label="Bloccato" />}
         </div>
         <div className="mt-auto flex flex-col gap-2">
           <div className="flex items-baseline justify-between text-sm">
-            <span className="font-heading text-lg font-semibold tabular">
+            <span className="font-heading text-lg font-bold tabular">
               {fmtPoints(prize.cost)} <span className="text-xs font-medium text-muted-foreground">punti</span>
             </span>
             {!ok && <span className="text-xs text-muted-foreground">mancano {fmtPoints(prize.cost - points)}</span>}
@@ -146,11 +146,11 @@ function PrizeDetail({ prize, points, busy, onRedeem }: { prize: Prize; points: 
         <div className="grid grid-cols-2 gap-2">
           <div className="flex flex-col gap-0.5 rounded-2xl bg-muted p-3">
             <span className="text-xs text-muted-foreground">Costo</span>
-            <span className="font-heading text-lg font-semibold tabular">{fmtPoints(prize.cost)} punti</span>
+            <span className="font-heading text-lg font-bold tabular">{fmtPoints(prize.cost)} punti</span>
           </div>
           <div className="flex flex-col gap-0.5 rounded-2xl bg-muted p-3">
             <span className="text-xs text-muted-foreground">Dopo il riscatto</span>
-            <span className={cn("font-heading text-lg font-semibold tabular", !ok && "text-muted-foreground")}>{ok ? `${fmtPoints(points - prize.cost)} punti` : "—"}</span>
+            <span className={cn("font-heading text-lg font-bold tabular", !ok && "text-muted-foreground")}>{ok ? `${fmtPoints(points - prize.cost)} punti` : "—"}</span>
           </div>
         </div>
         <p className="flex gap-2.5 rounded-2xl bg-success-soft p-3 text-[13px] text-success">

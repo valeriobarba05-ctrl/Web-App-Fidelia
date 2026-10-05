@@ -66,7 +66,7 @@ export function LocaleScreen() {
               <div className="flex items-center gap-3.5">
                 <VenueMark className="size-14 text-lg" />
                 <div className="flex flex-col gap-1.5">
-                  <h1 className="font-heading text-[24px] leading-tight font-semibold">{venue.name}</h1>
+                  <h1 className="font-heading text-[24px] leading-tight font-extrabold">{venue.name}</h1>
                   <Badge variant={state.open ? "success" : "secondary"} size="lg">
                     <span className={cn("size-1.5 rounded-full", state.open ? "bg-success" : "bg-muted-foreground")} />
                     {state.label}
@@ -141,7 +141,7 @@ export function LocaleScreen() {
                 <span className="flex size-11 items-center justify-center rounded-2xl bg-highlight text-highlight-foreground">
                   <RiStarSmileLine className="size-6" />
                 </span>
-                <h2 className="font-heading text-xl font-semibold">Ti è piaciuto? Raccontalo in pochi secondi</h2>
+                <h2 className="font-heading text-xl font-bold">Ti è piaciuto? Raccontalo in pochi secondi</h2>
                 <p className="text-sm text-inverted-muted">Una recensione su Google aiuta un locale indipendente più di qualsiasi pubblicità.</p>
                 <Button asChild variant="highlight" size="xl" className="w-fit">
                   <a href={venue.links.review} target="_blank" rel="noopener noreferrer">

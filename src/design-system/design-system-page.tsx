@@ -33,6 +33,7 @@ import {
   RiUser3Line,
 } from "@remixicon/react"
 
+import { BrandMotif, FideliaLogo, FideliaSymbol, PoweredBy, Spunta } from "@/components/fidelia/brand"
 import { EventCard } from "@/components/fidelia/event-card"
 import { TicketCard } from "@/components/fidelia/loyalty-card"
 import { WalletButton, WalletPassPreview } from "@/components/fidelia/wallet"
@@ -72,6 +73,7 @@ import { toast } from "sonner"
 import { cn } from "@/lib/utils"
 
 const SECTIONS = [
+  ["brand", "Brand"],
   ["fondamenta", "Preset"],
   ["colori", "Colori"],
   ["leggibilita", "Leggibilità"],
@@ -89,7 +91,7 @@ const SECTIONS = [
 export function DesignSystemPage() {
   const { dark } = useVenue()
   const { setPreviewDark } = useVenueAdmin()
-  const [active, setActive] = React.useState<string>("fondamenta")
+  const [active, setActive] = React.useState<string>("brand")
 
   React.useEffect(() => {
     const io = new IntersectionObserver(
@@ -111,8 +113,8 @@ export function DesignSystemPage() {
             <RiArrowLeftLine /> Torna alla gestione
           </Button>
           <div className="flex min-w-0 flex-1 flex-col">
-            <span className="font-heading text-lg font-semibold">Fidelia Design System</span>
-            <span className="text-xs text-muted-foreground">shadcn/ui · preset b1LObiUpjd · rhea / taupe / emerald</span>
+            <span className="flex items-center gap-2 font-heading text-lg font-extrabold"><FideliaSymbol size={22} /> Design system</span>
+            <span className="text-xs text-muted-foreground">Brand Fidelia v1 · shadcn/ui preset b1LObiUpjd (rhea, Remix Icon)</span>
           </div>
           <div className="flex items-center gap-2">
             <RiMoonLine className="size-4 text-muted-foreground" />
@@ -148,6 +150,7 @@ export function DesignSystemPage() {
         </nav>
 
         <main className="flex min-w-0 flex-col gap-20">
+          <Brand />
           <Intro />
           <Colors />
           <Legibility />
@@ -170,7 +173,7 @@ function Section({ id, title, lead, children }: { id: string; title: string; lea
   return (
     <section id={id} aria-labelledby={`${id}-t`} className="flex scroll-mt-24 flex-col gap-6">
       <div className="flex max-w-2xl flex-col gap-2">
-        <h2 id={`${id}-t`} className="font-heading text-[28px] leading-tight font-semibold tracking-[-0.02em]">
+        <h2 id={`${id}-t`} className="font-heading text-[28px] leading-tight font-extrabold tracking-[-0.02em]">
           {title}
         </h2>
         {lead && <p className="text-[15px] leading-relaxed text-muted-foreground">{lead}</p>}
@@ -189,13 +192,77 @@ function Specimen({ label, children, className }: { label: string; children: Rea
   )
 }
 
+const BRAND_PALETTE: [string, string, string][] = [
+  ["Verde Petrolio", "#123C3A", "colore primario · 30%"],
+  ["Verde Tonale", "#2A5552", "voce attiva su verde"],
+  ["Crema", "#F5F1EA", "sfondo · testo su verde · 60%"],
+  ["Sabbia", "#EFE9DF", "superfici secondarie"],
+  ["Oro", "#FFD36E", "solo premi, traguardi, riscatto · 10%"],
+  ["Oro Testo", "#7A5200", "testo dorato su chiaro"],
+  ["Nero", "#16181B", "testo"],
+  ["Grigio Testo", "#5B5F66", "testo secondario"],
+]
+
+function Brand() {
+  return (
+    <Section
+      id="brand"
+      title="Brand Fidelia"
+      lead="Dal Materiale Grafico v1 (asset in public/brand/). Proporzioni 60% Crema/Sabbia, 30% Verde, 10% Oro. Niente ombre forti: le superfici si separano col colore. Sulla tessera del cliente il protagonista è il locale; Fidelia firma in basso."
+    >
+      <div className="grid gap-3 lg:grid-cols-2">
+        <Specimen label="Logo orizzontale · su chiaro">
+          <FideliaLogo size={40} />
+          <FideliaSymbol size={40} />
+          <FideliaSymbol variant="mono-nero" size={40} />
+        </Specimen>
+        <Specimen label="Logo orizzontale · su verde (simbolo su-verde, scritta Crema)" className="bg-brand text-brand-foreground">
+          <FideliaLogo size={40} onBrand />
+          <FideliaSymbol variant="mono-bianco" size={40} />
+        </Specimen>
+        <Specimen label="Firma powered by · sotto la tessera, mai più grande del nome del locale">
+          <PoweredBy />
+        </Specimen>
+        <Specimen label="Spunta-timbro e bollino premio" className="bg-brand text-brand-foreground">
+          <span className="flex size-8 items-center justify-center rounded-full bg-brand-foreground text-brand"><Spunta className="w-[64%]" strokeWidth={9} /></span>
+          <span className="size-8 rounded-full border-[1.5px] border-dashed border-current/40" />
+          <img src="./brand/elementi/bollino-premio.svg" alt="" className="size-12" />
+        </Specimen>
+      </div>
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        {BRAND_PALETTE.map(([name, hex, use]) => (
+          <div key={hex} className="flex flex-col overflow-hidden rounded-3xl border">
+            <div className="h-16" style={{ background: hex }} />
+            <div className="flex flex-col gap-0.5 p-3">
+              <span className="text-sm font-semibold">{name}</span>
+              <code className="text-xs">{hex}</code>
+              <span className="text-xs text-muted-foreground">{use}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="flex flex-col gap-2">
+        <span className="text-xs font-medium text-muted-foreground">Motivi (da approvare) · componente BrandMotif: maschera ripetuta che prende il colore del locale</span>
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          {(["timbri", "spunte", "quadrati", "tessera"] as const).map((m) => (
+            <div key={m} className="relative isolate flex h-28 items-end overflow-hidden rounded-3xl bg-brand p-3 text-brand-foreground">
+              <BrandMotif motif={m} className="-z-10 opacity-20" />
+              <span className="caption">{m}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </Section>
+  )
+}
+
 function Intro() {
   const rows = [
     ["Stile", "rhea", "controlli rounded-2xl, card rounded-4xl con ring sottile"],
     ["Colore base", "taupe", "neutri caldi per sfondi, testi e bordi"],
-    ["Tema", "emerald", "primario; sovrascrivibile dai “Colori del locale”"],
-    ["Font", "Montserrat", "testo, etichette, controlli"],
-    ["Titoli", "Figtree", "titoli e numeri del saldo"],
+    ["Tema", "Fidelia", "Verde Petrolio + Oro; sovrascrivibile dai “Colori del locale”"],
+    ["Font", "Manrope", "testo, etichette, controlli (dal brand)"],
+    ["Titoli", "Bricolage Grotesque", "titoli, numeri del saldo e logo (dal brand)"],
     ["Icone", "Remix Icon", "Line di default, Fill per lo stato attivo"],
     ["Raggio", "small · 0.45rem", "scala sm → 4xl derivata"],
     ["Menu", "inverted · bold", "menu e toast scuri, voce attiva piena"],
@@ -211,7 +278,7 @@ function Intro() {
         {rows.map(([k, v, d]) => (
           <div key={k} className="flex flex-col gap-1 rounded-3xl border p-4">
             <span className="text-xs text-muted-foreground">{k}</span>
-            <span className="font-heading text-lg font-semibold">{v}</span>
+            <span className="font-heading text-lg font-bold">{v}</span>
             <span className="text-sm text-muted-foreground">{d}</span>
           </div>
         ))}
@@ -271,7 +338,7 @@ function Legibility() {
           ["Controllo automatico", "npm run check:contrast verifica tutte le coppie, per ogni colore e in entrambi i temi."],
         ].map(([k, v]) => (
           <div key={k} className="flex flex-col gap-1 rounded-3xl border p-4">
-            <span className="font-heading text-base font-semibold">{k}</span>
+            <span className="font-heading text-base font-bold">{k}</span>
             <span className="text-sm text-muted-foreground">{v}</span>
           </div>
         ))}
@@ -282,17 +349,17 @@ function Legibility() {
 
 function Typography() {
   const scale = [
-    ["Display · Figtree 52/1.05 · 600 · -0.03em", "text-[52px] leading-[1.05] tracking-[-0.03em] font-heading font-semibold", "Punti a ogni visita"],
-    ["H1 · Figtree 34 · 600 · -0.02em", "text-[34px] leading-tight tracking-[-0.02em] font-heading font-semibold", "Saldo e movimenti"],
-    ["H2 · Figtree 28 · 600", "text-[28px] leading-tight font-heading font-semibold", "Premi"],
-    ["H3 · Figtree 22 · 600", "text-[22px] leading-tight font-heading font-semibold", "Martedì pizza + birra a 12 €"],
-    ["Titolo · Figtree 17 · 600", "text-[17px] font-heading font-semibold", "Calice di vino"],
-    ["Body · Montserrat 15/1.6", "text-[15px] leading-relaxed", "Ogni martedì sera pizza a scelta e birra media. Mostra la tessera e accumuli il doppio dei punti."],
-    ["Small · Montserrat 14 · 500", "text-sm font-medium", "Il codice si rinnova tra 24s"],
-    ["Caption · Montserrat 12", "text-xs text-muted-foreground", "2 ott, 21:14 · valido una sola volta"],
+    ["Display · Bricolage 56/1 · 800", "text-[56px] leading-none tracking-[-0.03em] font-heading font-extrabold", "340 punti"],
+    ["H1 · Bricolage 34/1.1 · 800", "text-[34px] leading-[1.1] tracking-[-0.02em] font-heading font-extrabold", "Saldo e movimenti"],
+    ["H2 · Bricolage 28/1.15 · 800", "text-[28px] leading-[1.15] font-heading font-extrabold", "Premi"],
+    ["H3 · Bricolage 22/1.2 · 700", "text-[22px] leading-[1.2] font-heading font-bold", "Martedì pizza + birra a 12 €"],
+    ["Body-lg · Manrope 17/26 · 500", "text-[17px] leading-[26px] font-medium", "Ogni visita vale punti: mostra la tessera in cassa."],
+    ["Body · Manrope 15/22 · 400", "text-[15px] leading-[22px]", "Ogni martedì sera pizza a scelta e birra media. Mostra la tessera e accumuli il doppio dei punti."],
+    ["Small · Manrope 13/18 · 500", "text-[13px] leading-[18px] font-medium", "Il codice si rinnova tra 24s"],
+    ["Caption · Manrope 11/14 · 700 · maiuscolo", "caption text-muted-foreground", "Saldo punti"],
   ]
   return (
-    <Section id="tipografia" title="Tipografia" lead="Figtree dà voce ai titoli e ai numeri; Montserrat regge testo e controlli. I numeri del saldo usano cifre tabellari, così non “ballano” quando cambiano.">
+    <Section id="tipografia" title="Tipografia" lead="Bricolage Grotesque dà voce a titoli, numeri e logo; Manrope regge testo e controlli. La caption (classe caption) è l'unico stile in maiuscolo. I numeri del saldo usano cifre tabellari, così non “ballano” quando cambiano.">
       <div className="flex flex-col divide-y rounded-3xl border">
         {scale.map(([meta, cls, sample]) => (
           <div key={meta} className="grid gap-2 p-5 md:grid-cols-[220px_1fr] md:items-baseline">
@@ -640,7 +707,7 @@ function Patterns() {
     <Section id="pattern" title="Pattern Fidelia" lead="Gli elementi che rendono Fidelia riconoscibile. La tessera è un biglietto: due tacche laterali e una perforazione separano chi sei (sopra) da cosa fai adesso (sotto).">
       <div className="grid gap-6 lg:grid-cols-2">
         <div className="flex flex-col gap-2">
-          <span className="text-xs font-medium text-muted-foreground">TicketCard · tessera-biglietto con trama guilloché, timbri verso il premio e riflesso al tocco</span>
+          <span className="text-xs font-medium text-muted-foreground">TicketCard · tessera-biglietto con motivo "timbri" del brand, timbri con la spunta, firma "powered by fidelia" e riflesso al tocco</span>
           <TicketCard venue={{ name: "Osteria del Porto", initials: "OP" }} member={{ name: "Giulia Russo", code: "FDL-4821", points: 340 }} next={PRIZES[3]} />
         </div>
         <div className="flex flex-col gap-2">

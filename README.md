@@ -2,7 +2,7 @@
 
 > **Per lo sviluppatore: leggi [HANDOFF.md](HANDOFF.md).** Qui c'è il design in codice; il backend è da realizzare.
 
-Redesign della web app Fidelia su **shadcn/ui** (preset `b1LObiUpjd`: rhea · taupe · emerald · Montserrat/Figtree · Remix Icon), con design system integrato.
+Redesign della web app Fidelia su **shadcn/ui** (preset `b1LObiUpjd`: rhea · Remix Icon) con il **brand Fidelia** (palette Verde Petrolio/Crema/Oro, Bricolage Grotesque + Manrope, logo e motivi in `public/brand/`), con design system integrato.
 
 ```bash
 npm install

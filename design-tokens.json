@@ -19,104 +19,104 @@
   "color": {
     "light": {
       "background": {
-        "value": "oklch(1 0 0)",
-        "hex": "#ffffff"
+        "value": "#F5F1EA",
+        "hex": "#f5f1ea"
       },
       "foreground": {
-        "value": "oklch(0.147 0.004 49.3)",
-        "hex": "#0c0a09"
+        "value": "#16181B",
+        "hex": "#16181b"
       },
       "card": {
-        "value": "oklch(1 0 0)",
+        "value": "#FFFFFF",
         "hex": "#ffffff"
       },
       "card-foreground": {
-        "value": "oklch(0.147 0.004 49.3)",
-        "hex": "#0c0a09"
-      },
-      "popover": {
-        "value": "oklch(0.214 0.009 43.1)",
-        "hex": "#1d1816"
-      },
-      "popover-foreground": {
-        "value": "oklch(0.986 0.002 67.8)",
-        "hex": "#fbfaf9"
+        "value": "#16181B",
+        "hex": "#16181b"
       },
       "secondary": {
-        "value": "oklch(0.955 0.003 40)",
-        "hex": "#f2efef"
+        "value": "#EFE9DF",
+        "hex": "#efe9df"
       },
       "secondary-foreground": {
-        "value": "oklch(0.214 0.009 43.1)",
-        "hex": "#1d1816"
+        "value": "#16181B",
+        "hex": "#16181b"
       },
       "muted": {
-        "value": "oklch(0.955 0.003 40)",
-        "hex": "#f2efef"
+        "value": "#EFE9DF",
+        "hex": "#efe9df"
       },
       "muted-foreground": {
-        "value": "oklch(0.47 0.02 43)",
-        "hex": "#655752"
+        "value": "#5B5F66",
+        "hex": "#5b5f66"
       },
       "accent": {
-        "value": "oklch(0.955 0.003 40)",
-        "hex": "#f2efef"
+        "value": "#EFE9DF",
+        "hex": "#efe9df"
       },
       "accent-foreground": {
-        "value": "oklch(0.214 0.009 43.1)",
-        "hex": "#1d1816"
+        "value": "#16181B",
+        "hex": "#16181b"
       },
       "destructive": {
-        "value": "oklch(0.53 0.21 27)",
-        "hex": "#c90f1a"
+        "value": "#B3261E",
+        "hex": "#b3261e"
       },
       "destructive-soft": {
-        "value": "oklch(0.95 0.03 25)",
-        "hex": "#ffe7e4"
+        "value": "#FBE7E5",
+        "hex": "#fbe7e5"
       },
       "border": {
-        "value": "oklch(0.9 0.006 34)",
-        "hex": "#e2dddb"
+        "value": "#E6E0D6",
+        "hex": "#e6e0d6"
       },
       "input": {
-        "value": "oklch(0.9 0.006 34)",
-        "hex": "#e2dddb"
+        "value": "#CFC7BA",
+        "hex": "#cfc7ba"
       },
       "primary": {
-        "value": "oklch(0.508 0.118 165.612)",
-        "hex": "#007a55"
+        "value": "#123C3A",
+        "hex": "#123c3a"
       },
       "primary-foreground": {
-        "value": "oklch(0.99 0.02 166)",
-        "hex": "#f0fff9"
+        "value": "#F5F1EA",
+        "hex": "#f5f1ea"
       },
       "primary-soft": {
-        "value": "oklch(0.95 0.045 166)",
-        "hex": "#d3f9e8"
+        "value": "oklch(0.95 0.025 186)",
+        "hex": "#ddf4f1"
       },
       "primary-soft-foreground": {
-        "value": "oklch(0.45 0.1 166)",
-        "hex": "#006648"
+        "value": "#123C3A",
+        "hex": "#123c3a"
       },
       "ring": {
-        "value": "oklch(0.508 0.118 165.612)",
-        "hex": "#007a55"
+        "value": "#123C3A",
+        "hex": "#123c3a"
       },
       "brand": {
-        "value": "oklch(0.378 0.077 168.94)",
-        "hex": "#004f3b"
+        "value": "#123C3A",
+        "hex": "#123c3a"
       },
       "brand-foreground": {
-        "value": "oklch(0.99 0.02 166)",
-        "hex": "#f0fff9"
+        "value": "#F5F1EA",
+        "hex": "#f5f1ea"
+      },
+      "brand-tonal": {
+        "value": "#2A5552",
+        "hex": "#2a5552"
+      },
+      "brand-muted": {
+        "value": "oklch(0.86 0.02 186)",
+        "hex": "#c3d5d3"
       },
       "highlight": {
-        "value": "oklch(0.8 0.15 78)",
-        "hex": "#f2b036"
+        "value": "#FFD36E",
+        "hex": "#ffd36e"
       },
       "highlight-foreground": {
-        "value": "oklch(0.16 0.01 50)",
-        "hex": "#110c09"
+        "value": "#16181B",
+        "hex": "#16181b"
       },
       "chart-1": {
         "value": "oklch(0.897 0.196 126.665)",
@@ -138,65 +138,33 @@
         "value": "oklch(0.453 0.124 130.933)",
         "hex": "#3c6300"
       },
-      "sidebar": {
-        "value": "oklch(0.2 0.008 45)",
-        "hex": "#191513"
-      },
-      "sidebar-foreground": {
-        "value": "oklch(0.986 0.002 67.8)",
-        "hex": "#fbfaf9"
-      },
-      "sidebar-muted": {
-        "value": "oklch(0.8 0.01 45)",
-        "hex": "#c4bcb8"
-      },
-      "sidebar-accent": {
-        "value": "oklch(0.28 0.01 40)",
-        "hex": "#2d2725"
-      },
-      "sidebar-accent-foreground": {
-        "value": "oklch(0.986 0.002 67.8)",
-        "hex": "#fbfaf9"
-      },
       "sidebar-border": {
         "value": "oklch(1 0 0 / 10%)",
         "hex": "#ffffff"
       },
-      "sidebar-ring": {
-        "value": "oklch(0.7 0.02 43)",
-        "hex": "#aa9b95"
-      },
       "surface": {
-        "value": "oklch(0.975 0.003 60)",
-        "hex": "#f8f6f5"
-      },
-      "inverted": {
-        "value": "oklch(0.2 0.008 45)",
-        "hex": "#191513"
-      },
-      "inverted-foreground": {
-        "value": "oklch(0.986 0.002 67.8)",
-        "hex": "#fbfaf9"
-      },
-      "inverted-muted": {
-        "value": "oklch(0.8 0.01 45)",
-        "hex": "#c4bcb8"
+        "value": "#F5F1EA",
+        "hex": "#f5f1ea"
       },
       "success": {
-        "value": "oklch(0.47 0.11 163)",
-        "hex": "#006d48"
+        "value": "#1F7A4D",
+        "hex": "#1f7a4d"
       },
       "success-soft": {
-        "value": "oklch(0.95 0.045 163)",
-        "hex": "#d4f9e6"
+        "value": "#E3F2EA",
+        "hex": "#e3f2ea"
       },
       "warning": {
-        "value": "oklch(0.45 0.11 62)",
-        "hex": "#7f4400"
+        "value": "#7A5200",
+        "hex": "#7a5200"
       },
       "warning-soft": {
-        "value": "oklch(0.96 0.06 92)",
-        "hex": "#fff1c5"
+        "value": "#FFF4DC",
+        "hex": "#fff4dc"
+      },
+      "amber": {
+        "value": "#E2A43A",
+        "hex": "#e2a43a"
       }
     },
     "dark": {
@@ -311,110 +279,11 @@
     }
   },
   "venueThemes": {
-    "emerald": {
-      "name": "Emerald",
-      "input": {
-        "brand": "#007a55",
-        "highlight": "#f2b036"
-      },
-      "light": {
-        "primary": {
-          "value": "oklch(0.5128 0.1099 163.56)",
-          "hex": "#007a55"
-        },
-        "primary-foreground": {
-          "value": "oklch(0.99 0.0141 163.56)",
-          "hex": "#f4fff9"
-        },
-        "primary-soft": {
-          "value": "oklch(0.95 0.045 163.56)",
-          "hex": "#d4f9e6"
-        },
-        "primary-soft-foreground": {
-          "value": "oklch(0.4928 0.1057 163.56)",
-          "hex": "#007350"
-        },
-        "ring": {
-          "value": "oklch(0.5128 0.1099 163.56)",
-          "hex": "#007a55"
-        },
-        "brand": {
-          "value": "oklch(0.4 0.0857 163.56)",
-          "hex": "#00563b"
-        },
-        "brand-foreground": {
-          "value": "oklch(0.99 0.0141 163.56)",
-          "hex": "#f4fff9"
-        },
-        "highlight": {
-          "value": "oklch(0.7998 0.1501 78.05)",
-          "hex": "#f2b036"
-        },
-        "highlight-foreground": {
-          "value": "oklch(0.16 0.02 163.56)",
-          "hex": "#05100b"
-        },
-        "sidebar-primary": {
-          "value": "oklch(0.5128 0.1099 163.56)",
-          "hex": "#007a55"
-        },
-        "sidebar-primary-foreground": {
-          "value": "oklch(0.99 0.0141 163.56)",
-          "hex": "#f4fff9"
-        }
-      },
-      "dark": {
-        "primary": {
-          "value": "oklch(0.72 0.11 163.56)",
-          "hex": "#5aba91"
-        },
-        "primary-foreground": {
-          "value": "oklch(0.16 0.02 163.56)",
-          "hex": "#05100b"
-        },
-        "primary-soft": {
-          "value": "oklch(0.26 0.0557 163.56)",
-          "hex": "#002c1c"
-        },
-        "primary-soft-foreground": {
-          "value": "oklch(0.82 0.11 163.56)",
-          "hex": "#7bdbb0"
-        },
-        "ring": {
-          "value": "oklch(0.72 0.11 163.56)",
-          "hex": "#5aba91"
-        },
-        "brand": {
-          "value": "oklch(0.4 0.0857 163.56)",
-          "hex": "#00563b"
-        },
-        "brand-foreground": {
-          "value": "oklch(0.99 0.0141 163.56)",
-          "hex": "#f4fff9"
-        },
-        "highlight": {
-          "value": "oklch(0.7998 0.1501 78.05)",
-          "hex": "#f2b036"
-        },
-        "highlight-foreground": {
-          "value": "oklch(0.16 0.02 163.56)",
-          "hex": "#05100b"
-        },
-        "sidebar-primary": {
-          "value": "oklch(0.72 0.11 163.56)",
-          "hex": "#5aba91"
-        },
-        "sidebar-primary-foreground": {
-          "value": "oklch(0.16 0.02 163.56)",
-          "hex": "#05100b"
-        }
-      }
-    },
-    "porto": {
-      "name": "Verde porto",
+    "fidelia": {
+      "name": "Fidelia",
       "input": {
         "brand": "#123c3a",
-        "highlight": "#e2a43a"
+        "highlight": "#ffd36e"
       },
       "light": {
         "primary": {
@@ -422,8 +291,8 @@
           "hex": "#123c3a"
         },
         "primary-foreground": {
-          "value": "oklch(0.99 0.0138 190.74)",
-          "hex": "#f2fffe"
+          "value": "oklch(0.9593 0.0103 81.8)",
+          "hex": "#f5f1ea"
         },
         "primary-soft": {
           "value": "oklch(0.95 0.045 190.74)",
@@ -442,24 +311,24 @@
           "hex": "#123c3a"
         },
         "brand-foreground": {
-          "value": "oklch(0.99 0.0138 190.74)",
-          "hex": "#f2fffe"
+          "value": "oklch(0.9593 0.0103 81.8)",
+          "hex": "#f5f1ea"
         },
         "highlight": {
-          "value": "oklch(0.7599 0.1382 76.77)",
-          "hex": "#e2a43a"
+          "value": "oklch(0.8851 0.1291 86.06)",
+          "hex": "#ffd36e"
         },
         "highlight-foreground": {
           "value": "oklch(0.16 0.02 190.74)",
           "hex": "#04100f"
         },
-        "sidebar-primary": {
-          "value": "oklch(0.3267 0.046 190.74)",
-          "hex": "#123c3a"
+        "brand-tonal": {
+          "value": "oklch(0.4167 0.046 190.74)",
+          "hex": "#2c5452"
         },
-        "sidebar-primary-foreground": {
-          "value": "oklch(0.99 0.0138 190.74)",
-          "hex": "#f2fffe"
+        "brand-muted": {
+          "value": "oklch(0.86 0.03 190.74)",
+          "hex": "#bcd8d5"
         }
       },
       "dark": {
@@ -488,24 +357,123 @@
           "hex": "#123c3a"
         },
         "brand-foreground": {
-          "value": "oklch(0.99 0.0138 190.74)",
-          "hex": "#f2fffe"
+          "value": "oklch(0.9593 0.0103 81.8)",
+          "hex": "#f5f1ea"
         },
         "highlight": {
-          "value": "oklch(0.7599 0.1382 76.77)",
-          "hex": "#e2a43a"
+          "value": "oklch(0.8851 0.1291 86.06)",
+          "hex": "#ffd36e"
         },
         "highlight-foreground": {
           "value": "oklch(0.16 0.02 190.74)",
           "hex": "#04100f"
         },
-        "sidebar-primary": {
-          "value": "oklch(0.72 0.046 190.74)",
-          "hex": "#84aeab"
+        "brand-tonal": {
+          "value": "oklch(0.4167 0.046 190.74)",
+          "hex": "#2c5452"
         },
-        "sidebar-primary-foreground": {
-          "value": "oklch(0.16 0.02 190.74)",
-          "hex": "#04100f"
+        "brand-muted": {
+          "value": "oklch(0.86 0.03 190.74)",
+          "hex": "#bcd8d5"
+        }
+      }
+    },
+    "emerald": {
+      "name": "Emerald",
+      "input": {
+        "brand": "#007a55",
+        "highlight": "#f2b036"
+      },
+      "light": {
+        "primary": {
+          "value": "oklch(0.5028 0.1078 163.56)",
+          "hex": "#007753"
+        },
+        "primary-foreground": {
+          "value": "oklch(0.9593 0.0103 81.8)",
+          "hex": "#f5f1ea"
+        },
+        "primary-soft": {
+          "value": "oklch(0.95 0.045 163.56)",
+          "hex": "#d4f9e6"
+        },
+        "primary-soft-foreground": {
+          "value": "oklch(0.4928 0.1057 163.56)",
+          "hex": "#007350"
+        },
+        "ring": {
+          "value": "oklch(0.5028 0.1078 163.56)",
+          "hex": "#007753"
+        },
+        "brand": {
+          "value": "oklch(0.4 0.0857 163.56)",
+          "hex": "#00563b"
+        },
+        "brand-foreground": {
+          "value": "oklch(0.9593 0.0103 81.8)",
+          "hex": "#f5f1ea"
+        },
+        "highlight": {
+          "value": "oklch(0.7998 0.1501 78.05)",
+          "hex": "#f2b036"
+        },
+        "highlight-foreground": {
+          "value": "oklch(0.16 0.02 163.56)",
+          "hex": "#05100b"
+        },
+        "brand-tonal": {
+          "value": "oklch(0.49 0.105 163.56)",
+          "hex": "#007250"
+        },
+        "brand-muted": {
+          "value": "oklch(0.91 0.03 163.56)",
+          "hex": "#d0e8dc"
+        }
+      },
+      "dark": {
+        "primary": {
+          "value": "oklch(0.72 0.11 163.56)",
+          "hex": "#5aba91"
+        },
+        "primary-foreground": {
+          "value": "oklch(0.16 0.02 163.56)",
+          "hex": "#05100b"
+        },
+        "primary-soft": {
+          "value": "oklch(0.26 0.0557 163.56)",
+          "hex": "#002c1c"
+        },
+        "primary-soft-foreground": {
+          "value": "oklch(0.82 0.11 163.56)",
+          "hex": "#7bdbb0"
+        },
+        "ring": {
+          "value": "oklch(0.72 0.11 163.56)",
+          "hex": "#5aba91"
+        },
+        "brand": {
+          "value": "oklch(0.4 0.0857 163.56)",
+          "hex": "#00563b"
+        },
+        "brand-foreground": {
+          "value": "oklch(0.9593 0.0103 81.8)",
+          "hex": "#f5f1ea"
+        },
+        "highlight": {
+          "value": "oklch(0.7998 0.1501 78.05)",
+          "hex": "#f2b036"
+        },
+        "highlight-foreground": {
+          "value": "oklch(0.16 0.02 163.56)",
+          "hex": "#05100b"
+        },
+        "brand-tonal": {
+          "value": "oklch(0.49 0.105 163.56)",
+          "hex": "#007250"
+        },
+        "brand-muted": {
+          "value": "oklch(0.91 0.03 163.56)",
+          "hex": "#d0e8dc"
         }
       }
     },
@@ -521,8 +489,8 @@
           "hex": "#7a1f2b"
         },
         "primary-foreground": {
-          "value": "oklch(0.99 0.0048 17.88)",
-          "hex": "#fffafa"
+          "value": "oklch(0.9593 0.0103 81.8)",
+          "hex": "#f5f1ea"
         },
         "primary-soft": {
           "value": "oklch(0.95 0.0249 17.88)",
@@ -541,8 +509,8 @@
           "hex": "#7a1f2b"
         },
         "brand-foreground": {
-          "value": "oklch(0.99 0.0048 17.88)",
-          "hex": "#fffafa"
+          "value": "oklch(0.9593 0.0103 81.8)",
+          "hex": "#f5f1ea"
         },
         "highlight": {
           "value": "oklch(0.7907 0.1331 79.3)",
@@ -552,13 +520,13 @@
           "value": "oklch(0.16 0.02 17.88)",
           "hex": "#150a0a"
         },
-        "sidebar-primary": {
-          "value": "oklch(0.391 0.1245 17.88)",
-          "hex": "#7a1f2b"
+        "brand-tonal": {
+          "value": "oklch(0.481 0.12 17.88)",
+          "hex": "#963c44"
         },
-        "sidebar-primary-foreground": {
-          "value": "oklch(0.99 0.0048 17.88)",
-          "hex": "#fffafa"
+        "brand-muted": {
+          "value": "oklch(0.87 0.03 17.88)",
+          "hex": "#e8cdcd"
         }
       },
       "dark": {
@@ -587,8 +555,8 @@
           "hex": "#7a1f2b"
         },
         "brand-foreground": {
-          "value": "oklch(0.99 0.0048 17.88)",
-          "hex": "#fffafa"
+          "value": "oklch(0.9593 0.0103 81.8)",
+          "hex": "#f5f1ea"
         },
         "highlight": {
           "value": "oklch(0.7907 0.1331 79.3)",
@@ -598,13 +566,13 @@
           "value": "oklch(0.16 0.02 17.88)",
           "hex": "#150a0a"
         },
-        "sidebar-primary": {
-          "value": "oklch(0.72 0.1245 17.88)",
-          "hex": "#e88387"
+        "brand-tonal": {
+          "value": "oklch(0.481 0.12 17.88)",
+          "hex": "#963c44"
         },
-        "sidebar-primary-foreground": {
-          "value": "oklch(0.16 0.02 17.88)",
-          "hex": "#150a0a"
+        "brand-muted": {
+          "value": "oklch(0.87 0.03 17.88)",
+          "hex": "#e8cdcd"
         }
       }
     },
@@ -620,8 +588,8 @@
           "hex": "#1e3a8a"
         },
         "primary-foreground": {
-          "value": "oklch(0.99 0.0046 265.52)",
-          "hex": "#fafcff"
+          "value": "oklch(0.9593 0.0103 81.8)",
+          "hex": "#f5f1ea"
         },
         "primary-soft": {
           "value": "oklch(0.95 0.0236 265.52)",
@@ -640,8 +608,8 @@
           "hex": "#1e3a8a"
         },
         "brand-foreground": {
-          "value": "oklch(0.99 0.0046 265.52)",
-          "hex": "#fafcff"
+          "value": "oklch(0.9593 0.0103 81.8)",
+          "hex": "#f5f1ea"
         },
         "highlight": {
           "value": "oklch(0.8059 0.1471 78.99)",
@@ -651,13 +619,13 @@
           "value": "oklch(0.16 0.02 265.52)",
           "hex": "#090d16"
         },
-        "sidebar-primary": {
-          "value": "oklch(0.3791 0.1378 265.52)",
-          "hex": "#1e3a8a"
+        "brand-tonal": {
+          "value": "oklch(0.4691 0.12 265.52)",
+          "hex": "#3a569d"
         },
-        "sidebar-primary-foreground": {
-          "value": "oklch(0.99 0.0046 265.52)",
-          "hex": "#fafcff"
+        "brand-muted": {
+          "value": "oklch(0.86 0.03 265.52)",
+          "hex": "#c8d1e5"
         }
       },
       "dark": {
@@ -686,8 +654,8 @@
           "hex": "#1e3a8a"
         },
         "brand-foreground": {
-          "value": "oklch(0.99 0.0046 265.52)",
-          "hex": "#fafcff"
+          "value": "oklch(0.9593 0.0103 81.8)",
+          "hex": "#f5f1ea"
         },
         "highlight": {
           "value": "oklch(0.8059 0.1471 78.99)",
@@ -697,13 +665,13 @@
           "value": "oklch(0.16 0.02 265.52)",
           "hex": "#090d16"
         },
-        "sidebar-primary": {
-          "value": "oklch(0.72 0.1378 265.52)",
-          "hex": "#7ba1fb"
+        "brand-tonal": {
+          "value": "oklch(0.4691 0.12 265.52)",
+          "hex": "#3a569d"
         },
-        "sidebar-primary-foreground": {
-          "value": "oklch(0.16 0.02 265.52)",
-          "hex": "#090d16"
+        "brand-muted": {
+          "value": "oklch(0.86 0.03 265.52)",
+          "hex": "#c8d1e5"
         }
       }
     },
@@ -719,8 +687,8 @@
           "hex": "#1f1f1f"
         },
         "primary-foreground": {
-          "value": "oklch(0.99 0 0)",
-          "hex": "#fcfcfc"
+          "value": "oklch(0.9593 0.0103 81.8)",
+          "hex": "#f5f1ea"
         },
         "primary-soft": {
           "value": "oklch(0.95 0 0)",
@@ -739,8 +707,8 @@
           "hex": "#1f1f1f"
         },
         "brand-foreground": {
-          "value": "oklch(0.99 0 0)",
-          "hex": "#fcfcfc"
+          "value": "oklch(0.9593 0.0103 81.8)",
+          "hex": "#f5f1ea"
         },
         "highlight": {
           "value": "oklch(0.7507 0.1295 79.85)",
@@ -750,13 +718,13 @@
           "value": "oklch(0.16 0 0)",
           "hex": "#0d0d0d"
         },
-        "sidebar-primary": {
-          "value": "oklch(0.2393 0 0)",
-          "hex": "#1f1f1f"
+        "brand-tonal": {
+          "value": "oklch(0.3293 0 0)",
+          "hex": "#353535"
         },
-        "sidebar-primary-foreground": {
-          "value": "oklch(0.99 0 0)",
-          "hex": "#fcfcfc"
+        "brand-muted": {
+          "value": "oklch(0.86 0 0)",
+          "hex": "#d1d1d1"
         }
       },
       "dark": {
@@ -785,8 +753,8 @@
           "hex": "#1f1f1f"
         },
         "brand-foreground": {
-          "value": "oklch(0.99 0 0)",
-          "hex": "#fcfcfc"
+          "value": "oklch(0.9593 0.0103 81.8)",
+          "hex": "#f5f1ea"
         },
         "highlight": {
           "value": "oklch(0.7507 0.1295 79.85)",
@@ -796,13 +764,13 @@
           "value": "oklch(0.16 0 0)",
           "hex": "#0d0d0d"
         },
-        "sidebar-primary": {
-          "value": "oklch(0.72 0.02 0)",
-          "hex": "#b0a0a4"
+        "brand-tonal": {
+          "value": "oklch(0.3293 0 0)",
+          "hex": "#353535"
         },
-        "sidebar-primary-foreground": {
-          "value": "oklch(0.16 0 0)",
-          "hex": "#0d0d0d"
+        "brand-muted": {
+          "value": "oklch(0.86 0 0)",
+          "hex": "#d1d1d1"
         }
       }
     }

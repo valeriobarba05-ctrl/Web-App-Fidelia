@@ -38,7 +38,7 @@ export function ProfiloScreen() {
                 </AvatarFallback>
               </Avatar>
               <div className="flex min-w-0 flex-col gap-0.5">
-                <span className="font-heading text-xl font-semibold">
+                <span className="font-heading text-xl font-bold">
                   {user.firstName} {user.lastName}
                 </span>
                 <span className="truncate text-sm text-muted-foreground">{user.email}</span>

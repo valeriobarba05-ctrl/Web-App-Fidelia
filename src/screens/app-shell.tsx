@@ -83,7 +83,7 @@ function Sidebar({ route }: { route: Route }) {
       <a href="#/home" className="flex items-center gap-3 rounded-2xl p-2 outline-none focus-visible:ring-3 focus-visible:ring-sidebar-ring/40">
         <BrandMark />
         <span className="flex flex-col">
-          <span className="font-heading text-[15px] font-semibold">{venue.name}</span>
+          <span className="font-heading text-[15px] font-bold">{venue.name}</span>
           <span className="text-xs text-sidebar-muted">Tessera fedeltà</span>
         </span>
       </a>

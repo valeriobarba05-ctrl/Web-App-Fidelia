@@ -3,16 +3,38 @@
 Fonte unica: `src/styles/globals.css` (token) + `src/components/ui` (componenti shadcn) + `src/components/fidelia` (pattern).
 Documentazione viva: apri l'app su `#/design-system`.
 
+## Brand Fidelia (Materiale Grafico v1)
+Gli asset originali sono in `public/brand/` (logo, elementi, motivi) e sono usati dai componenti di `src/components/fidelia/brand.tsx`.
+
+| Elemento | Regola | Nel codice |
+|---|---|---|
+| Palette | Verde Petrolio `#123C3A`, Verde Tonale `#2A5552`, Crema `#F5F1EA`, Sabbia `#EFE9DF`, Oro `#FFD36E` (testo dorato `#7A5200`), Nero `#16181B`, Grigio Testo `#5B5F66`, Bordo `#E6E0D6`, Successo `#1F7A4D`, Errore `#B3261E`. Ambra `#E2A43A` solo decorativa | token in `globals.css`; preset "Fidelia" in `themes.ts` (predefinito) |
+| Proporzioni | 60% Crema/Sabbia · 30% Verde · 10% Oro. L'Oro solo per premi, traguardi e riscatto | `--highlight` = Oro |
+| Tipografia | **Bricolage Grotesque** (titoli, numeri, logo: 800, h3 700) · **Manrope** (testo) | `--font-heading`, `--font-sans`; scala nella pagina `#/design-system` |
+| Caption | 11/14 · 700 · maiuscolo · +0,06em, l'unico stile in maiuscolo | utility `caption` |
+| Logo | simbolo + "fidelia" minuscolo, Bricolage 800, -0,035em. Su verde: simbolo `su-verde` e scritta Crema. Minimo 16 px, niente ombre, mai deformato | `FideliaLogo`, `FideliaSymbol` |
+| Firma | "powered by fidelia" in fondo alla tessera e all'accesso, mai più grande del nome del locale | `PoweredBy` |
+| Timbri | pieno = Crema con la spunta del simbolo, vuoto = tratteggiato, ultimo = Oro | `TicketCard` + `Spunta` |
+| Premio | bollino oro con anello tratteggiato; coriandoli solo a premio ottenuto | `riscatto.tsx` |
+| Ombre | niente ombre forti: le superfici si separano col colore | `--shadow-*` ammorbiditi |
+| Motivi | timbri, spunte, quadrati, tessera (**da approvare** nel brand book) | `BrandMotif`: maschera ripetuta che segue il colore del locale (tessera e accesso) |
+| Tono | si dà del "tu"; al cliente non si dice "wallet", "programma fedeltà", "CRM"; niente emoji | "Salva la tessera nel telefono". Restano i nomi ufficiali "Apple Wallet" / "Google Wallet" sui badge |
+
+Scelte da confermare col brand:
+- **Icone:** il brand chiede icone a tratto arrotondato (stile Lucide); qui restano **Remix Icon** perché fanno parte del preset shadcn scelto. Il cambio è meccanico (un import per icona).
+- **Raggi:** il brand book non dà valori numerici; resta il raggio del preset (small 0,45rem).
+- Il logo usa i colori fissi del brand: è l'unica eccezione alla regola "mai colori scritti a mano".
+
 ## Base: preset shadcn `b1LObiUpjd`
 | Asse | Valore |
 |---|---|
 | Stile | **rhea** — controlli e badge `rounded-2xl`, card `rounded-4xl` con `ring-1 ring-foreground/5` e `shadow-sm`, input riempiti `bg-input/50` senza bordo |
 | Colore base | **taupe** (neutri caldi, OKLCH dal registry shadcn) |
-| Tema | **emerald** — `--primary: oklch(0.508 0.118 165.612)` |
-| Font | **Montserrat** (testo) · **Figtree** (titoli e numeri) |
+| Tema | emerald nel preset, **sostituito dalla palette Fidelia** (Verde Petrolio + Oro) |
+| Font | Montserrat/Figtree nel preset, **sostituiti dai font del brand**: Manrope (testo) · Bricolage Grotesque (titoli e numeri) |
 | Icone | **Remix Icon** (`@remixicon/react`): Line, Fill solo per la nav attiva |
 | Raggio | **small** `0.45rem`, scala `sm → 4xl` (controlli `rounded-2xl` ≈ 13px, card `rounded-4xl` ≈ 19px). Nessun raggio in px nei componenti: cambiando `--radius` cambia tutto in proporzione |
-| Menu | **inverted + bold**: menu e toast scuri (`--popover` = taupe 900), voce evidenziata piena col primario |
+| Menu | **inverted + bold**: menu e toast sul verde del brand (`--popover` = `--brand`), voce evidenziata in Verde Tonale |
 | Grafici | **lime** `--chart-1…5` |
 
 ## Livello Fidelia (aggiunte minime)
@@ -25,9 +47,9 @@ Documentazione viva: apri l'app su `#/design-system`.
 - Badge `highlight`, `success`, `warning`, `glass`; taglia `lg`.
 
 ## Colori del locale (li sceglie solo il titolare)
-`src/lib/themes.ts` → `generateTheme(brand, punti, scuro)`. Il titolare sceglie due colori (o un abbinamento: Emerald, Verde porto, Bordeaux, Blu notte, Antracite);
+`src/lib/themes.ts` → `generateTheme(brand, punti, scuro)`. Il titolare sceglie due colori (o un abbinamento: Fidelia, Emerald, Bordeaux, Blu notte, Antracite);
 da questi vengono generati `--primary`, `--primary-soft`, `--brand` (superficie scura della tessera), `--highlight` e i rispettivi testi,
-alzando o abbassando la luminosità finché ogni coppia supera **WCAG AA 4,5:1** in chiaro e in scuro.
+alzando o abbassando la luminosità finché ogni coppia supera **WCAG AA 4,5:1** in chiaro e in scuro. Il testo su colore del locale è Crema; `--brand-tonal` (voce attiva) e `--brand-muted` (testo secondario su verde) sono generati con la stessa garanzia.
 
 ## Leggibilità
 - L'app usa **solo il tema chiaro** (`THEME_MODE = "light"`). Token scuri pronti ma non attivi: sfondo **nero puro** (`#000`), card grafite `oklch(0.17)`, bordi al 14%. Nel tema scuro il primario diventa chiaro con testo scuro.

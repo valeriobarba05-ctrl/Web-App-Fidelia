@@ -17,8 +17,9 @@ useMode(modeOklch)
 export type ThemePreset = { id: string; name: string; brand: string; highlight: string }
 
 export const THEME_PRESETS: ThemePreset[] = [
+  // Colori del brand Fidelia (Verde Petrolio + Oro): sono il predefinito di ogni locale.
+  { id: "fidelia", name: "Fidelia", brand: "#123c3a", highlight: "#ffd36e" },
   { id: "emerald", name: "Emerald", brand: "#007a55", highlight: "#f2b036" },
-  { id: "porto", name: "Verde porto", brand: "#123c3a", highlight: "#e2a43a" },
   { id: "bordeaux", name: "Bordeaux", brand: "#7a1f2b", highlight: "#e8b04b" },
   { id: "notte", name: "Blu notte", brand: "#1e3a8a", highlight: "#f2b33d" },
   { id: "antracite", name: "Antracite", brand: "#1f1f1f", highlight: "#d9a441" },
@@ -46,8 +47,11 @@ function fit(l: number, c: number, h: number, step: number, ok: (col: Oklch) => 
 }
 
 // Superfici fisse del sistema (devono coincidere con globals.css)
+/** Crema del brand: il testo sui fondi di marca (brand book: "Crema su Verde_Petrolio"). */
+const CREMA = toOklch(parse("#F5F1EA")!)!
+
 export const SURFACES = {
-  light: { background: "oklch(1 0 0)", surface: "oklch(0.975 0.003 60)", muted: "oklch(0.955 0.003 40)", card: "oklch(1 0 0)" },
+  light: { background: "#F5F1EA", surface: "#F5F1EA", muted: "#EFE9DF", card: "#FFFFFF" },
   dark: { background: "oklch(0 0 0)", surface: "oklch(0 0 0)", muted: "oklch(0.25 0.006 45)", card: "oklch(0.17 0.004 49)" },
 }
 
@@ -58,7 +62,7 @@ export function generateTheme(brandColor: string, highlightColor: string, dark: 
   const h = base.h ?? 0
   const c = base.c ?? 0
   const S = dark ? SURFACES.dark : SURFACES.light
-  const white = mk(0.99, Math.min(c, 0.02), h)
+  const white = CREMA
   const ink = mk(0.16, Math.min(c, 0.02), h)
 
   // Punti (oro): deve reggere testo scuro sopra di sé.
@@ -67,6 +71,11 @@ export function generateTheme(brandColor: string, highlightColor: string, dark: 
 
   // Superficie di marca (tessera, card saldo, pannello accesso): sempre scura, con testo chiaro e numeri oro.
   const brand = fit(Math.min(base.l, dark ? 0.4 : 0.42), Math.min(c, 0.14), h, -0.01, (x) => cr(x, highlight) >= AA && cr(x, white) >= 7)
+
+  // Verde_Tonale: pannelli e voce attiva sopra il colore di marca (come #2A5552 su #123C3A).
+  const tonal = fit(brand.l + 0.09, Math.min(c, 0.12), h, -0.01, (x) => cr(white, x) >= AA + 0.5)
+  // testo secondario sopra il colore di marca
+  const brandMuted = fit(0.86, Math.min(c, 0.03), h, 0.01, (x) => cr(x, brand) >= AA && cr(x, tonal) >= AA)
 
   let primary: Oklch, primaryFg: Oklch, soft: Oklch, softFg: Oklch
   if (!dark) {
@@ -93,8 +102,8 @@ export function generateTheme(brandColor: string, highlightColor: string, dark: 
     "--brand-foreground": css(white),
     "--highlight": css(highlight),
     "--highlight-foreground": css(ink),
-    "--sidebar-primary": css(primary),
-    "--sidebar-primary-foreground": css(primaryFg),
+    "--brand-tonal": css(tonal),
+    "--brand-muted": css(brandMuted),
   }
 }
 
@@ -103,7 +112,7 @@ export function applyTheme(brandColor: string, highlightColor: string, dark: boo
   root.classList.add("theme-switching")
   root.classList.toggle("dark", dark)
   for (const [k, v] of Object.entries(generateTheme(brandColor, highlightColor, dark))) root.style.setProperty(k, v)
-  document.querySelector('meta[name="theme-color"]')?.setAttribute("content", dark ? "#000000" : "#f8f6f5")
+  document.querySelector('meta[name="theme-color"]')?.setAttribute("content", dark ? "#000000" : "#F5F1EA")
   window.setTimeout(() => root.classList.remove("theme-switching"), 320)
 }
 

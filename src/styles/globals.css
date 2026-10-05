@@ -1,20 +1,21 @@
 /*
  * Fidelia Design System — token layer
- * Base: shadcn/ui preset b1LObiUpjd
- *   style rhea · base taupe · theme emerald · radius small (0.45rem)
- *   font Montserrat · heading Figtree · icons Remix · menu inverted + bold accent · charts lime
- * Fidelia layer: --highlight (punti/oro), --success, --warning, --ticket-*, venue theming.
+ * Struttura: shadcn/ui preset b1LObiUpjd (stile rhea · radius small 0.45rem · icone Remix · menu inverted + bold · chart lime)
+ * Brand:     Fidelia – Materiale Grafico v1 (palette, tipografia, logo, elementi, motivi)
+ *   colori  Verde Petrolio #123C3A · Oro #FFD36E · Crema #F5F1EA · Sabbia #EFE9DF · Nero #16181B · Grigio #5B5F66
+ *   font    Bricolage Grotesque (titoli, numeri, logo) · Manrope (testo e interfaccia)
+ *   proporz. 60% Crema/Sabbia · 30% Verde · 10% Oro (solo premi e traguardi)
  */
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "@fontsource-variable/montserrat";
-@import "@fontsource-variable/figtree";
+@import "@fontsource-variable/bricolage-grotesque";
+@import "@fontsource-variable/manrope";
 
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-sans: "Montserrat Variable", ui-sans-serif, system-ui, sans-serif;
-  --font-heading: "Figtree Variable", "Montserrat Variable", ui-sans-serif, sans-serif;
+  --font-sans: "Manrope Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Bricolage Grotesque Variable", "Manrope Variable", ui-sans-serif, sans-serif;
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -63,6 +64,9 @@
   --color-destructive-soft: var(--destructive-soft);
   --color-sidebar-muted: var(--sidebar-muted);
   --color-inverted-muted: var(--inverted-muted);
+  --color-brand-tonal: var(--brand-tonal);
+  --color-brand-muted: var(--brand-muted);
+  --color-amber: var(--amber);
   --color-inverted: var(--inverted);
   --color-inverted-foreground: var(--inverted-foreground);
 
@@ -77,9 +81,9 @@
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 
   /* Elevazione: ogni ombra dell'app viene da qui (niente valori sparsi nei componenti) */
-  --shadow-float: 0 14px 34px -16px oklch(0.16 0.01 50 / 0.32);
-  --shadow-overlay: 0 18px 40px -16px oklch(0 0 0 / 0.42);
-  --shadow-ticket: 0 22px 44px -20px color-mix(in oklch, var(--brand) 75%, black), 0 2px 6px -2px oklch(0 0 0 / 0.18);
+  --shadow-float: 0 10px 24px -16px oklch(0.2 0.03 190 / 0.22);
+  --shadow-overlay: 0 14px 32px -16px oklch(0.2 0.03 190 / 0.32);
+  --shadow-ticket: 0 16px 32px -20px color-mix(in oklch, var(--brand) 70%, black);
   --shadow-points: 0 10px 24px -8px color-mix(in oklch, var(--highlight) 80%, black);
   --animate-rise: rise 0.5s var(--ease-out-expo) both;
   --animate-pop: pop 0.45s var(--ease-out-expo) both;
@@ -102,34 +106,36 @@
 :root {
   --radius: 0.45rem; /* preset b1LObiUpjd: radius "small" */
 
-  /* taupe base (light) — muted-foreground scurito per AA anche su --muted */
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.147 0.004 49.3);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.147 0.004 49.3);
-  --popover: oklch(0.214 0.009 43.1); /* menu: inverted */
-  --popover-foreground: oklch(0.986 0.002 67.8);
-  --secondary: oklch(0.955 0.003 40);
-  --secondary-foreground: oklch(0.214 0.009 43.1);
-  --muted: oklch(0.955 0.003 40);
-  --muted-foreground: oklch(0.47 0.02 43);
-  --accent: oklch(0.955 0.003 40);
-  --accent-foreground: oklch(0.214 0.009 43.1);
-  --destructive: oklch(0.53 0.21 27);
-  --destructive-soft: oklch(0.95 0.03 25);
-  --border: oklch(0.9 0.006 34);
-  --input: oklch(0.9 0.006 34);
+  /* palette Fidelia (02 Colori/Fidelia-colori.css) */
+  --background: #F5F1EA; /* Crema: fondo principale */
+  --foreground: #16181B; /* Nero */
+  --card: #FFFFFF; /* Bianco_Card: le superfici si separano col colore, non con ombre forti */
+  --card-foreground: #16181B;
+  --popover: var(--brand); /* menu "inverted": sul colore di marca */
+  --popover-foreground: var(--brand-foreground);
+  --secondary: #EFE9DF; /* Sabbia */
+  --secondary-foreground: #16181B;
+  --muted: #EFE9DF;
+  --muted-foreground: #5B5F66; /* Grigio_Testo */
+  --accent: #EFE9DF;
+  --accent-foreground: #16181B;
+  --destructive: #B3261E; /* Errore */
+  --destructive-soft: #FBE7E5;
+  --border: #E6E0D6; /* Bordo */
+  --input: #CFC7BA; /* Bordo_Input */
 
-  /* tema del locale: sovrascritto a runtime da applyTheme() (src/lib/themes.ts) */
-  --primary: oklch(0.508 0.118 165.612);
-  --primary-foreground: oklch(0.99 0.02 166);
-  --primary-soft: oklch(0.95 0.045 166);
-  --primary-soft-foreground: oklch(0.45 0.1 166);
-  --ring: oklch(0.508 0.118 165.612);
-  --brand: oklch(0.378 0.077 168.94);
-  --brand-foreground: oklch(0.99 0.02 166);
-  --highlight: oklch(0.8 0.15 78);
-  --highlight-foreground: oklch(0.16 0.01 50);
+  /* tema del locale: sovrascritto a runtime da applyTheme() (src/lib/themes.ts). Predefinito = brand Fidelia */
+  --primary: #123C3A; /* Verde_Petrolio */
+  --primary-foreground: #F5F1EA;
+  --primary-soft: oklch(0.95 0.025 186);
+  --primary-soft-foreground: #123C3A;
+  --ring: #123C3A;
+  --brand: #123C3A;
+  --brand-foreground: #F5F1EA; /* Crema su Verde_Petrolio 10,8:1 */
+  --brand-tonal: #2A5552; /* Verde_Tonale */
+  --brand-muted: oklch(0.86 0.02 186);
+  --highlight: #FFD36E; /* Oro: solo premi, traguardi, riscatto */
+  --highlight-foreground: #16181B;
 
   /* lime charts */
   --chart-1: oklch(0.897 0.196 126.665);
@@ -138,28 +144,29 @@
   --chart-4: oklch(0.532 0.157 131.589);
   --chart-5: oklch(0.453 0.124 130.933);
 
-  --sidebar: oklch(0.2 0.008 45);
-  --sidebar-foreground: oklch(0.986 0.002 67.8);
-  --sidebar-muted: oklch(0.8 0.01 45);
-  --sidebar-primary: var(--primary);
-  --sidebar-primary-foreground: var(--primary-foreground);
-  --sidebar-accent: oklch(0.28 0.01 40);
-  --sidebar-accent-foreground: oklch(0.986 0.002 67.8);
+  --sidebar: var(--brand);
+  --sidebar-foreground: var(--brand-foreground);
+  --sidebar-muted: var(--brand-muted);
+  --sidebar-primary: var(--brand-tonal);
+  --sidebar-primary-foreground: var(--brand-foreground);
+  --sidebar-accent: var(--brand-tonal);
+  --sidebar-accent-foreground: var(--brand-foreground);
   --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.7 0.02 43);
+  --sidebar-ring: var(--highlight);
 
   /* Fidelia layer */
-  --surface: oklch(0.975 0.003 60);
-  --inverted: oklch(0.2 0.008 45);
-  --inverted-foreground: oklch(0.986 0.002 67.8);
-  --inverted-muted: oklch(0.8 0.01 45);
-  --success: oklch(0.47 0.11 163);
-  --success-soft: oklch(0.95 0.045 163);
-  --warning: oklch(0.45 0.11 62);
-  --warning-soft: oklch(0.96 0.06 92);
+  --surface: #F5F1EA;
+  --inverted: var(--brand); /* barra in basso, promo: il 30% verde del brand */
+  --inverted-foreground: var(--brand-foreground);
+  --inverted-muted: var(--brand-muted);
+  --success: #1F7A4D; /* Successo */
+  --success-soft: #E3F2EA;
+  --warning: #7A5200; /* Oro_Testo */
+  --warning-soft: #FFF4DC; /* Oro_Tenue */
+  --amber: #E2A43A; /* Ambra: solo decorativo, mai testo */
 }
 
-/* Tema scuro: sfondo nero puro, card grafite, testi chiari. */
+/* Tema scuro (non attivo: THEME_MODE = "light"). */
 .dark {
   --background: oklch(0 0 0);
   --foreground: oklch(0.97 0.003 67.8);
@@ -251,6 +258,15 @@
 }
 
 @utility tabular { font-variant-numeric: tabular-nums; }
+
+/* caption del brand: 11/14 · 700 · maiuscolo · +0,06em (l'unico stile in maiuscolo) */
+@utility caption {
+  font-size: 11px;
+  line-height: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
 
 /* Veli per il testo sopra le foto caricate dal titolare: garantiscono la leggibilità su qualsiasi immagine. */
 @utility scrim-photo {

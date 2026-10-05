@@ -19,7 +19,7 @@ export function MovementRow({ m, className }: { m: Movement; className?: string 
         <ItemTitle>{m.label}</ItemTitle>
         <ItemDescription className="text-xs">{fmtMovementDate(m.date)}</ItemDescription>
       </ItemContent>
-      <span className={cn("font-heading text-base font-semibold tabular", plus ? "text-success" : "text-foreground")}>
+      <span className={cn("font-heading text-base font-bold tabular", plus ? "text-success" : "text-foreground")}>
         {plus ? "+" : "−"}
         {Math.abs(m.points)}
       </span>

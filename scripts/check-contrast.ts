@@ -35,7 +35,9 @@ const PAIRS: [string, string, number?, number?][] = [
   ["success", "success-soft"], ["success", "card"], ["warning", "warning-soft"],
   ["destructive", "card"], ["destructive", "background"], ["destructive", "destructive-soft"],
   ["background", "destructive"], // voce di menu "Esci" evidenziata
-  ["muted-foreground", "secondary"], ["foreground", "card"],
+  ["muted-foreground", "secondary"], ["foreground", "card"], ["foreground", "muted"],
+  // brand Fidelia: Verde Tonale (voci attive) e testo attenuato su verde (caption, firma "powered by")
+  ["brand-foreground", "brand-tonal"], ["brand-muted", "brand"], ["brand-muted", "brand-tonal"], ["sidebar-muted", "sidebar-accent"],
 ]
 
 const EXTRA = [
@@ -56,6 +58,11 @@ for (const preset of [...THEME_PRESETS, ...EXTRA])
         return v?.startsWith("var(--") ? resolve(v.slice(6, -1)) : v
       }
       const f = resolve(fg), b = resolve(bg)
+      if (!f || !b) {
+        fails++
+        console.log(`✗ ${preset.name.padEnd(24)} ${mode.padEnd(6)} variabile mancante: ${!f ? fg : bg}`)
+        continue
+      }
       const ratio = wcagContrast(alpha < 1 ? over(f, b, alpha) : f, b)
       if (ratio < min) {
         fails++

@@ -35,7 +35,7 @@ function DrawerFooter({ className, ...props }: React.ComponentProps<"div">) {
   return <div data-slot="drawer-footer" className={cn("mt-auto flex flex-col gap-2 p-5 pt-2", className)} {...props} />
 }
 function DrawerTitle({ className, ...props }: React.ComponentProps<typeof DrawerPrimitive.Title>) {
-  return <DrawerPrimitive.Title data-slot="drawer-title" className={cn("font-heading text-xl font-semibold text-foreground", className)} {...props} />
+  return <DrawerPrimitive.Title data-slot="drawer-title" className={cn("font-heading text-xl font-bold text-foreground", className)} {...props} />
 }
 function DrawerDescription({ className, ...props }: React.ComponentProps<typeof DrawerPrimitive.Description>) {
   return <DrawerPrimitive.Description data-slot="drawer-description" className={cn("text-sm text-muted-foreground", className)} {...props} />

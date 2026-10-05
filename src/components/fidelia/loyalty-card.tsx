@@ -1,6 +1,7 @@
 import * as React from "react"
-import { RiCheckLine, RiGift2Fill } from "@remixicon/react"
+import { RiGift2Fill } from "@remixicon/react"
 
+import { BrandMotif, PoweredBy, Spunta } from "@/components/fidelia/brand"
 import { PointsOdometer } from "@/components/fidelia/points-odometer"
 import { cn, fmtPoints } from "@/lib/utils"
 import type { Prize } from "@/types"
@@ -19,34 +20,9 @@ export function VenueMark({ initials, logo, className }: { initials: string; log
 }
 
 /**
- * Trama guilloché (come banconote e biglietti): curve epitrocoidi sovrapposte,
- * calcolate una volta sola. Dà alla tessera l'aria di un documento "vero" senza immagini.
+ * Timbri verso il prossimo premio (brand book, 04 Elementi): 10 caselle, l'ultima è il premio.
+ * Pieno = Crema con la spunta del simbolo, vuoto = tratteggiato, ultimo = Oro.
  */
-const GUILLOCHE = (() => {
-  const curve = (R: number, r: number, d: number, turns: number, steps: number, cx: number, cy: number) => {
-    let p = ""
-    for (let i = 0; i <= steps; i++) {
-      const t = (i / steps) * Math.PI * 2 * turns
-      const x = cx + (R + r) * Math.cos(t) - d * Math.cos(((R + r) / r) * t)
-      const y = cy + (R + r) * Math.sin(t) - d * Math.sin(((R + r) / r) * t)
-      p += (i ? "L" : "M") + x.toFixed(1) + " " + y.toFixed(1)
-    }
-    return p
-  }
-  return [curve(84, 12, 38, 6, 900, 160, 160), curve(66, 9, 46, 9, 900, 160, 160), curve(102, 17, 30, 17, 1400, 160, 160)]
-})()
-
-function Guilloche({ className }: { className?: string }) {
-  return (
-    <svg aria-hidden viewBox="0 0 320 320" className={cn("pointer-events-none absolute", className)} fill="none" stroke="currentColor" strokeWidth="0.6">
-      {GUILLOCHE.map((d, i) => (
-        <path key={i} d={d} opacity={0.9 - i * 0.2} />
-      ))}
-    </svg>
-  )
-}
-
-/** Timbri verso il prossimo premio: 10 caselle, l'ultima è il premio. */
 function Stamps({ points, next }: { points: number; next: Prize }) {
   const total = 10
   const filled = Math.min(total - 1, Math.floor((points / next.cost) * total))
@@ -62,12 +38,12 @@ function Stamps({ points, next }: { points: number; next: Prize }) {
               aria-hidden
               className={cn(
                 "flex aspect-square w-full max-w-7 items-center justify-center rounded-full transition-[background-color,transform] duration-500 ease-(--ease-out-expo)",
-                on ? "bg-highlight text-highlight-foreground" : "border-[1.5px] border-dashed border-current/35",
-                last && "max-w-8 border-solid border-highlight bg-white/10 text-highlight",
+                on ? "bg-brand-foreground text-brand" : "border-[1.5px] border-dashed border-current/40",
+                last && "max-w-8 border-0 bg-highlight text-highlight-foreground",
               )}
               style={{ transitionDelay: `${i * 40}ms` }}
             >
-              {last ? <RiGift2Fill className="size-[55%]" /> : on && <RiCheckLine className="size-[60%]" />}
+              {last ? <RiGift2Fill className="size-[55%]" /> : on && <Spunta className="w-[64%]" strokeWidth={9} />}
             </li>
           )
         })}
@@ -147,8 +123,8 @@ export function TicketCard({
         className="ticket-notch relative isolate overflow-hidden rounded-4xl bg-brand text-brand-foreground shadow-ticket transition-transform duration-300 ease-(--ease-out-expo) [transform:rotateX(var(--rx,0deg))_rotateY(var(--ry,0deg))] [transform-style:preserve-3d]"
         style={{ ["--ticket-cut" as string]: `${cut}px` }}
       >
-        {/* trama di sicurezza */}
-        <Guilloche className="-top-24 -right-28 -z-10 size-[340px] text-brand-foreground opacity-[0.11]" />
+        {/* motivo del brand "timbri", sfumato verso il saldo */}
+        <BrandMotif motif="timbri" fade="left" scale={0.75} className="-z-10 text-brand-foreground opacity-[0.10]" />
         {/* riflesso che segue il dito */}
         <div
           aria-hidden
@@ -159,14 +135,14 @@ export function TicketCard({
           <div className="flex items-center gap-3">
             <VenueMark initials={venue.initials} logo={venue.logo} />
             <div className="flex min-w-0 flex-1 flex-col">
-              <span className="truncate font-heading text-[15px] font-semibold">{venue.name}</span>
+              <span className="truncate font-heading text-[15px] font-bold">{venue.name}</span>
               <span className="truncate text-xs opacity-90">{user.name}</span>
             </div>
-            <span className="shrink-0 rounded-lg border border-current/25 px-2 py-1 font-heading text-[11px] font-semibold tracking-[0.14em] tabular opacity-95">{user.code}</span>
+            <span className="shrink-0 rounded-lg border border-current/25 px-2 py-1 font-heading text-[11px] font-bold tracking-[0.14em] tabular opacity-95">{user.code}</span>
           </div>
           <div className="flex items-end justify-between gap-3">
             <div className="flex flex-col gap-1">
-              <span className="text-xs font-medium tracking-[0.08em] uppercase opacity-90">Saldo punti</span>
+              <span className="caption text-brand-muted">Saldo punti</span>
               <PointsOdometer value={user.points} className="text-[56px] text-highlight" />
             </div>
             {next && !stamps && (
@@ -186,6 +162,7 @@ export function TicketCard({
         <div className="flex flex-col gap-4 px-5 pt-4 pb-5">
           {stamps && (next ? <Stamps points={user.points} next={next} /> : <p className="text-sm font-medium">Hai sbloccato tutti i premi del catalogo.</p>)}
           {children}
+          <PoweredBy onBrand className="self-center pt-1" />
         </div>
       </div>
     </div>

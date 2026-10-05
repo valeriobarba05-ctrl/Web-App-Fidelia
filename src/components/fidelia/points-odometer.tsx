@@ -23,7 +23,7 @@ export function PointsOdometer({ value, className, label = "punti" }: { value: n
   // Riduci movimento: niente rullo, il nuovo saldo compare con una dissolvenza.
   if (reduced)
     return (
-      <span className={cn("inline-flex items-baseline font-heading font-semibold tabular leading-none tracking-[-0.03em]", className)}>
+      <span className={cn("inline-flex items-baseline font-heading font-extrabold tabular leading-none tracking-[-0.03em]", className)}>
         <span key={value} data-motion="fade" aria-live="polite">
           {value.toLocaleString("it-IT")}
           <span className="sr-only"> {label}</span>
@@ -31,7 +31,7 @@ export function PointsOdometer({ value, className, label = "punti" }: { value: n
       </span>
     )
   return (
-    <span className={cn("inline-flex items-baseline font-heading font-semibold tabular leading-none tracking-[-0.03em]", className)}>
+    <span className={cn("inline-flex items-baseline font-heading font-extrabold tabular leading-none tracking-[-0.03em]", className)}>
       <span className="sr-only">
         {value.toLocaleString("it-IT")} {label}
       </span>

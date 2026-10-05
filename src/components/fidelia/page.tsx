@@ -26,7 +26,7 @@ export function PageHeader({
         </Button>
       )}
       <div className="flex min-w-0 flex-1 flex-col gap-1">
-        <h1 className="font-heading text-[28px] leading-tight font-semibold tracking-[-0.02em] lg:text-[34px]">{title}</h1>
+        <h1 className="font-heading text-[28px] leading-tight font-extrabold tracking-[-0.02em] lg:text-[34px]">{title}</h1>
         {description && <p className="text-sm text-muted-foreground">{description}</p>}
       </div>
       {actions && <div className="flex shrink-0 items-center gap-2">{actions}</div>}
@@ -41,7 +41,7 @@ export function PageBody({ className, ...props }: React.ComponentProps<"main">) 
 export function SectionTitle({ children, action, id }: { children: React.ReactNode; action?: React.ReactNode; id?: string }) {
   return (
     <div className="flex items-center justify-between gap-3 px-1">
-      <h2 id={id} className="font-heading text-lg font-semibold tracking-[-0.01em]">
+      <h2 id={id} className="font-heading text-lg font-bold tracking-[-0.01em]">
         {children}
       </h2>
       {action}

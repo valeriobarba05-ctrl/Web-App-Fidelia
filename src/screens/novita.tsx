@@ -123,7 +123,7 @@ function PromoPanel() {
         </div>
         <CardContent className="flex flex-col gap-2 py-5">
           <span className="text-xs font-medium opacity-90">{hero.label}</span>
-          <h2 className="font-heading text-[26px] leading-tight font-semibold">{hero.title}</h2>
+          <h2 className="font-heading text-[26px] leading-tight font-extrabold">{hero.title}</h2>
           <p className="text-sm leading-relaxed">{hero.text}</p>
           <span className="text-xs font-semibold opacity-90">{hero.validity}</span>
         </CardContent>
@@ -142,7 +142,7 @@ function PromoPanel() {
               )}
               <div className="flex flex-col gap-1">
                 <Badge variant="secondary">{p.label}</Badge>
-                <span className="font-heading text-base font-semibold">{p.title}</span>
+                <span className="font-heading text-base font-bold">{p.title}</span>
                 <span className="text-sm text-muted-foreground">{p.text}</span>
                 <span className="text-xs font-semibold text-muted-foreground">{p.validity}</span>
               </div>
@@ -194,7 +194,7 @@ function EventsPanel({ initial }: { initial: string | null }) {
         <div className="grid gap-4 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] lg:items-start">
           <EventCard event={hero} tall booked={bookings[hero.id]} onOpen={() => setOpenId(hero.id)} />
           <div className="flex flex-col gap-2.5">
-            {rest.length > 0 && <h2 className="px-1 font-heading text-lg font-semibold">In programma</h2>}
+            {rest.length > 0 && <h2 className="px-1 font-heading text-lg font-bold">In programma</h2>}
             {rest.map((e) => {
               const d = eventDate(e.date)
               const Icon = EVENT_ICON[e.type]
@@ -213,7 +213,7 @@ function EventsPanel({ initial }: { initial: string | null }) {
                     <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
                       <Icon className="size-3.5" /> {e.typeLabel}
                     </span>
-                    <span className="truncate font-heading text-base font-semibold">{e.title}</span>
+                    <span className="truncate font-heading text-base font-bold">{e.title}</span>
                     <span className="flex flex-wrap items-center gap-x-3 text-xs text-muted-foreground">
                       <span>
                         {d.weekday} · {e.time}
@@ -291,7 +291,7 @@ function BookingSheet({ event, onDone }: { event: FideliaEvent; onDone: () => vo
               <Button variant="secondary" size="icon-xl" aria-label="Una persona in meno" disabled={guests <= 1} onClick={() => setGuests((g) => g - 1)}>
                 <RiSubtractLine />
               </Button>
-              <output aria-live="polite" className="w-10 text-center font-heading text-xl font-semibold tabular">
+              <output aria-live="polite" className="w-10 text-center font-heading text-xl font-bold tabular">
                 {guests}
               </output>
               <Button variant="secondary" size="icon-xl" aria-label="Una persona in più" disabled={guests >= max} onClick={() => setGuests((g) => g + 1)}>

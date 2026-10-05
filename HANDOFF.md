@@ -11,7 +11,7 @@ npm run check:contrast   # leggibilità WCAG AA di tutti i colori, chiaro e scur
 npm run tokens           # rigenera design-tokens.json
 ```
 
-Stack: React 19 · TypeScript · Vite · Tailwind CSS v4 · shadcn/ui (preset `b1LObiUpjd`: stile rhea, base taupe, tema emerald, Montserrat + Figtree, Remix Icon) · Radix UI · vaul · sonner.
+Stack: React 19 · TypeScript · Vite · Tailwind CSS v4 · shadcn/ui (preset `b1LObiUpjd`: stile rhea, Remix Icon) con il brand Fidelia (palette, Bricolage Grotesque + Manrope, logo e motivi) · Radix UI · vaul · sonner.
 
 ---
 
@@ -22,7 +22,8 @@ Stack: React 19 · TypeScript · Vite · Tailwind CSS v4 · shadcn/ui (preset `b
 | `src/styles/globals.css` | **Token** del design system (colori OKLCH chiaro/scuro, raggi, font, animazioni) | Tenere. Ogni colore passa da qui. |
 | `src/lib/themes.ts` | Generatore dei colori del locale con contrasto garantito | Tenere. Chiamare `applyTheme(brand, punti, scuro)` all'avvio con i colori del locale. |
 | `src/components/ui/` | Componenti shadcn in stile rhea (Button, Card, Badge, Input, Switch, Tabs, Drawer, Dialog, …) | Tenere. |
-| `src/components/fidelia/` | Pattern Fidelia **puri** (ricevono dati via props): `TicketCard`, `VenueMark`, `PointsOdometer`, `QrCode`, `EventCard`, `EventArt`, `PrizeArt`, `MovementRow`, `PageHeader/PageBody` | Tenere. |
+| `src/components/fidelia/` | Pattern Fidelia **puri** (ricevono dati via props): `TicketCard`, `VenueMark`, `FideliaLogo`/`PoweredBy`/`BrandMotif`/`Spunta` (brand), `PointsOdometer`, `QrCode`, `EventCard`, `EventArt`, `PrizeArt`, `MovementRow`, `PageHeader/PageBody` | Tenere. |
+| `public/brand/` | **Asset del brand** (Materiale Grafico v1): logo in 4 varianti, bollino premio, coriandoli, file di timbri, motivi + versioni `-maschera` per `BrandMotif`. Icone PWA e favicon derivano dal simbolo | Tenere. Usarli tramite `components/fidelia/brand.tsx` |
 | `src/lib/format.ts`, `utils.ts`, `qr.ts` | Formattazione italiana, orari, utilità, disegno QR | Tenere. |
 | `src/types.ts` | **Contratto dati**: forma di Venue, Prize, Promo, Event, Movement, Customer | Allineare all'API. |
 | `src/screens/` | Schermate dell'app **cliente** | Tenere il markup; collegare i dati reali. |

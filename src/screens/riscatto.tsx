@@ -1,5 +1,5 @@
 import * as React from "react"
-import { RiCheckboxCircleFill, RiErrorWarningLine, RiGift2Line, RiHourglassLine, RiStore2Line } from "@remixicon/react"
+import { RiErrorWarningLine, RiGift2Line, RiHourglassLine, RiStore2Line } from "@remixicon/react"
 
 import { PageBody, PageHeader } from "@/screens/app-shell"
 import { PointsOdometer } from "@/components/fidelia/points-odometer"
@@ -27,10 +27,12 @@ export function RiscattoScreen() {
       <>
         <PageHeader title="Premio riscattato" onBack={() => navigate("premi")} />
         <PageBody className="max-w-xl">
-          <Card className="items-center gap-4 text-center">
-            <CardContent className="flex flex-col items-center gap-4 py-4">
-              <RiCheckboxCircleFill className="size-16 animate-pop text-success" />
-              <h2 className="font-heading text-2xl font-semibold">Buon appetito!</h2>
+          <Card className="relative items-center gap-4 overflow-hidden text-center">
+            {/* coriandoli del brand: solo per il premio ottenuto */}
+            <img src="./brand/elementi/coriandoli.svg" alt="" aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-40 w-full object-cover opacity-90" />
+            <CardContent className="relative flex flex-col items-center gap-4 py-4">
+              <img src="./brand/elementi/bollino-premio.svg" alt="" aria-hidden className="size-24 animate-pop" />
+              <h2 className="font-heading text-2xl font-extrabold">Buon appetito!</h2>
               <p className="max-w-xs text-sm text-muted-foreground">
                 <strong className="text-foreground">{done}</strong> è stato registrato in cassa. Ecco il tuo nuovo saldo:
               </p>
@@ -84,7 +86,7 @@ export function RiscattoScreen() {
             <div className="flex w-full items-center gap-3">
               <PrizeArt id={prize.id} image={prize.image} category={prize.category} className="size-[52px]" />
               <div className="flex flex-1 flex-col">
-                <span className="font-heading text-[17px] font-semibold">{prize.name}</span>
+                <span className="font-heading text-[17px] font-bold">{prize.name}</span>
                 <span className="text-[13px] text-muted-foreground">−{prize.cost} punti dopo la scansione</span>
               </div>
             </div>
@@ -107,7 +109,7 @@ export function RiscattoScreen() {
               <QrCode value={`FIDELIA-RISCATTO:${redemption.code}`} label="QR monouso per il riscatto del premio" />
             </div>
             <div className="flex flex-col items-center gap-1">
-              <span className="font-heading text-xl font-semibold tracking-[0.18em] tabular">{redemption.code}</span>
+              <span className="font-heading text-xl font-bold tracking-[0.18em] tabular">{redemption.code}</span>
               <span className="text-xs text-muted-foreground">QR monouso · valido una sola volta</span>
             </div>
 
@@ -116,7 +118,7 @@ export function RiscattoScreen() {
                 <span className="flex items-center gap-2 text-muted-foreground">
                   <RiHourglassLine className="size-4" /> Scade tra
                 </span>
-                <span className="font-heading text-lg font-semibold tabular">
+                <span className="font-heading text-lg font-bold tabular">
                   {mm}:{ss}
                 </span>
               </div>

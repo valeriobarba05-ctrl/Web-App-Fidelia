@@ -2,6 +2,7 @@ import * as React from "react"
 import { RiAddBoxLine, RiAndroidFill, RiAppleFill, RiEyeLine, RiEyeOffLine, RiGift2Line, RiMore2Fill, RiQrCodeLine, RiShare2Line, RiSparkling2Line } from "@remixicon/react"
 
 import { BrandMark as VenueMark } from "@/screens/parts"
+import { BrandMotif, PoweredBy } from "@/components/fidelia/brand"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -78,15 +79,14 @@ export function AccessoScreen() {
             <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_top,var(--brand)_35%,color-mix(in_oklch,var(--brand)_82%,transparent))]" />
           </>
         )}
-        <span aria-hidden className="pointer-events-none absolute -right-10 -bottom-16 -z-10 font-heading text-[340px] leading-none font-black tracking-[-0.06em] opacity-[0.07] select-none">
-          {venue.initials}
-        </span>
+        {/* motivo del brand "spunte", sfumato verso il testo */}
+        <BrandMotif motif="spunte" fade="left" className="-z-10 text-brand-foreground opacity-[0.12]" />
         <div className="flex items-center gap-3">
           <VenueMark className="size-12 text-base" />
-          <span className="font-heading text-lg font-semibold">{venue.name}</span>
+          <span className="font-heading text-lg font-bold">{venue.name}</span>
         </div>
         <div className="flex max-w-lg flex-col gap-5">
-          <h1 className="font-heading text-[40px] leading-[1.05] font-semibold tracking-[-0.03em] sm:text-[52px]">{venue.tagline}</h1>
+          <h1 className="font-heading text-[40px] leading-[1.05] font-extrabold tracking-[-0.03em] sm:text-[52px]">{venue.tagline}</h1>
           <ul className="flex flex-col gap-3 text-[15px]">
             {[
               { icon: RiQrCodeLine, t: `${pointsRule(venue)}, con un QR dal telefono` },
@@ -102,7 +102,10 @@ export function AccessoScreen() {
             ))}
           </ul>
         </div>
-        <p className="hidden text-xs opacity-90 lg:block">Fidelia · la tessera fedeltà che vive nel telefono, senza app da scaricare.</p>
+        <div className="hidden flex-col gap-2 lg:flex">
+          <PoweredBy onBrand />
+          <p className="text-xs text-brand-muted">La tessera fedeltà che vive nel telefono, senza app da scaricare.</p>
+        </div>
       </section>
 
       {/* Form */}
@@ -201,7 +204,7 @@ function InstallHint() {
     <Card size="sm" className="bg-transparent shadow-none ring-0 border border-dashed">
       <CardContent className="flex flex-col gap-3">
         <div className="flex items-center justify-between gap-3">
-          <span className="font-heading text-[15px] font-semibold">Installa l'app sul telefono</span>
+          <span className="font-heading text-[15px] font-bold">Installa l'app sul telefono</span>
           <Tabs value={os} onValueChange={(v) => setOs(v as typeof os)}>
             <TabsList className="h-8">
               <TabsTrigger value="ios" aria-label="iPhone" className="px-2.5">

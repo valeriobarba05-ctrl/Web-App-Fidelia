@@ -50,7 +50,7 @@ export function EventCard({
         </div>
       </div>
       <div className="flex flex-col gap-2 p-5 pt-20">
-        <h3 className="font-heading text-[24px] leading-tight font-semibold tracking-[-0.01em] text-on-photo">{event.title}</h3>
+        <h3 className="font-heading text-[24px] leading-tight font-extrabold tracking-[-0.01em] text-on-photo">{event.title}</h3>
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[13px] font-medium text-white/90">
           <span className="flex items-center gap-1.5">
             <RiTimeLine className="size-4" /> {d.weekday} · {event.time}

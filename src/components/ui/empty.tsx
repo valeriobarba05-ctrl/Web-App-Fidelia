@@ -13,7 +13,7 @@ function EmptyMedia({ className, ...props }: React.ComponentProps<"div">) {
   return <div className={cn("flex size-12 items-center justify-center rounded-2xl bg-muted text-foreground [&_svg]:size-6", className)} {...props} />
 }
 function EmptyTitle({ className, ...props }: React.ComponentProps<"div">) {
-  return <div className={cn("font-heading text-base font-semibold", className)} {...props} />
+  return <div className={cn("font-heading text-base font-bold", className)} {...props} />
 }
 function EmptyDescription({ className, ...props }: React.ComponentProps<"p">) {
   return <p className={cn("max-w-xs text-sm text-muted-foreground", className)} {...props} />

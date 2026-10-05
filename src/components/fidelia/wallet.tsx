@@ -69,7 +69,7 @@ export function WalletPassPreview({
         <span className="min-w-0 flex-1 truncate text-[15px] font-semibold">{venue.name}</span>
         <span className="flex flex-col items-end">
           <span className="text-[11px] font-semibold tracking-[0.08em] text-highlight uppercase">Punti</span>
-          <span className="font-heading text-lg leading-none font-semibold tabular">{fmtPoints(member.points)}</span>
+          <span className="font-heading text-lg leading-none font-bold tabular">{fmtPoints(member.points)}</span>
         </span>
       </div>
       {/* strip / hero image con il campo principale */}
@@ -84,7 +84,7 @@ export function WalletPassPreview({
         )}
         <span className="flex flex-col">
           <span className="text-[11px] font-semibold tracking-[0.08em] text-highlight uppercase">Saldo</span>
-          <span className="font-heading text-[30px] leading-none font-semibold text-highlight tabular">{fmtPoints(member.points)}</span>
+          <span className="font-heading text-[30px] leading-none font-extrabold text-highlight tabular">{fmtPoints(member.points)}</span>
         </span>
       </div>
       {/* campi secondari */}

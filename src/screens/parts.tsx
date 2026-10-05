@@ -53,7 +53,7 @@ export function WalletButtons({ className }: { className?: string }) {
   )
 }
 
-/** Riga in Home: invita ad aggiungere la tessera al wallet; apre il foglio con anteprima e pulsanti. */
+/** Riga in Home: invita a salvare la tessera nel wallet del telefono (nel testo per il cliente non si dice "wallet"); apre il foglio con anteprima e pulsanti. */
 export function AddToWalletRow() {
   const { user, venue, visible, wallet, venueState } = useStore()
   const [open, setOpen] = React.useState(false)
@@ -67,7 +67,7 @@ export function AddToWalletRow() {
             <RiWallet3Line />
           </ItemMedia>
           <ItemContent>
-            <ItemTitle>{inWallet ? "La tessera è nel tuo wallet" : "Aggiungi la tessera al wallet"}</ItemTitle>
+            <ItemTitle>{inWallet ? "La tessera è nel tuo telefono" : "Salva la tessera nel telefono"}</ItemTitle>
             <ItemDescription className="text-xs">{inWallet ? "Si aggiorna da sola a ogni visita" : "Sempre con te, anche senza aprire l'app"}</ItemDescription>
           </ItemContent>
           {inWallet ? <RiCheckboxCircleFill className="size-5 text-success" aria-label="Aggiunta" /> : <RiArrowRightSLine className="size-5 text-muted-foreground" />}
@@ -76,8 +76,8 @@ export function AddToWalletRow() {
       <Drawer open={open} onOpenChange={setOpen}>
         <DrawerContent>
           <DrawerHeader>
-            <DrawerTitle>La tua tessera nel wallet</DrawerTitle>
-            <DrawerDescription>Mostrala in cassa direttamente dal wallet del telefono. Saldo e premi si aggiornano da soli.</DrawerDescription>
+            <DrawerTitle>La tua tessera nel telefono</DrawerTitle>
+            <DrawerDescription>La apri dalla schermata di blocco e la mostri in cassa. Saldo e premi si aggiornano da soli.</DrawerDescription>
           </DrawerHeader>
           <div className="flex flex-col gap-5 overflow-y-auto overscroll-contain px-5 pb-6">
             <WalletPassPreview

@@ -59,7 +59,7 @@ export function TesseraScreen() {
                 <div className="h-full origin-left rounded-full bg-highlight transition-transform duration-300 ease-linear" style={{ transform: `scaleX(${ratio})` }} />
               </div>
             </div>
-            <span className="font-heading text-lg font-semibold tracking-[0.18em] tabular">{user.cardCode}</span>
+            <span className="font-heading text-lg font-bold tracking-[0.18em] tabular">{user.cardCode}</span>
           </div>
         </LoyaltyCard>
 
@@ -79,8 +79,8 @@ export function TesseraScreen() {
 
           <Card size="sm">
             <CardHeader>
-              <CardTitle>Tessera nel wallet</CardTitle>
-              <CardDescription>Aggiungila al wallet del telefono: la apri dalla schermata di blocco, anche senza internet.</CardDescription>
+              <CardTitle>Tessera nel telefono</CardTitle>
+              <CardDescription>Salvala nel telefono: la apri dalla schermata di blocco, anche senza internet.</CardDescription>
             </CardHeader>
             <CardContent>
               <WalletButtons />
@@ -96,7 +96,7 @@ export function TesseraScreen() {
               <ol className="flex flex-col gap-3 text-sm">
                 {["Apri la tessera prima di pagare", "Il personale scansiona il QR", "Vedi i punti aggiornarsi qui, subito"].map((s, i) => (
                   <li key={s} className="flex items-center gap-3">
-                    <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-muted font-heading text-xs font-semibold">{i + 1}</span>
+                    <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-muted font-heading text-xs font-bold">{i + 1}</span>
                     {s}
                   </li>
                 ))}

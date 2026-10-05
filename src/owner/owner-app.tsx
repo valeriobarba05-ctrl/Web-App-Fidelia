@@ -22,6 +22,7 @@ import { EventArt } from "@/components/fidelia/event-art"
 import { ImageField } from "@/owner/image-field"
 import { TicketCard, VenueMark } from "@/components/fidelia/loyalty-card"
 import { WalletPassPreview } from "@/components/fidelia/wallet"
+import { FideliaLogo, FideliaSymbol } from "@/components/fidelia/brand"
 import { walletColors } from "@/lib/themes"
 import { PrizeArt } from "@/components/fidelia/prize-art"
 import { VenueThemePicker } from "@/owner/venue-theme-picker"
@@ -144,10 +145,11 @@ function OwnerSidebar({ current, onLogout }: { current: string; onLogout: () => 
   const { venue } = useVenue()
   return (
     <aside className="sticky top-0 hidden h-dvh flex-col gap-6 overflow-y-auto bg-sidebar p-4 text-sidebar-foreground lg:flex">
-      <div className="flex items-center gap-3 p-2">
+      <FideliaLogo onBrand size={28} className="px-2 pt-2" />
+      <div className="flex items-center gap-3 rounded-2xl bg-sidebar-accent p-2">
         <VenueMark initials={venue.initials} logo={venue.logo} />
         <span className="flex min-w-0 flex-col">
-          <span className="truncate font-heading text-[15px] font-semibold">{venue.name}</span>
+          <span className="truncate font-heading text-[15px] font-bold">{venue.name}</span>
           <span className="text-xs text-sidebar-muted">Gestione del locale</span>
         </span>
       </div>
@@ -193,6 +195,7 @@ function OwnerMobileBar({ current, onLogout }: { current: string; onLogout: () =
           <span className="truncate text-sm font-semibold">{venue.name}</span>
           <span className="text-xs text-sidebar-muted">Gestione del locale</span>
         </span>
+        <FideliaSymbol variant="su-verde" size={20} className="max-[380px]:hidden" />
         <Button asChild variant="glass" size="sm">
           <a href="#/home" target="_blank" rel="noopener">
             <RiEyeLine /> App clienti
@@ -359,7 +362,7 @@ function AdminList<T extends { id: string }>({
               <li key={item.id} className={cn("flex flex-wrap items-center gap-3 rounded-3xl bg-card p-3 shadow-sm ring-1 ring-foreground/5 dark:ring-foreground/10", r.active === false && "bg-muted/60")}>
                 {r.media}
                 <button type="button" onClick={() => onEdit(item)} className="flex min-w-0 flex-1 basis-[11rem] flex-col gap-1 text-left outline-none focus-visible:underline">
-                  <span className="flex items-center gap-2 font-heading text-base font-semibold">
+                  <span className="flex items-center gap-2 font-heading text-base font-bold">
                     <span className="truncate">{r.title || "Senza titolo"}</span>
                     {r.active === false && <Badge variant="secondary">Nascosto</Badge>}
                   </span>
